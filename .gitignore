@@ -30,3 +30,10 @@
 *.exe
 *.out
 *.app
+
+# Directories
+JuceLibraryCode/
+.jucer
+Builds/
+*.DS_Store
+.DS_Store
