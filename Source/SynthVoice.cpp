@@ -16,8 +16,8 @@ SynthVoice::SynthVoice()
 {
     // set subvoices
     for (int voice = 0; voice < 3; voice++) {
-        subVoices[voice].frequency = frequency;
-        subVoices[voice].detune = 0.33 * voice;
+        
+        subVoicesV.push_back(SubVoice(frequency, 0.33 * voice));
     }
 }
 
@@ -89,8 +89,8 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         
         double theSoundL;
         
-        for (int voice = 0; voice < 3; voice++) {
-            theSoundL = theSoundL + subVoices[voice].OscWave(); // TODO: this approach here just have to call oscwave. Could also not make frequency and detune general variables and add them every time call it. this seems better though
+        for (int voice = 0; voice < subVoicesV.size(); voice++) {
+            theSoundL = theSoundL + subVoicesV[voice].OscWave(); 
         }
         
         double volume = 0.1;

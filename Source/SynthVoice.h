@@ -5,6 +5,7 @@
 #include "maximilian.h"
 #include "Envelopes.h"
 #include "SubVoice.h"
+#include <vector>
 
 class TransitionFxAudioProcessor;
 
@@ -37,7 +38,6 @@ private:
     double masterGain;
     
     // subvoices
-    // TODO: use vector
-    SubVoice subVoices[3];
+    std::vector<SubVoice> subVoicesV;
         
 };

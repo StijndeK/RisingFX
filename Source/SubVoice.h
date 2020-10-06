@@ -18,7 +18,11 @@
 class SubVoice {
     private:
         maxiOsc osc;
+    
     public:
+    SubVoice(double frequency, double detune);
+    ~SubVoice();
+
         double OscWave ();
         double SubVoiceBlock ();
         double detune;
