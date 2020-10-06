@@ -17,21 +17,7 @@ TransitionFxAudioProcessor::TransitionFxAudioProcessor()
 tree (*this, nullptr)       // initialise valuetree
 #endif
 {
-    //==============================================================================
-    // setup format manager
-    //==============================================================================
-
-    formatManager.registerBasicFormats();
-    
-    // load default sample
-    File myFile ("/Users/stijn/Documents/HKU/FilmFxPlugin/JUCE_files/TransitionFX/AudioFiles/Big_Impact.wav");
-    auto* reader = formatManager.createReaderFor(myFile);
-    if (reader != nullptr) {
-        std::unique_ptr<AudioFormatReaderSource> tempSource (new AudioFormatReaderSource (reader, true));
-        transport.setSource(tempSource.get(), 0, nullptr, reader->sampleRate);
-        readerSource.reset(tempSource.release());
-    }
-    
+    /*
     // ==============================================================================
     // Set Normalisalbe Ranges
     // ==============================================================================
@@ -463,10 +449,10 @@ tree (*this, nullptr)       // initialise valuetree
     
     // safe for xml
     tree.state = ValueTree("savedParameters");
-    
+    */
     
     //==============================================================================
-    // Juce Synthesiser
+    // Synthesiser
     //==============================================================================
     
     // clear old voices
@@ -491,9 +477,10 @@ tree (*this, nullptr)       // initialise valuetree
     //==============================================================================
     // Reverb
     //==============================================================================
-
+    /*
     auto& verb = fxChain.template get<reverbIndex>();
     verb.setParameters(reverbParameters);
+     */
 }
 
 TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
@@ -566,6 +553,7 @@ void TransitionFxAudioProcessor::changeProgramName (int index, const String& new
 //==============================================================================
 void TransitionFxAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    /*
     // Initialise JUCE::DSP code (reverb and filter)
     lastSampleRate = sampleRate;
     
@@ -582,6 +570,7 @@ void TransitionFxAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     
     // sample playing
     transport.prepareToPlay(samplesPerBlock, sampleRate);
+     */
 }
 
 void TransitionFxAudioProcessor::releaseResources()
@@ -614,6 +603,7 @@ bool TransitionFxAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 #endif
 
 // sample loading and playing
+/*
 void TransitionFxAudioProcessor::getEditorInfo(int buttonPlay, int buttonLoad)
 {
     if (playButton != buttonPlay) {
@@ -665,6 +655,8 @@ void TransitionFxAudioProcessor::transportStateChanged(TransportState state)
         }
     }
 }
+ 
+*/
 
 //==============================================================================
 // processing
@@ -674,6 +666,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     // clear buffer
     buffer.clear();
     
+    /*
     // sample playing
     if (playSampleHit == true) {
         if (readerSource.get() == nullptr)
@@ -788,6 +781,8 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     
     */
     
+    /*
+    
     
     //==============================================================================
     // set/convert envelope time values
@@ -870,7 +865,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         masterRelease = (*tree.getRawParameterValue("masterReleaseFramesSliderID") / usedFramerate) * 1000;
     }
     
-    
+    */
     //==============================================================================
     // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
     for (int i = 0; i < mySynth.getNumVoices(); i++) {
@@ -883,6 +878,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
             // setup processors in voices
             myVoice->setupProcessor(this);
             
+            /*
             // initialise settings for voices (set parameters for every voice)
             if (firstInit[i] == true) {
                 initVoiceValue[i] = initVoiceValue[i] + 1;
@@ -989,6 +985,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
             myVoice->getLfo1Parameters((float*)tree.getRawParameterValue("lfo1MenuID"),(float*)tree.getRawParameterValue("lfo1FreqSliderID"));
             // hits
             myVoice->getHitsParameters((float*)tree.getRawParameterValue("kickPitchSliderID"), (float*)tree.getRawParameterValue("kickReleaseSliderID"), (float*)tree.getRawParameterValue("kickOnOffButtonID"), (float*)tree.getRawParameterValue("kickGainSliderID"), (float*)tree.getRawParameterValue("kickTempoOffsetSliderID"), (float*)tree.getRawParameterValue("kickDistortionOnOffButtonID"));
+         */
         }
     } // end forloop walktrough voices
     
@@ -998,6 +995,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     // cal proccesor located in SyntVoice.h
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
     
+    /*
     //==============================================================================
     // set samplerates
     env3RWet.setSampleRate(getSampleRate());
@@ -1031,7 +1029,6 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
             mySynth.setNoteIsPlaying(isNoteOn);
         }
     }
-     */
     
     //==============================================================================
     // sample trigger
@@ -1202,8 +1199,10 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         dsp::AudioBlock<float> block (buffer);
         lowPassFilter.process(dsp::ProcessContextReplacing <float> (block));
     }
+     */
 }   // end of processBlock
 
+/*
 //==============================================================================
 void TransitionFxAudioProcessor::setEnvTrigger(int trigger)
 {
@@ -1215,6 +1214,7 @@ double TransitionFxAudioProcessor::getEnvTrigger()
 {
     return envtrig;
 }
+ */
 
 //==============================================================================
 bool TransitionFxAudioProcessor::hasEditor() const

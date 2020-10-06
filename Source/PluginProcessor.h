@@ -13,48 +13,8 @@
 class TransitionFxAudioProcessor  : public AudioProcessor
 {
 public:
-    
-    int oldTriggerButtonValue = 0;
-    int manualTrigger = 0;
-    
-    //==============================================================================
-    // sample playing
-    AudioSourceChannelInfo ASCI;
-    
-    std::unique_ptr <AudioFormatReaderSource> PplaySource;
-    std::unique_ptr<AudioFormatReaderSource> readerSource;
-    AudioTransportSource transport;
-    
-    enum TransportState
-    {
-        Stopped,
-        Starting,
-        Stopping
-    };
-    
-    TransportState transState;
-    
-    void transportStateChanged(TransportState state);
-    
-    AudioFormatManager formatManager;
-    
-    void getEditorInfo (int buttonPlay, int buttonLoad);
-    int loadButton = 0;
-    int playButton = 0;
-    
-    Envelopes sampleHitDelay;
-    
-    bool playSampleHit = false;
-    int sampleDelayedTrigger = 0;
-    
-    
-    //==============================================================================
-    // colour for editor
-    // TODO: find a better place
-    int red = 0;
-    int green = 5;
-    int blue = 15;
-
+    //create valuetree
+    AudioProcessorValueTreeState tree;
     //==============================================================================
     TransitionFxAudioProcessor();
     ~TransitionFxAudioProcessor();
@@ -92,14 +52,14 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
+    /*
     //==============================================================================
     // triggers
     void setEnvTrigger(int trigger);
     double getEnvTrigger();
     
     //==============================================================================
-    //create valuetree
-    AudioProcessorValueTreeState tree;
+
     
     //==============================================================================
     // DAW waardes
@@ -318,10 +278,10 @@ public:
     
     string modulationVoiceNames[3][6];
     string modulationVoiceLabels[3][6];
-
+     */
     
 private:
-    
+    /*
     // timelinking
     bool hostLinked = false;
     double noteTimeValue;
@@ -375,7 +335,7 @@ private:
     float initVoiceValue[5] = {0,0,0,0,0};  // initial voicevalues for initialisation of every voice
     float* voiceValue;  // which voice is currently being edited
     float* voiceAmountValue;
-    
+    */
     //==============================================================================
     // Create Synth
     Synthesiser mySynth;
@@ -387,6 +347,7 @@ private:
     // set amount of voices
     const int numVoices = 1;
     
+    /*
     //==============================================================================
     int envtrig = 0;
     
@@ -395,7 +356,7 @@ private:
     int delayedTrigger = 0;
     int isNoteOn = false;
     Envelopes delayEnv;
-
+     */
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TransitionFxAudioProcessor)
 };
