@@ -14,9 +14,8 @@ class SynthVoice;
 
 SynthVoice::SynthVoice()
 {
-    // set subvoices
+    // create subvoices
     for (int voice = 0; voice < 3; voice++) {
-        
         subVoicesV.push_back(SubVoice(frequency, 0.33 * voice));
     }
 }

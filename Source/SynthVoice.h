@@ -39,5 +39,4 @@ private:
     
     // subvoices
     std::vector<SubVoice> subVoicesV;
-        
 };
