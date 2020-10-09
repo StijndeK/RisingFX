@@ -16,8 +16,8 @@ SubVoice::SubVoice(double frequency, double detune)
     this->detune = detune;
     
     // envelope parameters in ms
-    env.setADSRValue(4000, env.attack, true);
-    env.setADSRValue(1000, env.release, true);
+    env.setADSRValue(1000, env.attack, false);
+    env.setADSRValue(1000, env.release, false);
     
     std::cout << env.attack << std::endl;
     std::cout << env.release << std::endl;
@@ -29,5 +29,5 @@ SubVoice::~SubVoice()
 
 double SubVoice::OscWave ()
 {
-    return env.arExp(osc.sinebuf4(frequency * pow(2.0 , detune)), trigger);
+    return env.arLin(osc.sinebuf4(frequency * pow(2.0 , detune)), trigger);
 }

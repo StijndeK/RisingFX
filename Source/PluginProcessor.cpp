@@ -64,6 +64,16 @@ void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, fl
     }
 }
 
+void TransitionFxAudioProcessor::triggerManualSound(juce::TextButton::ButtonState state)
+{
+    if (state == 2) {
+        mySynth.manualTrigger(1);
+    }
+    else {
+        mySynth.manualTrigger(0);
+    }
+}
+
 //==============================================================================
 const String TransitionFxAudioProcessor::getName() const
 {
@@ -167,17 +177,6 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 {
     buffer.clear();
     
-    // Manually trigger a note
-    // 0 -> off. 1 -> start. 2 -> stop.
-    if (manualTrigger == 2) { // stop note
-        manualTrigger = 0;
-        mySynth.manualTrigger(0);
-    }
-    else if (manualTrigger == 1) {  // start note
-        manualTrigger = 2;
-        mySynth.manualTrigger(1);
-    }
-    
     // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
     for (int i = 0; i < mySynth.getNumVoices(); i++) {
         // check which voice is being edited
@@ -188,13 +187,8 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
             
             // get samplerate
             myVoice->setSamplerate(getSampleRate());
-            
-            // get information
-            // TODO: add change listener instead of doing this in the processblock (from the editor)
-//            myVoice->getSlider(*tree.getRawParameterValue("sliderID"));
         }
     }
-    
     
     // cal proccesor located in Voices
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());

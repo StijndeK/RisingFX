@@ -15,7 +15,6 @@
 class Envelopes {
     
 public:
-
     // arlin envelope states
     enum ArLinState {ATTACK, HOLD, RELEASE, STOP};
     

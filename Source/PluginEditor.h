@@ -24,7 +24,7 @@ private:
     TransitionFxAudioProcessor& processor;
     
     // input types
-    ToggleButton toggle { "On" };
+    TextButton play { "Play" };
     TextEditor editor;
     Slider slider1;
     ComboBox box;

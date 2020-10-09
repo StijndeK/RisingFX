@@ -15,6 +15,7 @@ class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessor
 public:
     // trigger button
     int manualTrigger;
+    void triggerManualSound(juce::TextButton::ButtonState state);
     
     //==============================================================================
     // valuetree

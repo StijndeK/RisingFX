@@ -11,8 +11,8 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     // INPUT TYPES
     
     // button
-    addAndMakeVisible(toggle);
-    toggle.onClick = [this] { updateToggleState (&toggle);   };
+    addAndMakeVisible(play);
+    play.onStateChange = [this] { updateToggleState (&play);   };
     
     // slider
     slider1.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
@@ -61,7 +61,7 @@ void TransitionFxAudioProcessorEditor::resized()
     Rectangle<int> area = getLocalBounds().reduced(100).removeFromBottom(100);
     box.setBounds(area.removeFromLeft(area.getWidth() / 4));
     slider1.setBounds(area.removeFromLeft(area.getWidth() / 3));
-    toggle.setBounds(area.removeFromLeft(area.getWidth() / 2));
+    play.setBounds(area.removeFromLeft(area.getWidth() / 2));
     editor.setBounds(area);
 }
 
@@ -69,8 +69,8 @@ void TransitionFxAudioProcessorEditor::resized()
 void TransitionFxAudioProcessorEditor::updateToggleState (Button* button)
 {
     // manually trigger a sound
-    if (button == &toggle) {
-        processor.manualTrigger = 1;
+    if (button == &play) {
+        processor.triggerManualSound(play.getState());
     }
 }
 

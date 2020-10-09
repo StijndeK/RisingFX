@@ -32,6 +32,9 @@ void SynthVoice::getSlider (float sliderValue)
     for (int voice = 0; voice < subVoicesV.size(); voice++) {
         subVoicesV[voice].frequency = sliderValue;
     }
+    for (auto voice : subVoicesV) {
+        voice.frequency = sliderValue;
+    }
 }
 
 //==============================================================================
