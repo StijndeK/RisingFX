@@ -88,10 +88,10 @@ double Envelopes::arExp(double input, int trigger)
 void Envelopes::setADSRValue(double lengthInMs, double &ADSRState, bool exp)
 {
     if (exp) {
-        ADSRState = pow((1.0/amplitudeStartValue), 1.0 / (samplerate * (lengthInMs / 1000.0)));
+        ADSRState = pow((1.0 / amplitudeStartValue), 1.0 / (samplerate * (lengthInMs / 1000.0)));
     }
     else {
-        ADSRState = (1.0/samplerate) * (1.0 / (lengthInMs / 1000.0));
+        ADSRState = (1.0 / samplerate) * (1.0 / (lengthInMs / 1000.0));
     }
 }
 
