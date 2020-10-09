@@ -10,7 +10,7 @@
 #include <algorithm>
 
 
-class TransitionFxAudioProcessor  : public AudioProcessor
+class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
 public:
     // trigger button
@@ -19,6 +19,8 @@ public:
     //==============================================================================
     // valuetree
     AudioProcessorValueTreeState tree;
+    
+    void parameterChanged(const String & parameterID, float newValue) override;
     
     //==============================================================================
     TransitionFxAudioProcessor();

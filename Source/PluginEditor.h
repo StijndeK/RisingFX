@@ -26,7 +26,7 @@ private:
     // input types
     ToggleButton toggle { "On" };
     TextEditor editor;
-    Slider slider;
+    Slider slider1;
     ComboBox box;
     
     ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTree;

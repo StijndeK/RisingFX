@@ -6,7 +6,7 @@
 TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFxAudioProcessor& p)
 : AudioProcessorEditor (&p), processor (p)
 {
-    setSize (800, 500);     // 640 bij 740
+    setSize (800, 500);
     
     // INPUT TYPES
     
@@ -15,10 +15,10 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     toggle.onClick = [this] { updateToggleState (&toggle);   };
     
     // slider
-    slider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    slider.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
-    addAndMakeVisible(&slider);
-    sliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "sliderID", slider);
+    slider1.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
+    slider1.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
+    addAndMakeVisible(&slider1);
+    sliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "sliderID", slider1);
     
     // combobox
     box.addItem("1", 1);
@@ -60,7 +60,7 @@ void TransitionFxAudioProcessorEditor::resized()
 {
     Rectangle<int> area = getLocalBounds().reduced(100).removeFromBottom(100);
     box.setBounds(area.removeFromLeft(area.getWidth() / 4));
-    slider.setBounds(area.removeFromLeft(area.getWidth() / 3));
+    slider1.setBounds(area.removeFromLeft(area.getWidth() / 3));
     toggle.setBounds(area.removeFromLeft(area.getWidth() / 2));
     editor.setBounds(area);
 }
@@ -76,7 +76,7 @@ void TransitionFxAudioProcessorEditor::updateToggleState (Button* button)
 
 void TransitionFxAudioProcessorEditor::sliderValueChanged(Slider *slider)
 {
-   
+
 }
 
 void TransitionFxAudioProcessorEditor::comboBoxChanged(ComboBox *comboBoxThatHasChanged)

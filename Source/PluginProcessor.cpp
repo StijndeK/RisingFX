@@ -17,18 +17,15 @@ TransitionFxAudioProcessor::TransitionFxAudioProcessor()
 tree (*this, nullptr)       // initialise valuetree
 #endif
 {
-    //==============================================================================
-    // Valuetree
-    //==============================================================================
+    /* Valuetree */
     
     NormalisableRange<float> sliderRange (0, 10, 0.001);
     tree.createAndAddParameter("sliderID", "sliderName", "SliderLabel", sliderRange, 0, nullptr, nullptr);
 
+    tree.addParameterListener("sliderID", this);
     tree.state = ValueTree("sliderID"); // initialise
 
-    //==============================================================================
-    // Synthesiser
-    //==============================================================================
+    /* Synthesiser */
     
     // clear old voices
     mySynth.clearVoices();
@@ -49,6 +46,11 @@ tree (*this, nullptr)       // initialise valuetree
 }
 
 TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
+{
+    
+}
+
+void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
     
 }
@@ -148,6 +150,19 @@ bool TransitionFxAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
   #endif
 }
 #endif
+
+//==============================================================================
+//void TransitionFxAudioProcessor::EditorListener (float value)
+//{
+//    // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
+//    for (int i = 0; i < mySynth.getNumVoices(); i++) {
+//        // check which voice is being edited
+//        if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
+//
+//            myVoice->getSlider(*tree.getRawParameterValue("sliderID"));
+//        }
+//    } // end forloop walktrough voices
+//}
 
 //==============================================================================
 // processing
