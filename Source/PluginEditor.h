@@ -20,10 +20,17 @@ public:
     void selectGUI();
 
 private:
-    const int pluginWidth = 640;
-
     // processor
     TransitionFxAudioProcessor& processor;
+    
+    // input types
+    ToggleButton toggle { "On" };
+    TextEditor editor;
+    Slider slider;
+    ComboBox box;
+    
+    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTree;
+
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TransitionFxAudioProcessorEditor)
 };

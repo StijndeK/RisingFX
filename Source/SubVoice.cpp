@@ -14,6 +14,10 @@ SubVoice::SubVoice(double frequency, double detune)
 {
     this->frequency = frequency;
     this->detune = detune;
+    
+    // envelope parameters in ms
+    env.setAttackLin(1000);
+    env.setReleaseLin(1000);
 }
 
 SubVoice::~SubVoice()
@@ -22,5 +26,7 @@ SubVoice::~SubVoice()
 
 double SubVoice::OscWave ()
 {
-    return osc.sinebuf4(frequency * pow(2.0 , detune));
+    // TODO: set frequency to slider value
+    
+    return env.arLin(osc.sinebuf4(frequency * pow(2.0 , detune)), trigger);
 }

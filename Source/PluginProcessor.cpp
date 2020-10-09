@@ -18,18 +18,25 @@ tree (*this, nullptr)       // initialise valuetree
 #endif
 {
     //==============================================================================
+    // Valuetree
+    //==============================================================================
+    
+    NormalisableRange<float> sliderRange (0, 10, 0.001);
+    tree.createAndAddParameter("sliderID", "sliderName", "SliderLabel", sliderRange, 0, nullptr, nullptr);
+
+    tree.state = ValueTree("sliderID"); // initialise
+
+    //==============================================================================
     // Synthesiser
     //==============================================================================
     
     // clear old voices
     mySynth.clearVoices();
-    // add voices
+    // add voices and sounds
     for (int i = 0; i < numVoices; i++) {
         mySynth.addVoice(new SynthVoice);
     }
-    // clear sound
     mySynth.clearSounds();
-    // add sounds
     mySynth.addSound(new SynthSound());
     
     // set samplerate
@@ -147,27 +154,38 @@ bool TransitionFxAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 //==============================================================================
 void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
-    // clear buffer
     buffer.clear();
     
+    // Manually trigger a note
+    // 0 -> off. 1 -> start. 2 -> stop.
+    if (manualTrigger == 2) { // stop note
+        manualTrigger = 0;
+        mySynth.manualTrigger(0);
+    }
+    else if (manualTrigger == 1) {  // start note
+        manualTrigger = 2;
+        mySynth.manualTrigger(1);
+    }
     
-    //==============================================================================
     // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
     for (int i = 0; i < mySynth.getNumVoices(); i++) {
         // check which voice is being edited
         if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
             
-            // get samplerates
-            myVoice->setSamplerate(getSampleRate());
-            
-            // setup processors in voices
+            // link processor in voice
             myVoice->setupProcessor(this);
             
+            // get samplerate
+            myVoice->setSamplerate(getSampleRate());
+            
+            // get information
+            // TODO: add change listener instead of doing this in the processblock (from the editor)
+            myVoice->getSlider(*tree.getRawParameterValue("sliderID"));
         }
     } // end forloop walktrough voices
     
     
-    // cal proccesor located in SyntVoice.h
+    // cal proccesor located in Voices
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
     
 }   // end of processBlock
@@ -186,24 +204,10 @@ AudioProcessorEditor* TransitionFxAudioProcessor::createEditor()
 //==============================================================================
 void TransitionFxAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-//    ScopedPointer<XmlElement> xml (tree.state.createXml());
-//    copyXmlToBinary(*xml, destData);
 }
 
 void TransitionFxAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-    /*
-    if (saveXml == true){
-        //get xml from binary
-        ScopedPointer<XmlElement> parameters (getXmlFromBinary(data, sizeInBytes));
-        //errorcheck
-        if (parameters != nullptr){
-            if (parameters -> hasTagName(tree.state.getType())){
-                tree.state = ValueTree::fromXml(*parameters);
-            }
-        }
-    }
-     */
 }
 
 //==============================================================================

@@ -16,15 +16,18 @@
 
 
 class SubVoice {
-    private:
-        maxiOsc osc;
+private:
+    maxiOsc osc;
+    Envelopes env;
     
-    public:
+public:
     SubVoice(double frequency, double detune);
     ~SubVoice();
 
-        double OscWave ();
-        double SubVoiceBlock ();
-        double detune;
-        double frequency; //TODO: can use the frequency in synthvoice?
+    double OscWave ();
+    double SubVoiceBlock ();
+    double detune;
+    double frequency; //TODO: can use the frequency in synthvoice?
+    
+    int trigger = 0;
 };

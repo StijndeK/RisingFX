@@ -9,8 +9,7 @@
 */
 
 class SynthVoice;
-#include "PluginEditor.h"
-// TODO: get reference to processor without including plugineditor
+#include "PluginEditor.h" // include plugineditor for reference to processor
 
 SynthVoice::SynthVoice()
 {
@@ -22,6 +21,14 @@ SynthVoice::SynthVoice()
 
 SynthVoice::~SynthVoice()
 {
+}
+
+//==============================================================================
+//                              Getters
+//==============================================================================
+void SynthVoice::getSlider (float sliderValue)
+{
+    
 }
 
 //==============================================================================
@@ -46,6 +53,12 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity, SynthesiserSound
     amplitude = velocity;
     trigger = 1;
     
+    // trigger subvoices
+    // TODO: do this more simple using pointer to trigger
+    for (int voice = 0; voice < 3; voice++) {
+        subVoicesV[voice].trigger = trigger;
+    }
+    
     // get frequency from midiNoteNumber
     frequency = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
 }
@@ -55,6 +68,12 @@ void SynthVoice::stopNote (float velocity, bool allowTailOff)
 {
     allowTailOff = true;
     trigger = 0;
+    
+    // trigger subvoices
+    // TODO: do this more simple using pointer to trigger
+    for (int voice = 0; voice < 3; voice++) {
+        subVoicesV[voice].trigger = trigger;
+    }
     
     // clear note after tailoff
     if (amplitude == 0) {
@@ -94,7 +113,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         
         double volume = 0.1;
         
-        theSoundL = (theSoundL / 1) * volume;
+        theSoundL = (theSoundL / subVoicesV.size()) * volume; // TODO: remove 6db per subvoice instead of dividing by size
         
         outputBuffer.addSample(0, startSample, theSoundL);
 //        outputBuffer.addSample(1, startSample, theSoundR);

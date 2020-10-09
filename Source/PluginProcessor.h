@@ -13,8 +13,13 @@
 class TransitionFxAudioProcessor  : public AudioProcessor
 {
 public:
-    //create valuetree
+    // trigger button
+    int manualTrigger;
+    
+    //==============================================================================
+    // valuetree
     AudioProcessorValueTreeState tree;
+    
     //==============================================================================
     TransitionFxAudioProcessor();
     ~TransitionFxAudioProcessor();

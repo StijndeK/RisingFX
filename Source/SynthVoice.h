@@ -25,9 +25,12 @@ public:
     void setSamplerate (float srate);
     void renderNextBlock (AudioBuffer<float> &outputBuffer, int startSample, int numSamples);
     
-    float trigger;
+    int trigger;
     
     double frequency = 440;
+    
+    // get UI data
+    void getSlider(float sliderValue);
     
 private:
     // processor
