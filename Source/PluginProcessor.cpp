@@ -19,8 +19,8 @@ tree (*this, nullptr)       // initialise valuetree
 {
     /* Valuetree */
     
-    NormalisableRange<float> sliderRange (0, 10, 0.001);
-    tree.createAndAddParameter("sliderID", "sliderName", "SliderLabel", sliderRange, 0, nullptr, nullptr);
+    NormalisableRange<float> frequencyRange (200, 2000, 1);
+    tree.createAndAddParameter("sliderID", "sliderName", "SliderLabel", frequencyRange, 400, nullptr, nullptr);
 
     tree.addParameterListener("sliderID", this);
     tree.state = ValueTree("sliderID"); // initialise
@@ -52,7 +52,16 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
 
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
-    
+    // check which parameter changed by id
+    if (parameterID == "sliderID") {
+        // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
+        for (int i = 0; i < mySynth.getNumVoices(); i++) {
+            // check which voice is being edited
+            if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
+                myVoice->getSlider(*tree.getRawParameterValue("sliderID"));
+            }
+        }
+    }
 }
 
 //==============================================================================
@@ -152,19 +161,6 @@ bool TransitionFxAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 #endif
 
 //==============================================================================
-//void TransitionFxAudioProcessor::EditorListener (float value)
-//{
-//    // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
-//    for (int i = 0; i < mySynth.getNumVoices(); i++) {
-//        // check which voice is being edited
-//        if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
-//
-//            myVoice->getSlider(*tree.getRawParameterValue("sliderID"));
-//        }
-//    } // end forloop walktrough voices
-//}
-
-//==============================================================================
 // processing
 //==============================================================================
 void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
@@ -195,9 +191,9 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
             
             // get information
             // TODO: add change listener instead of doing this in the processblock (from the editor)
-            myVoice->getSlider(*tree.getRawParameterValue("sliderID"));
+//            myVoice->getSlider(*tree.getRawParameterValue("sliderID"));
         }
-    } // end forloop walktrough voices
+    }
     
     
     // cal proccesor located in Voices

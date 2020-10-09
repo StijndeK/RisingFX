@@ -28,7 +28,10 @@ SynthVoice::~SynthVoice()
 //==============================================================================
 void SynthVoice::getSlider (float sliderValue)
 {
-    
+    // TODO: find solution for using forloop if I am changing every instance to the same value anyway
+    for (int voice = 0; voice < subVoicesV.size(); voice++) {
+        subVoicesV[voice].frequency = sliderValue;
+    }
 }
 
 //==============================================================================
