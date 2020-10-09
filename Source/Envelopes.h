@@ -23,7 +23,8 @@ public:
     ArLinState currentEnvState = STOP;
         
     // envelopes
-    double arLin(double input, int trigger);    // ar Linear
+    double arLin(double input, int trigger);
+    double arExp(double input, int trigger);
 
     // Delay
     double delay(double input, int trigger);    // sends a delayed trigger
