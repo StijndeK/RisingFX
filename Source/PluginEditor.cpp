@@ -4,11 +4,13 @@
 
 //==============================================================================
 TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFxAudioProcessor& p)
-: AudioProcessorEditor (&p), processor (p)
+: AudioProcessorEditor (&p), processor (p), master(p), effects(p)
 {
     setSize (800, 500);
     
-    // INPUT TYPES
+    // Editors
+    addAndMakeVisible(master);
+    addAndMakeVisible(effects);
     
     // button
     addAndMakeVisible(play);
@@ -31,6 +33,16 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     // textbox
     addAndMakeVisible(editor);
     editor.setInputRestrictions(2, "0123456789");
+    
+    // areas
+    area = getLocalBounds().reduced(20);
+    titleArea = getLocalBounds().reduced(20).removeFromTop(40);
+    mainArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500);
+    mainAreaSwitch = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500).removeFromTop(40);
+    generalArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromRight(260);
+    
+    // call resized to set areas (resized is called before constructor)
+    resized();
 }
 
 
@@ -53,12 +65,6 @@ void TransitionFxAudioProcessorEditor::paint (Graphics& g)
 
     g.setColour (Colours::white);
     g.setFont (26.0f);
-    
-    Rectangle<int> area = getLocalBounds().reduced(20);
-    Rectangle<int> titleArea = getLocalBounds().reduced(20).removeFromTop(40);
-    Rectangle<int> mainArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500);
-    Rectangle<int> mainAreaSwitch = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500).removeFromTop(40);
-    Rectangle<int> generalArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromRight(260);
 
     g.drawRect(area);
     g.drawRect(titleArea);
@@ -71,11 +77,13 @@ void TransitionFxAudioProcessorEditor::paint (Graphics& g)
 
 void TransitionFxAudioProcessorEditor::resized()
 {
-    Rectangle<int> area = getLocalBounds().reduced(100).removeFromBottom(100);
-    box.setBounds(area.removeFromLeft(area.getWidth() / 4));
-    slider1.setBounds(area.removeFromLeft(area.getWidth() / 3));
-    play.setBounds(area.removeFromLeft(area.getWidth() / 2));
-    editor.setBounds(area);
+    std::cout << mainAreaSwitch.getHeight() << std::endl;
+//    box.setBounds(area.removeFromLeft(area.getWidth() / 4));
+//    slider1.setBounds(area.removeFromLeft(area.getWidth() / 3));
+    play.setBounds(mainAreaSwitch.withTrimmedRight(mainAreaSwitch.getWidth() - 100).reduced(5));
+//    editor.setBounds(area);
+    master.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedTop(5));
+    effects.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3).withTrimmedTop(generalArea.getHeight() / 3).reduced(10, 5));
 }
 
 //==============================================================================
@@ -89,13 +97,10 @@ void TransitionFxAudioProcessorEditor::updateToggleState (Button* button)
 
 void TransitionFxAudioProcessorEditor::sliderValueChanged(Slider *slider)
 {
-
 }
+
 
 void TransitionFxAudioProcessorEditor::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 {
-    std::cout << "combo box changed" << std::endl;
+    
 }
-
-
-

@@ -15,6 +15,14 @@
         <FILE id="LvVo3G" name="PluginEditor.cpp" compile="1" resource="0"
               file="Source/PluginEditor.cpp"/>
         <FILE id="KSAXJo" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+        <GROUP id="{E6FAFA54-BAC7-E926-15E4-D6DFC60E922C}" name="SubEditors">
+          <FILE id="Kabt8W" name="MasterEditor.cpp" compile="1" resource="0"
+                file="Source/MasterEditor.cpp"/>
+          <FILE id="Q9DBnV" name="MasterEditor.h" compile="0" resource="0" file="Source/MasterEditor.h"/>
+          <FILE id="hSwNB8" name="EffectsEditor.cpp" compile="1" resource="0"
+                file="Source/EffectsEditor.cpp"/>
+          <FILE id="v2ZQ9K" name="EffectsEditor.h" compile="0" resource="0" file="Source/EffectsEditor.h"/>
+        </GROUP>
       </GROUP>
       <GROUP id="{05E6C357-FAFC-DEF3-A4C5-0983235DC174}" name="Processing">
         <FILE id="dHveh0" name="PluginProcessor.cpp" compile="1" resource="0"

@@ -23,6 +23,8 @@ public:
     
     void parameterChanged(const String & parameterID, float newValue) override;
     
+    void initialiseTreeMember(string id, NormalisableRange<float> range, float initialValue);
+    
     //==============================================================================
     TransitionFxAudioProcessor();
     ~TransitionFxAudioProcessor();

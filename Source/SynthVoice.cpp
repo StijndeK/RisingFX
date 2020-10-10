@@ -26,10 +26,19 @@ SynthVoice::~SynthVoice()
 //==============================================================================
 //                                Getters
 //==============================================================================
-void SynthVoice::getSlider (float sliderValue)
+void SynthVoice::getSlider (float sliderValue, String ID)
 {
-    for (auto &voice : subVoicesV) {
-        voice.frequency = sliderValue;
+    // TODO: optimise. Maybe different getter for subvoices and voices
+    if (ID == "sliderID") {
+        for (auto &voice : subVoicesV) {
+            voice.frequency = sliderValue;
+        }
+    }
+    else if (ID == "gainSliderID") {
+        gain = pow(10, sliderValue / 20);   // dbtovolume
+    }
+    else if (ID == "panSliderID") {
+        pan = (sliderValue + 1) / 2; // pan between 0 and 1
     }
 }
 
@@ -106,18 +115,17 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
     // per sample
     for (int sample = 0; sample < numSamples; ++sample) {
         
-        double theSoundL;
+        double theSoundL, theSoundR;
         
         for (auto &voice : subVoicesV) {
             theSoundL = theSoundL + voice.OscWave();
         }
-        
-        double volume = 0.1;
-        
-        theSoundL = (theSoundL / subVoicesV.size()) * volume; // TODO: remove 6db per subvoice instead of dividing by size
-        
-        outputBuffer.addSample(0, startSample, theSoundL);
-//        outputBuffer.addSample(1, startSample, theSoundR);
+                
+        theSoundL = (theSoundL / (subVoicesV.size() * 2)) * gain;
+        theSoundR = theSoundL;
+
+        outputBuffer.addSample(0, startSample, theSoundL * (1.0-pan));
+        outputBuffer.addSample(1, startSample, theSoundR * pan);
 
         ++startSample;
     }

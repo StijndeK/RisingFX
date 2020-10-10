@@ -20,10 +20,16 @@ tree (*this, nullptr)       // initialise valuetree
     /* Valuetree */
     
     NormalisableRange<float> frequencyRange (200, 2000, 1);
-    tree.createAndAddParameter("sliderID", "sliderName", "SliderLabel", frequencyRange, 400, nullptr, nullptr);
-
-    tree.addParameterListener("sliderID", this);
-    tree.state = ValueTree("sliderID"); // initialise
+    NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
+    NormalisableRange<float> panRange (-1, 1, 0.01);
+    
+    // TODO: create general variable for IDs. ik kan gewoon een aparte class maken anders maken met de ids?
+    initialiseTreeMember("sliderID", frequencyRange, 400);
+    initialiseTreeMember("gainSliderID", gainRange, -6);
+    initialiseTreeMember("panSliderID", panRange, 0);
+    
+    // initialise
+    tree.state = ValueTree("sliderID");
 
     /* Synthesiser */
     
@@ -49,19 +55,24 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
 {
     
 }
+//==============================================================================
+void TransitionFxAudioProcessor::initialiseTreeMember(string id, NormalisableRange<float> range, float initialValue)
+{
+    tree.createAndAddParameter(id, id, id, range, initialValue, nullptr, nullptr);
+    tree.addParameterListener(id, this);
+}
+
 
 //==============================================================================
 
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
-    // check which parameter changed by id
-    if (parameterID == "sliderID") {
-        // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
-        for (int i = 0; i < mySynth.getNumVoices(); i++) {
-            // check which voice is being edited
-            if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
-                myVoice->getSlider(*tree.getRawParameterValue("sliderID"));
-            }
+    // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
+    for (int i = 0; i < mySynth.getNumVoices(); i++) {
+        // check which voice is being edited
+        if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
+            
+            myVoice->getSlider(*tree.getRawParameterValue(parameterID), parameterID);
         }
     }
 }

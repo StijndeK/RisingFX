@@ -30,7 +30,7 @@ public:
     double frequency = 440;
     
     // get UI data
-    void getSlider(float sliderValue);
+    void getSlider(float sliderValue, String ID);
     
 private:
     // processor
@@ -38,7 +38,9 @@ private:
 
     // master
     double amplitude;
-    double masterGain;
+    // TODO: initialise all input
+    double gain = 0.1;
+    double pan = 0.5;
     
     // subvoices
     std::vector<SubVoice> subVoicesV;

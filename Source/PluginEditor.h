@@ -2,6 +2,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
+#include "MasterEditor.h"
+#include "EffectsEditor.h"
 
 // CALLS ALL VISUALS
 class TransitionFxAudioProcessorEditor  : public AudioProcessorEditor, public ComboBox::Listener, public Slider::Listener
@@ -30,6 +32,17 @@ private:
     ComboBox box;
     
     ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTree;
+    
+    // layout
+    Rectangle<int> area;
+    Rectangle<int> titleArea;
+    Rectangle<int> mainArea;
+    Rectangle<int> mainAreaSwitch;
+    Rectangle<int> generalArea;
+    
+    // editors
+    MasterEditor master;
+    EffectsEditor effects;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TransitionFxAudioProcessorEditor)
