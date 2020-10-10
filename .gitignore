@@ -37,3 +37,4 @@ JuceLibraryCode/
 Builds/
 *.DS_Store
 .DS_Store
+TFX.jucer

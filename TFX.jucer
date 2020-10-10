@@ -60,6 +60,9 @@
     </GROUP>
     <FILE id="UU339K" name="Tests.cpp" compile="1" resource="0" file="Source/Tests.cpp"/>
     <FILE id="lHFRr3" name="Tests.h" compile="0" resource="0" file="Source/Tests.h"/>
+    <GROUP id="{79D72106-03B4-FFBD-C92B-7192A70ECA7F}" name="Resources">
+      <FILE id="J3Ns2k" name="Logo.png" compile="0" resource="1" file="Resources/Logo.png"/>
+    </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">

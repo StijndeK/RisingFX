@@ -25,11 +25,12 @@ private:
     // processor
     TransitionFxAudioProcessor& processor;
     
-    // input types
+    // components
     TextButton play { "Play" };
     TextEditor editor;
     Slider slider1;
     ComboBox box;
+    ImageComponent logoImage;
     
     ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTree;
     

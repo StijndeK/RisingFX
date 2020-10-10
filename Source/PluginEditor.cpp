@@ -8,6 +8,11 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
 {
     setSize (800, 500);
     
+    // Images
+    auto logo = ImageCache::getFromMemory(BinaryData::Logo_png, BinaryData::Logo_pngSize);
+    logoImage.setImage(logo, RectanglePlacement::centred);
+    addAndMakeVisible(logoImage);
+    
     // Editors
     addAndMakeVisible(master);
     addAndMakeVisible(effects);
@@ -66,18 +71,18 @@ void TransitionFxAudioProcessorEditor::paint (Graphics& g)
     g.setColour (Colours::white);
     g.setFont (26.0f);
 
-    g.drawRect(area);
-    g.drawRect(titleArea);
+//    g.drawRect(area);
+//    g.drawRect(titleArea);
     g.drawRect(mainArea);
     g.drawRect(mainAreaSwitch);
     g.drawRect(generalArea);
 
-    g.drawText ("RFX", titleArea, Justification::centred);
+//    g.drawText ("RFX", titleArea, Justification::centred);
 }
 
 void TransitionFxAudioProcessorEditor::resized()
 {
-    std::cout << mainAreaSwitch.getHeight() << std::endl;
+    logoImage.setBounds(titleArea);
 //    box.setBounds(area.removeFromLeft(area.getWidth() / 4));
 //    slider1.setBounds(area.removeFromLeft(area.getWidth() / 3));
     play.setBounds(mainAreaSwitch.withTrimmedRight(mainAreaSwitch.getWidth() - 100).reduced(5));
