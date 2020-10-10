@@ -53,7 +53,20 @@ void TransitionFxAudioProcessorEditor::paint (Graphics& g)
 
     g.setColour (Colours::white);
     g.setFont (26.0f);
-//    g.drawText ("TRANSITION FX - ALPHA", area, Justification::centredTop);
+    
+    Rectangle<int> area = getLocalBounds().reduced(20);
+    Rectangle<int> titleArea = getLocalBounds().reduced(20).removeFromTop(40);
+    Rectangle<int> mainArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500);
+    Rectangle<int> mainAreaSwitch = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500).removeFromTop(40);
+    Rectangle<int> generalArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromRight(260);
+
+    g.drawRect(area);
+    g.drawRect(titleArea);
+    g.drawRect(mainArea);
+    g.drawRect(mainAreaSwitch);
+    g.drawRect(generalArea);
+
+    g.drawText ("RFX", titleArea, Justification::centred);
 }
 
 void TransitionFxAudioProcessorEditor::resized()
