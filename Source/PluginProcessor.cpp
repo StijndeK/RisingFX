@@ -50,6 +50,8 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
     
 }
 
+//==============================================================================
+
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
     // check which parameter changed by id

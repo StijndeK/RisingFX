@@ -24,21 +24,17 @@ SynthVoice::~SynthVoice()
 }
 
 //==============================================================================
-//                              Getters
+//                                Getters
 //==============================================================================
 void SynthVoice::getSlider (float sliderValue)
 {
-    // TODO: find solution for using forloop if I am changing every instance to the same value anyway
-    for (int voice = 0; voice < subVoicesV.size(); voice++) {
-        subVoicesV[voice].frequency = sliderValue;
-    }
-    for (auto voice : subVoicesV) {
+    for (auto &voice : subVoicesV) {
         voice.frequency = sliderValue;
     }
 }
 
 //==============================================================================
-//                              Synth Functions
+//                                  Synth
 //==============================================================================
 
 // Must return true if this voice object is capable of playing the given sound
@@ -59,14 +55,14 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity, SynthesiserSound
     amplitude = velocity;
     trigger = 1;
     
-    // trigger subvoices
-    // TODO: do this more simple using pointer to trigger
-    for (int voice = 0; voice < 3; voice++) {
-        subVoicesV[voice].trigger = trigger;
-    }
-    
     // get frequency from midiNoteNumber
     frequency = MidiMessage::getMidiNoteInHertz(midiNoteNumber);
+    
+    
+    for (auto &voice : subVoicesV) {
+        voice.trigger = trigger; // trigger subvoices
+        voice.frequency = frequency; // frequency subvoices
+    }
 }
 
 // Called to stop note
@@ -76,9 +72,8 @@ void SynthVoice::stopNote (float velocity, bool allowTailOff)
     trigger = 0;
     
     // trigger subvoices
-    // TODO: do this more simple using pointer to trigger
-    for (int voice = 0; voice < 3; voice++) {
-        subVoicesV[voice].trigger = trigger;
+    for (auto &voice : subVoicesV) {
+        voice.trigger = trigger;
     }
     
     // clear note after tailoff
@@ -113,8 +108,8 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         
         double theSoundL;
         
-        for (int voice = 0; voice < subVoicesV.size(); voice++) {
-            theSoundL = theSoundL + subVoicesV[voice].OscWave(); 
+        for (auto &voice : subVoicesV) {
+            theSoundL = theSoundL + voice.OscWave();
         }
         
         double volume = 0.1;
