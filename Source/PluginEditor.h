@@ -5,6 +5,8 @@
 #include "MasterEditor.h"
 #include "EffectsEditor.h"
 #include "TimeEditor.h"
+#include "TimeLinkingEditor.h"
+#include "VoicesEditor.h"
 
 // CALLS ALL VISUALS
 class TransitionFxAudioProcessorEditor  : public AudioProcessorEditor, public ComboBox::Listener, public Slider::Listener
@@ -39,7 +41,9 @@ private:
     Rectangle<int> area;
     Rectangle<int> titleArea;
     Rectangle<int> mainArea;
+    Rectangle<int> mainAreaVoicesSwitchLength;
     Rectangle<int> mainAreaSwitch;
+    Rectangle<int> mainAreaVoices;
     Rectangle<int> generalArea;
     Rectangle<int> lengthArea;
     
@@ -47,6 +51,8 @@ private:
     MasterEditor master;
     EffectsEditor effects;
     TimeEditor time;
+    TimeLinkingEditor timeLinking;
+    VoicesEditor voices;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TransitionFxAudioProcessorEditor)

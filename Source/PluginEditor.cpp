@@ -4,7 +4,7 @@
 
 //==============================================================================
 TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFxAudioProcessor& p)
-: AudioProcessorEditor (&p), processor (p), master(p), effects(p), time(p)
+: AudioProcessorEditor (&p), processor (p), master(p), effects(p), time(p), timeLinking(p), voices(p)
 {
     setSize (800, 500);
     
@@ -17,7 +17,9 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     addAndMakeVisible(master);
     addAndMakeVisible(effects);
     addAndMakeVisible(time);
-    
+    addAndMakeVisible(timeLinking);
+    addAndMakeVisible(voices);
+
     // Buttons
     addAndMakeVisible(play);
     play.onStateChange = [this] { updateToggleState (&play);   };
@@ -45,6 +47,8 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     titleArea = getLocalBounds().reduced(20).removeFromTop(40);
     mainArea = getLocalBounds().reduced(20).withTrimmedTop(40).withTrimmedBottom(60).removeFromLeft(500);
     mainAreaSwitch = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500).removeFromTop(40);
+    mainAreaVoices = getLocalBounds().reduced(20).withTrimmedTop(80).removeFromLeft(500).removeFromTop(80);
+    mainAreaVoicesSwitchLength = getLocalBounds().reduced(20).withTrimmedTop(80).removeFromLeft(500);
     lengthArea = getLocalBounds().reduced(20).removeFromBottom(60).removeFromLeft(500);
     generalArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromRight(260);
     
@@ -75,22 +79,26 @@ void TransitionFxAudioProcessorEditor::paint (Graphics& g)
 
 //    g.drawRect(area);
 //    g.drawRect(titleArea);
-    g.drawRect(mainArea);
+//    g.drawRect(mainArea);
     g.drawRect(mainAreaSwitch);
+//    g.drawRect(mainAreaVoices);
     g.drawRect(generalArea);
-    g.drawRect(lengthArea);
+//    g.drawRect(lengthArea);
+    g.drawRect(mainAreaVoicesSwitchLength);
 
-//    g.drawText ("RFX", titleArea, Justification::centred);
 }
 
 void TransitionFxAudioProcessorEditor::resized()
 {
     logoImage.setBounds(titleArea);
+    
     play.setBounds(mainAreaSwitch.withTrimmedRight(mainAreaSwitch.getWidth() - 100).reduced(5));
+    voices.setBounds(mainAreaVoices.reduced(5));
     
     master.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedTop(5));
     effects.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3).withTrimmedTop(generalArea.getHeight() / 3).reduced(10, 5));
-    
+    timeLinking.setBounds(generalArea.withTrimmedTop(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedBottom(5));
+
     time.setBounds(lengthArea.reduced(5));
     
 }

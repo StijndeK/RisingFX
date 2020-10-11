@@ -45,11 +45,6 @@ void TimeEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("TimeEditor", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
 }
 
 void TimeEditor::resized()

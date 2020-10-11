@@ -24,6 +24,13 @@
           <FILE id="v2ZQ9K" name="EffectsEditor.h" compile="0" resource="0" file="Source/EffectsEditor.h"/>
           <FILE id="OC9L3z" name="TimeEditor.cpp" compile="1" resource="0" file="Source/TimeEditor.cpp"/>
           <FILE id="gvkYVh" name="TimeEditor.h" compile="0" resource="0" file="Source/TimeEditor.h"/>
+          <FILE id="qik1PA" name="TimeLinkingEditor.cpp" compile="1" resource="0"
+                file="Source/TimeLinkingEditor.cpp"/>
+          <FILE id="ogGD8t" name="TimeLinkingEditor.h" compile="0" resource="0"
+                file="Source/TimeLinkingEditor.h"/>
+          <FILE id="aHTifY" name="VoicesEditor.cpp" compile="1" resource="0"
+                file="Source/VoicesEditor.cpp"/>
+          <FILE id="SHEKSz" name="VoicesEditor.h" compile="0" resource="0" file="Source/VoicesEditor.h"/>
         </GROUP>
       </GROUP>
       <GROUP id="{05E6C357-FAFC-DEF3-A4C5-0983235DC174}" name="Processing">
