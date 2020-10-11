@@ -40,6 +40,16 @@ void SynthVoice::getSlider (float sliderValue, String ID)
     else if (ID == "panSliderID") {
         pan = (sliderValue + 1) / 2; // pan between 0 and 1
     }
+    else if (ID == "attackSliderID") {
+        for (auto &voice : subVoicesV) {
+            voice.env.setADSRValue(sliderValue, voice.env.attack, false);
+        }
+    }
+    else if (ID == "releaseSliderID") {
+        for (auto &voice : subVoicesV) {
+            voice.env.setADSRValue(sliderValue, voice.env.release, false);
+        }
+    }
 }
 
 //==============================================================================
@@ -119,7 +129,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         double theSoundR = 0;
         
         for (auto &voice : subVoicesV) {
-            theSoundL = theSoundL + voice.OscWave();
+            theSoundL = theSoundL + voice.oscWave();
         }
                         
         theSoundL = (theSoundL / (subVoicesV.size() * 2)) * gain;

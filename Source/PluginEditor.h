@@ -4,6 +4,7 @@
 #include "PluginProcessor.h"
 #include "MasterEditor.h"
 #include "EffectsEditor.h"
+#include "TimeEditor.h"
 
 // CALLS ALL VISUALS
 class TransitionFxAudioProcessorEditor  : public AudioProcessorEditor, public ComboBox::Listener, public Slider::Listener
@@ -40,10 +41,12 @@ private:
     Rectangle<int> mainArea;
     Rectangle<int> mainAreaSwitch;
     Rectangle<int> generalArea;
+    Rectangle<int> lengthArea;
     
     // editors
     MasterEditor master;
     EffectsEditor effects;
+    TimeEditor time;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TransitionFxAudioProcessorEditor)

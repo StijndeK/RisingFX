@@ -39,3 +39,4 @@ Builds/
 .DS_Store
 TFX.jucer
 TFX.jucer
+*.jucer

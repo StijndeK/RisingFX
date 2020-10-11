@@ -22,11 +22,14 @@ tree (*this, nullptr)       // initialise valuetree
     NormalisableRange<float> frequencyRange (200, 2000, 1);
     NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
     NormalisableRange<float> panRange (-1, 1, 0.01);
+    NormalisableRange<float> lengthMsRange (100, 10000, 1);
     
     // TODO: create general variable for IDs. ik kan gewoon een aparte class maken anders maken met de ids?
     initialiseTreeMember("sliderID", frequencyRange, 400);
     initialiseTreeMember("gainSliderID", gainRange, -6);
     initialiseTreeMember("panSliderID", panRange, 0);
+    initialiseTreeMember("releaseSliderID", lengthMsRange, 1000);
+    initialiseTreeMember("attackSliderID", lengthMsRange, 1000);
     
     // initialise
     tree.state = ValueTree("sliderID");

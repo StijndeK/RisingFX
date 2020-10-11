@@ -4,7 +4,7 @@
 
 //==============================================================================
 TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFxAudioProcessor& p)
-: AudioProcessorEditor (&p), processor (p), master(p), effects(p)
+: AudioProcessorEditor (&p), processor (p), master(p), effects(p), time(p)
 {
     setSize (800, 500);
     
@@ -16,18 +16,19 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     // Editors
     addAndMakeVisible(master);
     addAndMakeVisible(effects);
+    addAndMakeVisible(time);
     
-    // button
+    // Buttons
     addAndMakeVisible(play);
     play.onStateChange = [this] { updateToggleState (&play);   };
     
-    // slider
+    // Sliders
     slider1.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
     slider1.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
     addAndMakeVisible(&slider1);
     sliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "sliderID", slider1);
     
-    // combobox
+    // Comboboxes
     box.addItem("1", 1);
     box.addItem("2", 2);
     box.setSelectedId(1);
@@ -35,15 +36,16 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     box.addListener(this);
     addAndMakeVisible(&box);
     
-    // textbox
+    // Textboxes
     addAndMakeVisible(editor);
     editor.setInputRestrictions(2, "0123456789");
     
-    // areas
+    // Areas
     area = getLocalBounds().reduced(20);
     titleArea = getLocalBounds().reduced(20).removeFromTop(40);
-    mainArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500);
+    mainArea = getLocalBounds().reduced(20).withTrimmedTop(40).withTrimmedBottom(60).removeFromLeft(500);
     mainAreaSwitch = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500).removeFromTop(40);
+    lengthArea = getLocalBounds().reduced(20).removeFromBottom(60).removeFromLeft(500);
     generalArea = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromRight(260);
     
     // call resized to set areas (resized is called before constructor)
@@ -76,6 +78,7 @@ void TransitionFxAudioProcessorEditor::paint (Graphics& g)
     g.drawRect(mainArea);
     g.drawRect(mainAreaSwitch);
     g.drawRect(generalArea);
+    g.drawRect(lengthArea);
 
 //    g.drawText ("RFX", titleArea, Justification::centred);
 }
@@ -83,12 +86,13 @@ void TransitionFxAudioProcessorEditor::paint (Graphics& g)
 void TransitionFxAudioProcessorEditor::resized()
 {
     logoImage.setBounds(titleArea);
-//    box.setBounds(area.removeFromLeft(area.getWidth() / 4));
-//    slider1.setBounds(area.removeFromLeft(area.getWidth() / 3));
     play.setBounds(mainAreaSwitch.withTrimmedRight(mainAreaSwitch.getWidth() - 100).reduced(5));
-//    editor.setBounds(area);
+    
     master.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedTop(5));
     effects.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3).withTrimmedTop(generalArea.getHeight() / 3).reduced(10, 5));
+    
+    time.setBounds(lengthArea.reduced(5));
+    
 }
 
 //==============================================================================
