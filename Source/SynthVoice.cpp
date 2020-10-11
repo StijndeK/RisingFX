@@ -14,7 +14,7 @@ class SynthVoice;
 SynthVoice::SynthVoice()
 {
     // create subvoices
-    for (int voice = 0; voice < 3; voice++) {
+    for (int voice = 0; voice < 1; voice++) {
         subVoicesV.push_back(SubVoice(frequency, 0.33 * voice));
     }
 }
@@ -115,15 +115,16 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
     // per sample
     for (int sample = 0; sample < numSamples; ++sample) {
         
-        double theSoundL, theSoundR;
+        double theSoundL = 0;
+        double theSoundR = 0;
         
         for (auto &voice : subVoicesV) {
             theSoundL = theSoundL + voice.OscWave();
         }
-                
+                        
         theSoundL = (theSoundL / (subVoicesV.size() * 2)) * gain;
         theSoundR = theSoundL;
-
+        
         outputBuffer.addSample(0, startSample, theSoundL * (1.0-pan));
         outputBuffer.addSample(1, startSample, theSoundR * pan);
 

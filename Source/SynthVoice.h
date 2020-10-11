@@ -39,8 +39,10 @@ private:
     // master
     double amplitude;
     // TODO: initialise all input
-    double gain = 0.1;
+    double gain = 0.5;
     double pan = 0.5;
+    
+    maxiOsc osc;
     
     // subvoices
     std::vector<SubVoice> subVoicesV;

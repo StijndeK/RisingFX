@@ -29,5 +29,5 @@ SubVoice::~SubVoice()
 
 double SubVoice::OscWave ()
 {
-    return env.arLin(osc.sinebuf4(frequency * pow(2.0 , detune)), trigger);
+    return env.arLin(osc.sinewave(frequency * pow(2.0 , detune)), trigger);
 }
