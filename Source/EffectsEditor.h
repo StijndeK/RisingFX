@@ -12,6 +12,8 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include "LowpassComponent.h"
+#include "ReverbComponent.h"
 
 //==============================================================================
 /*
@@ -29,6 +31,10 @@ public:
 
 private:
     ComboBox typeBox;
+    
+    // components
+    LowpassComponent lowpass;
+    ReverbComponent reverb;
     
     // processor
     TransitionFxAudioProcessor& processor;

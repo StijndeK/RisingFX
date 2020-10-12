@@ -12,8 +12,12 @@
 #include "EffectsEditor.h"
 
 //==============================================================================
-EffectsEditor::EffectsEditor(TransitionFxAudioProcessor& p) : processor(p)
+EffectsEditor::EffectsEditor(TransitionFxAudioProcessor& p) : processor(p), lowpass(p), reverb(p)
 {
+    addAndMakeVisible(lowpass);
+    addAndMakeVisible(reverb);
+    reverb.setVisible(false);
+    
     // combobox
     typeBox.addItem("Lowpass", 1);
     typeBox.addItem("Reverb", 2);
@@ -50,9 +54,18 @@ void EffectsEditor::paint (juce::Graphics& g)
 void EffectsEditor::resized()
 {
     typeBox.setBounds(getLocalBounds().removeFromTop(20));
+    lowpass.setBounds(getLocalBounds().withTrimmedTop(20));
+    reverb.setBounds(getLocalBounds().withTrimmedTop(20));
 }
 
 void EffectsEditor::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 {
-    
+    if (comboBoxThatHasChanged->getSelectedId() == 1) {
+        lowpass.setVisible(true);
+        reverb.setVisible(false);
+    }
+    else if (comboBoxThatHasChanged->getSelectedId() == 2) {
+        lowpass.setVisible(false);
+        reverb.setVisible(true);
+    }
 }

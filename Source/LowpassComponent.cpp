@@ -12,7 +12,7 @@
 #include "LowpassComponent.h"
 
 //==============================================================================
-LowpassComponent::LowpassComponent()
+LowpassComponent::LowpassComponent(TransitionFxAudioProcessor& p) : processor(p)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.

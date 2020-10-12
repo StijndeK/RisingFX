@@ -11,6 +11,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include "PluginProcessor.h"
 
 //==============================================================================
 /*
@@ -18,12 +19,15 @@
 class ReverbComponent  : public juce::Component
 {
 public:
-    ReverbComponent();
+    ReverbComponent(TransitionFxAudioProcessor&);
     ~ReverbComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
+    // processor
+    TransitionFxAudioProcessor& processor;
+    
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ReverbComponent)
 };
