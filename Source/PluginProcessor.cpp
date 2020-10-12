@@ -23,6 +23,9 @@ tree (*this, nullptr)       // initialise valuetree
     NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
     NormalisableRange<float> panRange (-1, 1, 0.01);
     NormalisableRange<float> lengthMsRange (100, 10000, 1);
+    NormalisableRange<float> resonanceRange (1, 5, 0.1);
+    NormalisableRange<float> zeroOneRange (0, 1, 0.1);
+    
     
     // TODO: create general variable for IDs. ik kan gewoon een aparte class maken anders maken met de ids?
     initialiseTreeMember("sliderID", frequencyRange, 400);
@@ -30,6 +33,12 @@ tree (*this, nullptr)       // initialise valuetree
     initialiseTreeMember("panSliderID", panRange, 0);
     initialiseTreeMember("releaseSliderID", lengthMsRange, 1000);
     initialiseTreeMember("attackSliderID", lengthMsRange, 1000);
+    initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, 1000);
+    initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, 1);
+    initialiseTreeMember("reverbWetSliderID", zeroOneRange, 1);
+    initialiseTreeMember("reverbWidthSliderID", zeroOneRange, 1);
+    initialiseTreeMember("reverbSizeSliderID", zeroOneRange, 1);
+    initialiseTreeMember("reverbDampingSliderID", zeroOneRange, 1);
     
     // initialise
     tree.state = ValueTree("sliderID");
@@ -52,7 +61,6 @@ tree (*this, nullptr)       // initialise valuetree
     else{
         mySynth.setCurrentPlaybackSampleRate(44100);
     }
-    
 
     /* Reverb */
 
@@ -230,11 +238,11 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     /* reverb and lowpass */
     
     // set parameters
-    reverbParameters.roomSize = 1;
-    reverbParameters.wetLevel = 1;
+    reverbParameters.roomSize = *tree.getRawParameterValue("reverbSizeSliderID");
+    reverbParameters.wetLevel = *tree.getRawParameterValue("reverbWetSliderID");
     reverbParameters.dryLevel = 1 - reverbParameters.wetLevel;
-    reverbParameters.damping  = 1;
-    reverbParameters.width    = 1;
+    reverbParameters.damping  = *tree.getRawParameterValue("reverbDampingSliderID");
+    reverbParameters.width    = *tree.getRawParameterValue("reverbWidthSliderID");
     
     // give parameters to reverb for every sample
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
@@ -243,7 +251,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         verb.setParameters(reverbParameters);
         
         // filter
-        *lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 500, 1);
+        *lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), *tree.getRawParameterValue("lowpassCutoffSliderID"), *tree.getRawParameterValue("lowpassResonanceSliderID"));
     }
 
     // set output for reverb

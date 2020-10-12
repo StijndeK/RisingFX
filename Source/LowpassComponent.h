@@ -26,6 +26,9 @@ public:
     void resized() override;
 
 private:
+    Slider lowpassCutoffSlider, lowpassResonanceSlider;
+    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> lowpassCutoffSliderTree, lowpassResonanceSliderTree;
+    
     // processor
     TransitionFxAudioProcessor& processor;
     

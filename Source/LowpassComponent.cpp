@@ -17,6 +17,16 @@ LowpassComponent::LowpassComponent(TransitionFxAudioProcessor& p) : processor(p)
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
 
+    // cutoff (100, 2000), resonance (1, 5)
+    lowpassCutoffSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    lowpassCutoffSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
+    addAndMakeVisible(&lowpassCutoffSlider);
+    lowpassCutoffSliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "lowpassCutoffSliderID", lowpassCutoffSlider);
+    
+    lowpassResonanceSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
+    lowpassResonanceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
+    addAndMakeVisible(&lowpassResonanceSlider);
+    lowpassResonanceSliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "lowpassResonanceSliderID", lowpassResonanceSlider);
 }
 
 LowpassComponent::~LowpassComponent()
@@ -36,16 +46,11 @@ void LowpassComponent::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("LowpassComponent", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
 }
 
 void LowpassComponent::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
-
+    Rectangle<int> localArea = getLocalBounds().reduced(10);
+    lowpassCutoffSlider.setBounds(localArea.removeFromLeft(localArea.getWidth()/2));
+    lowpassResonanceSlider.setBounds(localArea);
 }

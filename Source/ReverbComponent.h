@@ -26,6 +26,9 @@ public:
     void resized() override;
 
 private:
+    Slider reverbWetSlider, reverbWidthSlider, reverbSizeSlider, reverbDampingSlider;
+    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> reverbWetSliderTree, reverbWidthSliderTree, reverbSizeSliderTree, reverbDampingSliderTree;
+    
     // processor
     TransitionFxAudioProcessor& processor;
     
