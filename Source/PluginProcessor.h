@@ -13,6 +13,15 @@
 class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
 public:
+    
+    // reverb
+    enum{
+        reverbIndex
+    };
+    dsp::ProcessorChain <juce::dsp::Reverb> fxChain;
+    dsp::Reverb::Parameters reverbParameters;
+    
+    //==============================================================================
     // trigger button
     int manualTrigger;
     void triggerManualSound(juce::TextButton::ButtonState state);

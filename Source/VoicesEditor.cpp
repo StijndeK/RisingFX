@@ -12,11 +12,16 @@
 #include "VoicesEditor.h"
 
 //==============================================================================
-VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : processor(p)
+VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : processor(p), voice()
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
-
+    // Buttons
+    addAndMakeVisible(addButton);
+    addButton.onStateChange = [this] { updateToggleState (&addButton);   };
+    
+//    auto test = voice;
+    // Start with one voice
+//    voices.push_back(voice);
+    resized();
 }
 
 VoicesEditor::~VoicesEditor()
@@ -45,7 +50,17 @@ void VoicesEditor::paint (juce::Graphics& g)
 
 void VoicesEditor::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
+    Rectangle<int> localArea = getLocalBounds().reduced(5);
+    
+    addButton.setBounds(localArea.removeFromRight(40).reduced(0, 10));
+    
+//    for (int voice = 0; voice < voices.size(); voice++) {
+//        voices[voice].setBounds(localArea.removeFromLeft(40));
+//    }
+}
 
+void VoicesEditor::updateToggleState (Button* button)
+{
+    // add new voice component (push back in a vector). when a voice is added, create a new one by addind it to the vector and putting it into resized
+//    voices.push_back(VoiceComponent());
 }

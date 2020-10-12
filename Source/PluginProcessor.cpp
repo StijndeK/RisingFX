@@ -52,6 +52,12 @@ tree (*this, nullptr)       // initialise valuetree
     else{
         mySynth.setCurrentPlaybackSampleRate(44100);
     }
+    
+
+    /* Reverb */
+
+    auto& verb = fxChain.template get<reverbIndex>();
+    verb.setParameters(reverbParameters);
 }
 
 TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
@@ -155,6 +161,15 @@ void TransitionFxAudioProcessor::changeProgramName (int index, const String& new
 //==============================================================================
 void TransitionFxAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
+    /* DSP initialising */
+    
+    dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = samplesPerBlock;
+    spec.numChannels = getTotalNumOutputChannels();
+    
+    fxChain.reset();
+    fxChain.prepare (spec);
 }
 
 void TransitionFxAudioProcessor::releaseResources()
@@ -208,6 +223,27 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     
     // cal proccesor located in Voices
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
+    
+    /* reverb*/
+    
+    // set parameters
+    reverbParameters.roomSize = 1;
+    reverbParameters.wetLevel = 1;
+    reverbParameters.dryLevel = 1 - reverbParameters.wetLevel;
+    reverbParameters.damping  = 1;
+    reverbParameters.width    = 1;
+    
+    // give parameters to reverb for every sample
+    for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+        auto& verb = fxChain.template get<reverbIndex>();
+        verb.setParameters(reverbParameters);
+    }
+
+    // set output
+    auto verbBlock = juce::dsp::AudioBlock<float> (buffer);
+    auto blockToUse = verbBlock.getSubBlock (0, buffer.getNumSamples());
+    auto contextToUse = juce::dsp::ProcessContextReplacing<float> (blockToUse);
+    fxChain.process(contextToUse);
     
 }   // end of processBlock
 

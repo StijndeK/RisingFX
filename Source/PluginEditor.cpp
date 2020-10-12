@@ -100,7 +100,6 @@ void TransitionFxAudioProcessorEditor::resized()
     timeLinking.setBounds(generalArea.withTrimmedTop(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedBottom(5));
 
     time.setBounds(lengthArea.reduced(5));
-    
 }
 
 //==============================================================================
