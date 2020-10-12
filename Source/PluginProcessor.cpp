@@ -170,6 +170,9 @@ void TransitionFxAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
     
     fxChain.reset();
     fxChain.prepare (spec);
+    
+    lowPassFilter.reset();
+    lowPassFilter.prepare(spec);
 }
 
 void TransitionFxAudioProcessor::releaseResources()
@@ -224,7 +227,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     // cal proccesor located in Voices
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
     
-    /* reverb*/
+    /* reverb and lowpass */
     
     // set parameters
     reverbParameters.roomSize = 1;
@@ -235,15 +238,23 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     
     // give parameters to reverb for every sample
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
+        // verb
         auto& verb = fxChain.template get<reverbIndex>();
         verb.setParameters(reverbParameters);
+        
+        // filter
+        *lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), 500, 1);
     }
 
-    // set output
+    // set output for reverb
     auto verbBlock = juce::dsp::AudioBlock<float> (buffer);
     auto blockToUse = verbBlock.getSubBlock (0, buffer.getNumSamples());
     auto contextToUse = juce::dsp::ProcessContextReplacing<float> (blockToUse);
     fxChain.process(contextToUse);
+    
+    // set output for filter
+    dsp::AudioBlock<float> block (buffer);
+    lowPassFilter.process(dsp::ProcessContextReplacing <float> (block));
     
 }   // end of processBlock
 

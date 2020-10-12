@@ -14,12 +14,13 @@ class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessor
 {
 public:
     
-    // reverb
+    // dsp
     enum{
         reverbIndex
     };
     dsp::ProcessorChain <juce::dsp::Reverb> fxChain;
     dsp::Reverb::Parameters reverbParameters;
+    dsp::ProcessorDuplicator<dsp::IIR::Filter <float>, dsp::IIR::Coefficients <float>> lowPassFilter;
     
     //==============================================================================
     // trigger button
