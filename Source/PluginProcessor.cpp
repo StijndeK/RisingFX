@@ -28,17 +28,19 @@ tree (*this, nullptr)       // initialise valuetree
     
     
     // TODO: create general variable for IDs. ik kan gewoon een aparte class maken anders maken met de ids?
-    initialiseTreeMember("sliderID", frequencyRange, 400);
-    initialiseTreeMember("gainSliderID", gainRange, -6);
-    initialiseTreeMember("panSliderID", panRange, 0);
-    initialiseTreeMember("releaseSliderID", lengthMsRange, 1000);
-    initialiseTreeMember("attackSliderID", lengthMsRange, 1000);
-    initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, 1000);
-    initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, 1);
-    initialiseTreeMember("reverbWetSliderID", zeroOneRange, 1);
-    initialiseTreeMember("reverbWidthSliderID", zeroOneRange, 1);
-    initialiseTreeMember("reverbSizeSliderID", zeroOneRange, 1);
-    initialiseTreeMember("reverbDampingSliderID", zeroOneRange, 1);
+    initialiseTreeMember("sliderID", frequencyRange, 400, testValue);
+    initialiseTreeMember("gainSliderID", gainRange, -6, testValue);
+    initialiseTreeMember("panSliderID", panRange, 0, testValue);
+    initialiseTreeMember("releaseSliderID", lengthMsRange, 1000, testValue);
+    initialiseTreeMember("attackSliderID", lengthMsRange, 1000, testValue);
+    
+    initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, 1000, lowpassCutoff);
+    initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, 1, lowpassResonance);
+    
+    initialiseTreeMember("reverbWetSliderID", zeroOneRange, 1, reverbParameters.wetLevel);
+    initialiseTreeMember("reverbWidthSliderID", zeroOneRange, 1, reverbParameters.width);
+    initialiseTreeMember("reverbSizeSliderID", zeroOneRange, 1, reverbParameters.roomSize);
+    initialiseTreeMember("reverbDampingSliderID", zeroOneRange, 1, reverbParameters.damping);
     
     // initialise
     tree.state = ValueTree("sliderID");
@@ -73,10 +75,16 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
     
 }
 //==============================================================================
-void TransitionFxAudioProcessor::initialiseTreeMember(string id, NormalisableRange<float> range, float initialValue)
+void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt)
 {
-    tree.createAndAddParameter(id, id, id, range, initialValue, nullptr, nullptr);
-    tree.addParameterListener(id, this);
+    tree.createAndAddParameter(parameterID, parameterID, parameterID, range, initialValue, nullptr, nullptr);
+    tree.addParameterListener(parameterID, this);
+    
+    // initialise
+//    tree.state = ValueTree(parameterID);
+    
+    // TODO: don't create a copy of the id
+    adaptableParameters.push_back(AdaptableParameter(parameterID, parameterToAdapt));
 }
 
 
@@ -84,6 +92,12 @@ void TransitionFxAudioProcessor::initialiseTreeMember(string id, NormalisableRan
 
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
+    for (auto &param: adaptableParameters) {
+        if (param.paramId == parameterID) {
+            *param.param = *tree.getRawParameterValue(parameterID);
+        }
+    }
+
     // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
     for (int i = 0; i < mySynth.getNumVoices(); i++) {
         // check which voice is being edited
@@ -218,7 +232,7 @@ bool TransitionFxAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     buffer.clear();
-    
+        
     // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
     for (int i = 0; i < mySynth.getNumVoices(); i++) {
         // check which voice is being edited
@@ -231,18 +245,15 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
             myVoice->setSamplerate(getSampleRate());
         }
     }
-    
+        
     // cal proccesor located in Voices
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
-    
+        
     /* reverb and lowpass */
     
     // set parameters
-    reverbParameters.roomSize = *tree.getRawParameterValue("reverbSizeSliderID");
-    reverbParameters.wetLevel = *tree.getRawParameterValue("reverbWetSliderID");
+    // TODO: allow for multiple parameters to change on listener, so that this value does not have to be calculated every sample
     reverbParameters.dryLevel = 1 - reverbParameters.wetLevel;
-    reverbParameters.damping  = *tree.getRawParameterValue("reverbDampingSliderID");
-    reverbParameters.width    = *tree.getRawParameterValue("reverbWidthSliderID");
     
     // give parameters to reverb for every sample
     for (int sample = 0; sample < buffer.getNumSamples(); sample++) {
@@ -251,7 +262,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         verb.setParameters(reverbParameters);
         
         // filter
-        *lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), *tree.getRawParameterValue("lowpassCutoffSliderID"), *tree.getRawParameterValue("lowpassResonanceSliderID"));
+        *lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), lowpassCutoff, lowpassResonance);
     }
 
     // set output for reverb

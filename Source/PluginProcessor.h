@@ -8,7 +8,7 @@
 #include "Envelopes.h"
 #include "SubVoice.h"
 #include <algorithm>
-
+#include "AdapatableParameter.h"
 
 class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
@@ -22,6 +22,11 @@ public:
     dsp::Reverb::Parameters reverbParameters;
     dsp::ProcessorDuplicator<dsp::IIR::Filter <float>, dsp::IIR::Coefficients <float>> lowPassFilter;
     
+    float lowpassCutoff = 1000;
+    float lowpassResonance = 1;
+    
+    float testValue = 0.5;
+    
     //==============================================================================
     // trigger button
     int manualTrigger;
@@ -33,7 +38,9 @@ public:
     
     void parameterChanged(const String & parameterID, float newValue) override;
     
-    void initialiseTreeMember(string id, NormalisableRange<float> range, float initialValue);
+    void initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt);
+    
+    std::vector<AdaptableParameter> adaptableParameters;
     
     //==============================================================================
     TransitionFxAudioProcessor();
