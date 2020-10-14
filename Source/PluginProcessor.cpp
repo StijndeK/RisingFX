@@ -108,6 +108,7 @@ void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, fl
     }
 }
 
+// send message to synth to start or stop note
 void TransitionFxAudioProcessor::triggerManualSound(juce::TextButton::ButtonState state)
 {
     if (state == 2) {
@@ -232,6 +233,22 @@ bool TransitionFxAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     buffer.clear();
+    
+    // get data from DAW(host)
+    // TODO: create listeners
+    AudioPlayHead* phead = getPlayHead();
+    if (phead != nullptr)           // if there is a host
+    {
+        AudioPlayHead::CurrentPositionInfo playposinfo;
+        phead->getCurrentPosition(playposinfo);
+        
+        bpm = &playposinfo.bpm;
+        framerate = playposinfo.frameRate;
+        timeSigNum = playposinfo.timeSigNumerator;
+        timeSigDenom = playposinfo.timeSigDenominator;
+        currentPlayheadPosition = playposinfo.ppqPosition;
+        isDawPlaying = playposinfo.isPlaying;
+    }
         
     // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
     for (int i = 0; i < mySynth.getNumVoices(); i++) {

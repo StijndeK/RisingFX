@@ -10,10 +10,10 @@
 
 #include "SubVoice.h"
 
-SubVoice::SubVoice(double frequency, double detune)
+SubVoice::SubVoice(float& frequency_, float detune_)
 {
-    this->frequency = frequency;
-    this->detune = detune;
+    frequency = &frequency_;
+    detune = detune_;
     
     // envelope parameters in ms
     env.setADSRValue(1000, env.attack, false);
@@ -26,5 +26,5 @@ SubVoice::~SubVoice()
 
 double SubVoice::oscWave ()
 {
-    return env.arLin(osc.saw(frequency * pow(2.0 , detune)), trigger);
+    return env.arLin(osc.saw(*frequency * pow(2.0 , detune)), trigger);
 }

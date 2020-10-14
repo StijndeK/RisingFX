@@ -30,9 +30,7 @@ void SynthVoice::getSlider (float sliderValue, String ID)
 {
     // TODO: optimise. Maybe different getter for subvoices and voices
     if (ID == "sliderID") {
-        for (auto &voice : subVoicesV) {
-            voice.frequency = sliderValue;
-        }
+        frequency = sliderValue;
     }
     else if (ID == "gainSliderID") {
         gain = pow(10, sliderValue / 20);   // dbtovolume
@@ -80,7 +78,7 @@ void SynthVoice::startNote (int midiNoteNumber, float velocity, SynthesiserSound
     
     for (auto &voice : subVoicesV) {
         voice.trigger = trigger; // trigger subvoices
-        voice.frequency = frequency; // frequency subvoices
+//        voice.frequency = &frequency; // frequency subvoices
     }
 }
 

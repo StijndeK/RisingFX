@@ -14,6 +14,17 @@ class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessor
 {
 public:
     
+    // DAW values
+    double* bpm;
+    AudioPlayHead::FrameRateType framerate;
+    double* sampleRate;
+    int timeSigNum;
+    int timeSigDenom;
+    double currentPlayheadPosition; // als meervoud van de numerator is zit je op het begin van een maat
+    bool isDawPlaying; // alleen wanneer de daw speelt, linken aan begin van een maat
+    
+    //==============================================================================
+    
     // dsp
     enum{
         reverbIndex
@@ -88,7 +99,7 @@ private:
     SubVoice* mySubVoice;
     
     // set amount of voices
-    const int numVoices = 1;
+    const int numVoices = 3;
     
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TransitionFxAudioProcessor)

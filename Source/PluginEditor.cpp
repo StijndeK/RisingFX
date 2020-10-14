@@ -95,6 +95,8 @@ void TransitionFxAudioProcessorEditor::resized()
     play.setBounds(mainAreaSwitch.withTrimmedRight(mainAreaSwitch.getWidth() - 100).reduced(5));
     voices.setBounds(mainAreaVoices.reduced(5));
     
+    slider1.setBounds(mainArea.reduced(50));
+    
     master.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedTop(5));
     effects.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3).withTrimmedTop(generalArea.getHeight() / 3).reduced(10, 5));
     timeLinking.setBounds(generalArea.withTrimmedTop(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedBottom(5));

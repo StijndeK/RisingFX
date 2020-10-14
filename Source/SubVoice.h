@@ -20,13 +20,13 @@ private:
     maxiOsc osc;
     
 public:
-    SubVoice(double frequency, double detune);
+    SubVoice(float& frequency_, float detune_);
     ~SubVoice();
     
     double oscWave ();
     
-    double detune;
-    double frequency;
+    float detune;
+    float* frequency;
     
     int trigger = 0;
     
