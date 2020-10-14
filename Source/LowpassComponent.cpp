@@ -14,13 +14,6 @@
 //==============================================================================
 LowpassComponent::LowpassComponent(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    NormalisableRange<float> frequencyRange (200, 2000, 1);
-    NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
-    NormalisableRange<float> panRange (-1, 1, 0.01);
-    NormalisableRange<float> lengthMsRange (100, 10000, 1);
-    NormalisableRange<float> resonanceRange (1, 5, 0.1);
-    NormalisableRange<float> zeroOneRange (0, 1, 0.1);
-    
     processor.initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, 1000, processor.lowpassCutoff);
     processor.initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, 1, processor.lowpassResonance);
     

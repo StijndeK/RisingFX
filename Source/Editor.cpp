@@ -12,11 +12,26 @@
 
 Editor::Editor(TransitionFxAudioProcessor& p) : processor(p)
 {
-
+    setNormalisableRange(frequencyRange, 200, 2000, 1);
+    setNormalisableRange(gainRange, -78.0,0.0, 0.01, 2.5);
+    setNormalisableRange(panRange, -1, 1, 0.01);
+    setNormalisableRange(lengthMsRange, 100, 10000, 1);
+    setNormalisableRange(resonanceRange, 1, 5, 0.1);
+    setNormalisableRange(zeroOneRange, 0, 1, 0.1);
 }
 
 Editor::~Editor()
 {
+    
+}
+
+// give normalisablerange its parameters
+void Editor::setNormalisableRange (NormalisableRange<float>& range, float start_, float end_, float interval_, float skew_)
+{
+    range.start = start_;
+    range.end = end_;
+    range.interval = interval_;
+    range.skew = skew_;
 }
 
 // create and initialise an amount of sliders
