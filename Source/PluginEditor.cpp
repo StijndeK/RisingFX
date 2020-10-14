@@ -8,6 +8,9 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
 {
     setSize (800, 500);
     
+    // value tree
+    processor.initialiseTreeMember("sliderID", master.frequencyRange, 400, processor.nullValue);
+    
     // Images
     auto logo = ImageCache::getFromMemory(BinaryData::Logo_png, BinaryData::Logo_pngSize);
     logoImage.setImage(logo, RectanglePlacement::centred);

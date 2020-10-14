@@ -14,6 +14,9 @@
 //==============================================================================
 MasterEditor::MasterEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
+    processor.initialiseTreeMember("gainSliderID", gainRange, -6, processor.nullValue);
+    processor.initialiseTreeMember("panSliderID", panRange, 0.5, processor.masterPan);
+    
     std::vector<string> linearSliderIds = {"gainSliderID"};
     std::vector<string> knobSliderIds = {"panSliderID"};
     createSliders(sliders, linearSliderIds);

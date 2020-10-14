@@ -14,6 +14,13 @@
 //==============================================================================
 TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
+    processor.initialiseTreeMember("releaseSliderID", lengthMsRange, 1000, processor.nullValue);
+    processor.initialiseTreeMember("attackSliderID", lengthMsRange, 1000, processor.nullValue);
+    processor.initialiseTreeMember("releaseFramesSliderID", lengthMsRange, 1000, processor.nullValue);
+    processor.initialiseTreeMember("attackFramesSliderID", lengthMsRange, 1000, processor.nullValue);
+    processor.initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, 1000, processor.nullValue);
+    processor.initialiseTreeMember("attackBeatsSliderID", lengthMsRange, 1000, processor.nullValue);
+    
     std::vector<string> sliderIds = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
     createSliders(sliders, sliderIds);
         

@@ -14,6 +14,11 @@
 //==============================================================================
 ReverbComponent::ReverbComponent(TransitionFxAudioProcessor& p) : Editor(p)
 {
+    processor.initialiseTreeMember("reverbWetSliderID", zeroOneRange, 1, processor.reverbParameters.wetLevel);
+    processor.initialiseTreeMember("reverbWidthSliderID", zeroOneRange, 1, processor.reverbParameters.width);
+    processor.initialiseTreeMember("reverbSizeSliderID", zeroOneRange, 1, processor.reverbParameters.roomSize);
+    processor.initialiseTreeMember("reverbDampingSliderID", zeroOneRange, 1, processor.reverbParameters.damping);
+    
     std::vector<string> sliderIds = {"reverbWetSliderID", "reverbWidthSliderID", "reverbSizeSliderID", "reverbDampingSliderID"};
     createSliders(sliders, sliderIds, Slider::SliderStyle::RotaryVerticalDrag);
 }

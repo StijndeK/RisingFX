@@ -14,7 +14,7 @@ class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessor
 {
 public:
     
-    float masterPan;
+    float masterPan = 0.5;
     
     // DAW values
     double* bpm;

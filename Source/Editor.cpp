@@ -14,7 +14,7 @@ Editor::Editor(TransitionFxAudioProcessor& p) : processor(p)
 {
     setNormalisableRange(frequencyRange, 200, 2000, 1);
     setNormalisableRange(gainRange, -78.0,0.0, 0.01, 2.5);
-    setNormalisableRange(panRange, -1, 1, 0.01);
+    setNormalisableRange(panRange, 0, 1, 0.01);
     setNormalisableRange(lengthMsRange, 100, 10000, 1);
     setNormalisableRange(resonanceRange, 1, 5, 0.1);
     setNormalisableRange(zeroOneRange, 0, 1, 0.1);
