@@ -12,7 +12,7 @@
 #include "VoicesEditor.h"
 
 //==============================================================================
-VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : processor(p), voice()
+VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
     // Buttons
     addAndMakeVisible(addButton);

@@ -12,29 +12,20 @@
 #include "LowpassComponent.h"
 
 //==============================================================================
-LowpassComponent::LowpassComponent(TransitionFxAudioProcessor& p) : processor(p)
+LowpassComponent::LowpassComponent(TransitionFxAudioProcessor& p) : Editor(p)
 {
-//    NormalisableRange<float> frequencyRange (200, 2000, 1);
-//    NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
-//    NormalisableRange<float> panRange (-1, 1, 0.01);
-//    NormalisableRange<float> lengthMsRange (100, 10000, 1);
-//    NormalisableRange<float> resonanceRange (1, 5, 0.1);
-//    NormalisableRange<float> zeroOneRange (0, 1, 0.1);
-//    
-//    processor.initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, 1000, processor.lowpassCutoff);
-//    processor.initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, 1, processor.lowpassResonance);
+    NormalisableRange<float> frequencyRange (200, 2000, 1);
+    NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
+    NormalisableRange<float> panRange (-1, 1, 0.01);
+    NormalisableRange<float> lengthMsRange (100, 10000, 1);
+    NormalisableRange<float> resonanceRange (1, 5, 0.1);
+    NormalisableRange<float> zeroOneRange (0, 1, 0.1);
     
-    std::cout << "lpcomp" << std::endl;
-    // cutoff (100, 2000), resonance (1, 5)
-    lowpassCutoffSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    lowpassCutoffSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
-    addAndMakeVisible(&lowpassCutoffSlider);
-//    lowpassCutoffSliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "lowpassCutoffSliderID", lowpassCutoffSlider);
+    processor.initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, 1000, processor.lowpassCutoff);
+    processor.initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, 1, processor.lowpassResonance);
     
-    lowpassResonanceSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    lowpassResonanceSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
-    addAndMakeVisible(&lowpassResonanceSlider);
-//    lowpassResonanceSliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "lowpassResonanceSliderID", lowpassResonanceSlider);
+    std::vector<string> sliderIds = {"lowpassCutoffSliderID", "lowpassResonanceSliderID"};
+    createSliders(sliders, sliderIds, Slider::SliderStyle::RotaryVerticalDrag);
 }
 
 LowpassComponent::~LowpassComponent()
@@ -59,6 +50,6 @@ void LowpassComponent::paint (juce::Graphics& g)
 void LowpassComponent::resized()
 {
     Rectangle<int> localArea = getLocalBounds().reduced(10);
-    lowpassCutoffSlider.setBounds(localArea.removeFromLeft(localArea.getWidth()/2));
-    lowpassResonanceSlider.setBounds(localArea);
+    sliders[0]->setBounds(localArea.removeFromLeft(localArea.getWidth()/2));
+    sliders[1]->setBounds(localArea);
 }

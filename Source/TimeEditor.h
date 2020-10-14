@@ -10,14 +10,12 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "PluginProcessor.h"
-#include <vector>
+#include "Editor.h"
 
 //==============================================================================
 /*
 */
-class TimeEditor  : public juce::Component, public ComboBox::Listener
+class TimeEditor  : public Editor, public ComboBox::Listener
 {
 public:
     TimeEditor(TransitionFxAudioProcessor&);
@@ -29,17 +27,9 @@ public:
     void comboBoxChanged(ComboBox *comboBoxThatHasChanged) override;
 
 private:
-    
-    void initialiseSlider (Slider* slider, string& sliderId, ScopedPointer <AudioProcessorValueTreeState::SliderAttachment>* sliderTree);
-    
-    // components
     std::vector<Slider*> sliders;
-    std::vector<ScopedPointer <AudioProcessorValueTreeState::SliderAttachment>*> attachments;
-
-    ComboBox timeValueBox;
     
-    // processor
-    TransitionFxAudioProcessor& processor;
+    ComboBox timeValueBox;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeEditor)
 };

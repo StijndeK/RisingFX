@@ -10,13 +10,12 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "PluginProcessor.h"
+#include "Editor.h"
 
 //==============================================================================
 /*
 */
-class LowpassComponent  : public juce::Component
+class LowpassComponent  : public Editor
 {
 public:
     LowpassComponent(TransitionFxAudioProcessor&);
@@ -26,11 +25,7 @@ public:
     void resized() override;
 
 private:
-    Slider lowpassCutoffSlider, lowpassResonanceSlider;
-    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> lowpassCutoffSliderTree, lowpassResonanceSliderTree;
-    
-    // processor
-    TransitionFxAudioProcessor& processor;
+    std::vector<Slider*> sliders;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LowpassComponent)
 };

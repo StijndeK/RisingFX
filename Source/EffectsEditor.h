@@ -10,15 +10,14 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "PluginProcessor.h"
+#include "Editor.h"
 #include "LowpassComponent.h"
 #include "ReverbComponent.h"
 
 //==============================================================================
 /*
 */
-class EffectsEditor  : public juce::Component, public ComboBox::Listener
+class EffectsEditor  : public Editor, public ComboBox::Listener
 {
 public:
     EffectsEditor(TransitionFxAudioProcessor&);
@@ -35,9 +34,6 @@ private:
     // components
     LowpassComponent lowpass;
     ReverbComponent reverb;
-    
-    // processor
-    TransitionFxAudioProcessor& processor;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (EffectsEditor)
 };

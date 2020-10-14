@@ -10,13 +10,12 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "PluginProcessor.h"
+#include "Editor.h"
 
 //==============================================================================
 /*
 */
-class MasterEditor  : public juce::Component
+class MasterEditor  : public Editor
 {
 public:
     MasterEditor(TransitionFxAudioProcessor&);
@@ -26,12 +25,7 @@ public:
     void resized() override;
 
 private:
-    
-    Slider gainSlider, panSlider;
-    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> gainSliderTree, panSliderTree;
-    
-    // processor
-    TransitionFxAudioProcessor& processor;
+    std::vector<Slider*> sliders;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MasterEditor)
 };

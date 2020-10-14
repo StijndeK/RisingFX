@@ -14,6 +14,8 @@ class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessor
 {
 public:
     
+    float masterPan;
+    
     // DAW values
     double* bpm;
     AudioPlayHead::FrameRateType framerate;

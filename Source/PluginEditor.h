@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
-#include "PluginProcessor.h"
+#include "Editor.h"
 #include "MasterEditor.h"
 #include "EffectsEditor.h"
 #include "TimeEditor.h"

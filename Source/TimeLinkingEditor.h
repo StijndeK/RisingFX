@@ -10,13 +10,12 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "PluginProcessor.h"
+#include "Editor.h"
 
 //==============================================================================
 /*
 */
-class TimeLinkingEditor  : public juce::Component
+class TimeLinkingEditor  : public Editor
 {
 public:
     TimeLinkingEditor(TransitionFxAudioProcessor&);
@@ -26,9 +25,6 @@ public:
     void resized() override;
 
 private:
-
-    // processor
-    TransitionFxAudioProcessor& processor;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeLinkingEditor)
 };

@@ -4,7 +4,7 @@
 
 //==============================================================================
 TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFxAudioProcessor& p)
-: AudioProcessorEditor (&p), processor (p), master(p), effects(p), time(p), timeLinking(p), voices(p)
+: AudioProcessorEditor (&p), processor(p), master(p), effects(p), time(p), timeLinking(p), voices(p)
 {
     setSize (800, 500);
     
@@ -54,6 +54,9 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     
     // call resized to set areas (resized is called before constructor)
     resized();
+    
+    // initialise
+    processor.tree.state = ValueTree("sliderID");
 }
 
 

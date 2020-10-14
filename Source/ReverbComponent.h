@@ -10,13 +10,12 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "PluginProcessor.h"
+#include "Editor.h"
 
 //==============================================================================
 /*
 */
-class ReverbComponent  : public juce::Component
+class ReverbComponent  : public Editor
 {
 public:
     ReverbComponent(TransitionFxAudioProcessor&);
@@ -26,11 +25,7 @@ public:
     void resized() override;
 
 private:
-    Slider reverbWetSlider, reverbWidthSlider, reverbSizeSlider, reverbDampingSlider;
-    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> reverbWetSliderTree, reverbWidthSliderTree, reverbSizeSliderTree, reverbDampingSliderTree;
-    
-    // processor
-    TransitionFxAudioProcessor& processor;
+    std::vector<Slider*> sliders;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ReverbComponent)
 };

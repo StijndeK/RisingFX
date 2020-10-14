@@ -10,16 +10,14 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "PluginProcessor.h"
 #include "VoiceComponent.h"
-#include <vector>
 #include "HeritTest.h"
+#include "Editor.h"
 
 //==============================================================================
 /*
 */
-class VoicesEditor  : public juce::Component
+class VoicesEditor : public Editor
 {
 public:
     VoicesEditor(TransitionFxAudioProcessor&);
@@ -33,9 +31,6 @@ public:
 private:
     // components
     TextButton addButton { "+" };
-    
-    // processor
-    TransitionFxAudioProcessor& processor;
     
     // voices
     std::vector<VoiceComponent> voices;

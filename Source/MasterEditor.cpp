@@ -12,17 +12,12 @@
 #include "MasterEditor.h"
 
 //==============================================================================
-MasterEditor::MasterEditor(TransitionFxAudioProcessor& p) : processor(p)
+MasterEditor::MasterEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    gainSlider.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    gainSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
-    addAndMakeVisible(&gainSlider);
-    gainSliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "gainSliderID", gainSlider);
-    
-    panSlider.setSliderStyle(Slider::SliderStyle::RotaryVerticalDrag);
-    panSlider.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
-    addAndMakeVisible(&panSlider);
-    panSliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "panSliderID", panSlider);
+    std::vector<string> linearSliderIds = {"gainSliderID"};
+    std::vector<string> knobSliderIds = {"panSliderID"};
+    createSliders(sliders, linearSliderIds);
+    createSliders(sliders, knobSliderIds, Slider::SliderStyle::RotaryVerticalDrag);
 }
 
 MasterEditor::~MasterEditor()
@@ -53,6 +48,6 @@ void MasterEditor::resized()
 {
     // This method is where you should set the bounds of any child
     // components that your component contains..
-    gainSlider.setBounds(getLocalBounds().removeFromLeft(getLocalBounds().getWidth()/2).reduced(20));
-    panSlider.setBounds(getLocalBounds().removeFromRight(getLocalBounds().getWidth()/2).reduced(20));
+    sliders[0]->setBounds(getLocalBounds().removeFromLeft(getLocalBounds().getWidth()/2).reduced(20));
+    sliders[1]->setBounds(getLocalBounds().removeFromRight(getLocalBounds().getWidth()/2).reduced(20));
 }

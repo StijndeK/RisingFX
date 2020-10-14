@@ -12,7 +12,7 @@
 #include "EffectsEditor.h"
 
 //==============================================================================
-EffectsEditor::EffectsEditor(TransitionFxAudioProcessor& p) : processor(p), lowpass(p), reverb(p)
+EffectsEditor::EffectsEditor(TransitionFxAudioProcessor& p) : Editor(p), lowpass(p), reverb(p)
 {
     addAndMakeVisible(lowpass);
     addAndMakeVisible(reverb);

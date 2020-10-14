@@ -17,42 +17,13 @@ TransitionFxAudioProcessor::TransitionFxAudioProcessor()
 tree (*this, nullptr)       // initialise valuetree
 #endif
 {
-    /* Valuetree */
-    
-    NormalisableRange<float> frequencyRange (200, 2000, 1);
-    NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
-    NormalisableRange<float> panRange (-1, 1, 0.01);
-    NormalisableRange<float> lengthMsRange (100, 10000, 1);
-    NormalisableRange<float> resonanceRange (1, 5, 0.1);
-    NormalisableRange<float> zeroOneRange (0, 1, 0.1);
-    
-    
-    // TODO: create general variable for IDs. ik kan gewoon een aparte class maken anders maken met de ids?
-    initialiseTreeMember("sliderID", frequencyRange, 400, nullValue);
-    initialiseTreeMember("gainSliderID", gainRange, -6, nullValue);
-    initialiseTreeMember("panSliderID", panRange, 0, nullValue);
-    initialiseTreeMember("releaseSliderID", lengthMsRange, 1000, nullValue);
-    initialiseTreeMember("attackSliderID", lengthMsRange, 1000, nullValue);
-    initialiseTreeMember("releaseFramesSliderID", lengthMsRange, 1000, nullValue);
-    initialiseTreeMember("attackFramesSliderID", lengthMsRange, 1000, nullValue);
-    initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, 1000, nullValue);
-    initialiseTreeMember("attackBeatsSliderID", lengthMsRange, 1000, nullValue);
-    
-    initialiseTreeMember("reverbWetSliderID", zeroOneRange, 1, reverbParameters.wetLevel);
-    initialiseTreeMember("reverbWidthSliderID", zeroOneRange, 1, reverbParameters.width);
-    initialiseTreeMember("reverbSizeSliderID", zeroOneRange, 1, reverbParameters.roomSize);
-    initialiseTreeMember("reverbDampingSliderID", zeroOneRange, 1, reverbParameters.damping);
-    
-    // initialise
-    tree.state = ValueTree("sliderID");
-    
     /* Synthesiser */
     
     // clear old voices
     mySynth.clearVoices();
     // add voices and sounds
     for (int i = 0; i < numVoices; i++) {
-        mySynth.addVoice(new SynthVoice);
+        mySynth.addVoice(new SynthVoice(masterPan));
     }
     mySynth.clearSounds();
     mySynth.addSound(new SynthSound());
@@ -65,6 +36,35 @@ tree (*this, nullptr)       // initialise valuetree
         mySynth.setCurrentPlaybackSampleRate(44100);
     }
 
+    /* Valuetree */
+    
+    NormalisableRange<float> frequencyRange (200, 2000, 1);
+    NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
+    NormalisableRange<float> panRange (0, 1, 0.01);
+    NormalisableRange<float> lengthMsRange (100, 10000, 1);
+    NormalisableRange<float> resonanceRange (1, 5, 0.1);
+    NormalisableRange<float> zeroOneRange (0, 1, 0.1);
+    
+    
+    // TODO: create general variable for IDs. ik kan gewoon een aparte class maken anders maken met de ids?
+    initialiseTreeMember("sliderID", frequencyRange, 400, nullValue);
+    initialiseTreeMember("gainSliderID", gainRange, -6, nullValue);
+    initialiseTreeMember("panSliderID", panRange, 0.5, masterPan);
+    initialiseTreeMember("releaseSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("attackSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("releaseFramesSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("attackFramesSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("attackBeatsSliderID", lengthMsRange, 1000, nullValue);
+    
+    initialiseTreeMember("reverbWetSliderID", zeroOneRange, 1, reverbParameters.wetLevel);
+    initialiseTreeMember("reverbWidthSliderID", zeroOneRange, 1, reverbParameters.width);
+    initialiseTreeMember("reverbSizeSliderID", zeroOneRange, 1, reverbParameters.roomSize);
+    initialiseTreeMember("reverbDampingSliderID", zeroOneRange, 1, reverbParameters.damping);
+    
+//    // initialise
+//    tree.state = ValueTree("sliderID");
+    
     /* Reverb */
 
     auto& verb = fxChain.template get<reverbIndex>();
@@ -73,7 +73,6 @@ tree (*this, nullptr)       // initialise valuetree
 
 TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
 {
-    
 }
 //==============================================================================
 void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt)

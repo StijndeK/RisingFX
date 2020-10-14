@@ -12,17 +12,11 @@
 #include "TimeEditor.h"
 
 //==============================================================================
-TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : processor(p)
+TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    string sliderIds [6] = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
-    
-    // create amount of sliders
-    for (int slider = 0; slider < 6; slider++) {
-        sliders.push_back(new Slider());
-        attachments.push_back(new ScopedPointer<AudioProcessorValueTreeState::SliderAttachment>());
-        initialiseSlider(sliders[slider], sliderIds[slider], attachments[slider]);
-    }
-    
+    std::vector<string> sliderIds = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
+    createSliders(sliders, sliderIds);
+        
     timeValueBox.addItem("MS", 1);
     timeValueBox.addItem("Beats", 2);
     timeValueBox.addItem("Frames", 3);
@@ -34,14 +28,6 @@ TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : processor(p)
 
 TimeEditor::~TimeEditor()
 {
-}
-
-void TimeEditor::initialiseSlider (Slider* slider, string& sliderId, ScopedPointer <AudioProcessorValueTreeState::SliderAttachment>* sliderTree)
-{
-    slider->setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    slider->setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
-    addAndMakeVisible(slider);
-    *sliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, sliderId, *slider);
 }
 
 void TimeEditor::paint (juce::Graphics& g)
@@ -67,20 +53,8 @@ void TimeEditor::resized()
 
 void TimeEditor::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 {
-    // set visible sliders based on what time option is selected
-    for (auto &slider: sliders) {
-        slider->setVisible(false);
-    }
-    if (comboBoxThatHasChanged->getSelectedId() == 1) {
-        sliders[0]->setVisible(true);
-        sliders[1]->setVisible(true);
-    }
-    if (comboBoxThatHasChanged->getSelectedId() == 2) {
-        sliders[2]->setVisible(true);
-        sliders[3]->setVisible(true);
-    }
-    if (comboBoxThatHasChanged->getSelectedId() == 3) {
-        sliders[4]->setVisible(true);
-        sliders[5]->setVisible(true);
+    for (int i = 0; i < 6; i++) {
+        bool visibility = comboBoxThatHasChanged->getSelectedId() == i / 2 + 1; // group by 2 (attack and release) to visible and rest to invisible
+        sliders[i]->setVisible(visibility);
     }
 }

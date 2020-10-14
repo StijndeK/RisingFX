@@ -12,7 +12,7 @@
 #include "TimeLinkingEditor.h"
 
 //==============================================================================
-TimeLinkingEditor::TimeLinkingEditor(TransitionFxAudioProcessor& p) : processor(p)
+TimeLinkingEditor::TimeLinkingEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
     // In your constructor, you should add any child components, and
     // initialise any special settings that your component needs.
