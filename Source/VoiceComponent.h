@@ -10,22 +10,23 @@
 
 #pragma once
 
-#include <JuceHeader.h>
-#include "PluginProcessor.h"
+#include "Editor.h"
 
 //==============================================================================
 /*
 */
-class VoiceComponent  : public juce::Component
+class VoiceComponent  : public Editor
 {
 public:
-    VoiceComponent();
+    VoiceComponent(TransitionFxAudioProcessor&, int name);
     ~VoiceComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
 
 private:
+    
+    int voiceNumber;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VoiceComponent)
 };

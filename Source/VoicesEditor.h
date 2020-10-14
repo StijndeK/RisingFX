@@ -33,8 +33,8 @@ private:
     TextButton addButton { "+" };
     
     // voices
-    std::vector<VoiceComponent> voices;
-    VoiceComponent voice;
+    std::vector<VoiceComponent*> voices;
+    void addVoice();
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VoicesEditor)
 };

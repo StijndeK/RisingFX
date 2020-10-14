@@ -42,8 +42,6 @@ void MasterEditor::paint (juce::Graphics& g)
 
 void MasterEditor::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
     sliders[0]->setBounds(getLocalBounds().removeFromLeft(getLocalBounds().getWidth()/2).reduced(20));
     sliders[1]->setBounds(getLocalBounds().removeFromRight(getLocalBounds().getWidth()/2).reduced(20));
 }

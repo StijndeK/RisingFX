@@ -12,11 +12,9 @@
 #include "VoiceComponent.h"
 
 //==============================================================================
-VoiceComponent::VoiceComponent()
+VoiceComponent::VoiceComponent(TransitionFxAudioProcessor& p, int voiceNumber) : Editor(p)
 {
-    // In your constructor, you should add any child components, and
-    // initialise any special settings that your component needs.
-    std::cout << "constructor" << std::endl;
+    this->voiceNumber = voiceNumber;
 }
 
 VoiceComponent::~VoiceComponent()
@@ -25,13 +23,6 @@ VoiceComponent::~VoiceComponent()
 
 void VoiceComponent::paint (juce::Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
 
     g.setColour (juce::Colours::grey);
@@ -39,7 +30,7 @@ void VoiceComponent::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::white);
     g.setFont (14.0f);
-    g.drawText ("VoiceComponent", getLocalBounds(),
+    g.drawText (std::to_string(voiceNumber), getLocalBounds(),
                 juce::Justification::centred, true);   // draw some placeholder text
 }
 

@@ -14,14 +14,14 @@
 //==============================================================================
 VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
+    // create valuetrees for every voice
+    
+    // create initial voice
+    addVoice();
+    
     // Buttons
     addAndMakeVisible(addButton);
     addButton.onStateChange = [this] { updateToggleState (&addButton);   };
-    
-//    auto test = voice;
-    // Start with one voice
-//    voices.push_back(voice);
-    resized();
 }
 
 VoicesEditor::~VoicesEditor()
@@ -41,11 +41,6 @@ void VoicesEditor::paint (juce::Graphics& g)
 
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
-
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("VoicesEditor", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
 }
 
 void VoicesEditor::resized()
@@ -54,13 +49,23 @@ void VoicesEditor::resized()
     
     addButton.setBounds(localArea.removeFromRight(40).reduced(0, 10));
     
-//    for (int voice = 0; voice < voices.size(); voice++) {
-//        voices[voice].setBounds(localArea.removeFromLeft(40));
-//    }
+    for (auto& voice: voices) {
+        voice->setBounds(localArea.removeFromLeft(95));
+        localArea.removeFromLeft(10);
+    }
+}
+
+void VoicesEditor::addVoice()
+{
+    voices.push_back(new VoiceComponent(processor, voices.size())); // create new voice and its number (by giving size)
+    addAndMakeVisible(voices.back());
+    resized();
 }
 
 void VoicesEditor::updateToggleState (Button* button)
 {
-    // add new voice component (push back in a vector). when a voice is added, create a new one by addind it to the vector and putting it into resized
-//    voices.push_back(VoiceComponent());
+    if (button->getState() == 2) {
+        std::cout << "new" << std::endl;
+        addVoice();
+    }
 }
