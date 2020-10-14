@@ -12,6 +12,7 @@
 
 #include <JuceHeader.h>
 #include "PluginProcessor.h"
+#include <vector>
 
 //==============================================================================
 /*
@@ -29,9 +30,12 @@ public:
 
 private:
     
+    void initialiseSlider (Slider* slider, string& sliderId, ScopedPointer <AudioProcessorValueTreeState::SliderAttachment>* sliderTree);
+    
     // components
-    Slider attackSlider, releaseSlider;
-    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> attackSliderTree, releaseSliderTree;
+    std::vector<Slider*> sliders;
+    std::vector<ScopedPointer <AudioProcessorValueTreeState::SliderAttachment>*> attachments;
+
     ComboBox timeValueBox;
     
     // processor

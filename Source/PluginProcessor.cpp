@@ -28,14 +28,15 @@ tree (*this, nullptr)       // initialise valuetree
     
     
     // TODO: create general variable for IDs. ik kan gewoon een aparte class maken anders maken met de ids?
-    initialiseTreeMember("sliderID", frequencyRange, 400, testValue);
-    initialiseTreeMember("gainSliderID", gainRange, -6, testValue);
-    initialiseTreeMember("panSliderID", panRange, 0, testValue);
-    initialiseTreeMember("releaseSliderID", lengthMsRange, 1000, testValue);
-    initialiseTreeMember("attackSliderID", lengthMsRange, 1000, testValue);
-    
-    initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, 1000, lowpassCutoff);
-    initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, 1, lowpassResonance);
+    initialiseTreeMember("sliderID", frequencyRange, 400, nullValue);
+    initialiseTreeMember("gainSliderID", gainRange, -6, nullValue);
+    initialiseTreeMember("panSliderID", panRange, 0, nullValue);
+    initialiseTreeMember("releaseSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("attackSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("releaseFramesSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("attackFramesSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, 1000, nullValue);
+    initialiseTreeMember("attackBeatsSliderID", lengthMsRange, 1000, nullValue);
     
     initialiseTreeMember("reverbWetSliderID", zeroOneRange, 1, reverbParameters.wetLevel);
     initialiseTreeMember("reverbWidthSliderID", zeroOneRange, 1, reverbParameters.width);
@@ -44,7 +45,7 @@ tree (*this, nullptr)       // initialise valuetree
     
     // initialise
     tree.state = ValueTree("sliderID");
-
+    
     /* Synthesiser */
     
     // clear old voices
@@ -80,29 +81,28 @@ void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID
     tree.createAndAddParameter(parameterID, parameterID, parameterID, range, initialValue, nullptr, nullptr);
     tree.addParameterListener(parameterID, this);
     
-    // initialise
-//    tree.state = ValueTree(parameterID);
-    
     // TODO: don't create a copy of the id
     adaptableParameters.push_back(AdaptableParameter(parameterID, parameterToAdapt));
 }
-
 
 //==============================================================================
 
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
+    // TODO: use the same system as is used for processor parameters, for subvoices parameters (find workaround dynamic amount of voices, or create set amount of subvoices beforehand)
+    
+    // processor parameters
     for (auto &param: adaptableParameters) {
-        if (param.paramId == parameterID) {
+        if (param.paramId == parameterID && param.param != &nullValue) {
             *param.param = *tree.getRawParameterValue(parameterID);
+            return; // parameter is in processor, so cast to subvoice is not necessary
         }
     }
-
-    // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
+    
+    // synth and subvoice parameters
     for (int i = 0; i < mySynth.getNumVoices(); i++) {
         // check which voice is being edited
         if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
-            
             myVoice->getSlider(*tree.getRawParameterValue(parameterID), parameterID);
         }
     }

@@ -25,7 +25,7 @@ public:
     float lowpassCutoff = 1000;
     float lowpassResonance = 1;
     
-    float testValue = 0.5;
+    float nullValue = 0;
     
     //==============================================================================
     // trigger button
