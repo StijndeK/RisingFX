@@ -18,18 +18,17 @@
 class VoiceComponent  : public Editor
 {
 public:
-    VoiceComponent(TransitionFxAudioProcessor&, int name);
+    VoiceComponent(TransitionFxAudioProcessor&, int name, std::vector<string>& gainSliderId);
     ~VoiceComponent() override;
 
     void paint (juce::Graphics&) override;
     void resized() override;
     
-    // components
-    TextButton removeButton { "-" };
-    
     int voiceNumber;
     
 private:
+    
+    std::vector<Slider*> sliders;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VoiceComponent)
 };

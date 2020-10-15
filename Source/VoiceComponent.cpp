@@ -12,12 +12,11 @@
 #include "VoiceComponent.h"
 
 //==============================================================================
-VoiceComponent::VoiceComponent(TransitionFxAudioProcessor& p, int voiceNumber) : Editor(p)
+VoiceComponent::VoiceComponent(TransitionFxAudioProcessor& p, int voiceNumber, std::vector<string>& sliderIds) : Editor(p)
 {
     this->voiceNumber = voiceNumber;
     
-    // Buttons
-    addAndMakeVisible(removeButton);
+    createSliders(sliders, sliderIds, Slider::SliderStyle::LinearVertical, Slider::NoTextBox);
 }
 
 VoiceComponent::~VoiceComponent()
@@ -39,6 +38,6 @@ void VoiceComponent::paint (juce::Graphics& g)
 
 void VoiceComponent::resized()
 {
-    Rectangle<int> localArea = getLocalBounds().reduced(10);
-    removeButton.setBounds(localArea.removeFromLeft(20));
+    Rectangle<int> localArea = getLocalBounds().reduced(1);
+    sliders[0]->setBounds(localArea);
 }

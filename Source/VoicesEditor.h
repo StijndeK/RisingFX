@@ -29,10 +29,11 @@ public:
 
 private:
     // components
-    TextButton addButton { "+" };
+//    TextButton addButton { "+" };
         
     // voices
     std::vector<VoiceComponent*> voices;
+    
     void addVoice();
     void removeVoice(VoiceComponent* voice);
     

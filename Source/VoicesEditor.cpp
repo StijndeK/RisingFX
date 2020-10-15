@@ -14,14 +14,28 @@
 //==============================================================================
 VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    // create valuetrees for every voice
+    std::vector<std::vector<string>> voicesIds = { {"voice1GainSliderId"},
+                                                {"voice2GainSliderId"},
+                                                {"voice3GainSliderId"},
+                                                {"voice4GainSliderId"} };
     
-    // create initial voice
-    addVoice();
+    // create 4 voices
+    for (int voice = 0; voice < 4; voice ++) {
+        
+        // valuetrees
+        for (auto& id: voicesIds[voice]) {
+            // TODO: link to actual value (make vector in processor for voiceGainSliders)
+            processor.initialiseTreeMember(id, gainRange, -6, processor.nullValue);
+        }
+        
+        // voices
+        voices.push_back(new VoiceComponent(processor, voice, voicesIds[voice]));
+        addAndMakeVisible(voices.back());
+    }
     
     // Buttons
-    addAndMakeVisible(addButton);
-    addButton.onStateChange = [this] { updateToggleState (&addButton);   };
+//    addAndMakeVisible(addButton);
+//    addButton.onStateChange = [this] { updateToggleState (&addButton);   };
 }
 
 VoicesEditor::~VoicesEditor()
@@ -40,42 +54,29 @@ void VoicesEditor::resized()
 {
     Rectangle<int> localArea = getLocalBounds().reduced(5);
     
-    addButton.setBounds(localArea.removeFromRight(40).reduced(0, 10));
+//    addButton.setBounds(localArea.removeFromRight(40).reduced(0, 10));
     
     for (auto& voice: voices) {
-        voice->setBounds(localArea.removeFromLeft(95));
+        voice->setBounds(localArea.removeFromLeft(105));
         localArea.removeFromLeft(10);
     }
 }
 
 void VoicesEditor::addVoice()
 {
-    voices.push_back(new VoiceComponent(processor, voices.size())); // create new voice and its number
-    addAndMakeVisible(voices.back());
-    
-    // TODO: somehow only a listener to the last created button is created
-    voices.back()->removeButton.onStateChange = [&] { updateToggleState (&voices.back()->removeButton);   };
-    
-    resized(); // draw new voice
+
 }
 
 void VoicesEditor::removeVoice(VoiceComponent* voice)
 {
-    std::cout << "remove voice: " << voice->voiceNumber << std::endl;
-    voices.erase(std::remove(voices.begin(), voices.end(), voice), voices.end()); // remove voice from vector
-    delete voice;// remove voice
-    
-    resized(); // remove new voice
+
 }
 
 void VoicesEditor::updateToggleState (Button* button)
 {
     if (button->getState() == 2) {
-        if (button == &addButton) {
-                addVoice();
-        }
-        else if (button == &voices[voices.size() - 1]->removeButton ) {
-                removeVoice(voices[voices.size() - 1]);
-        }
+//        if (button == &addButton) {
+//            addVoice();
+//        }
     }
 }
