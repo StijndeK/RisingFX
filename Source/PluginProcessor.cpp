@@ -23,7 +23,7 @@ tree (*this, nullptr)       // initialise valuetree
     mySynth.clearVoices();
     // add voices and sounds
     for (int i = 0; i < numVoices; i++) {
-        mySynth.addVoice(new SynthVoice(masterPan));
+        mySynth.addVoice(new SynthVoice(masterPan, masterGain));
     }
     mySynth.clearSounds();
     mySynth.addSound(new SynthSound());

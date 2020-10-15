@@ -25,7 +25,7 @@ VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
         // valuetrees
         for (auto& id: voicesIds[voice]) {
             // TODO: link to actual value (make vector in processor for voiceGainSliders)
-            processor.initialiseTreeMember(id, gainRange, -6, processor.nullValue);
+            processor.initialiseTreeMember(id, gainRange, processor.voiceGains[voice], processor.voiceGains[voice]);
         }
         
         // voices

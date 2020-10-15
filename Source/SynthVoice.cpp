@@ -11,7 +11,7 @@
 class SynthVoice;
 #include "PluginEditor.h" // include plugineditor for reference to processor
 
-SynthVoice::SynthVoice(float& pan_)
+SynthVoice::SynthVoice(float& pan_, float& gain_)
 {
     // create subvoices
     for (int voice = 0; voice < 1; voice++) {
@@ -19,6 +19,7 @@ SynthVoice::SynthVoice(float& pan_)
     }
     
     pan = &pan_;
+    gain = &gain_;
 }
 
 SynthVoice::~SynthVoice()
@@ -35,7 +36,7 @@ void SynthVoice::getSlider (float sliderValue, String ID)
         frequency = sliderValue;
     }
     else if (ID == "gainSliderID") {
-        gain = pow(10, sliderValue / 20);   // dbtovolume
+//        gain = pow(10, sliderValue / 20);   // dbtovolume
     }
     else if (ID == "panSliderID") {
 //        pan = (sliderValue + 1) / 2; // pan between 0 and 1
@@ -131,8 +132,9 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         for (auto &voice : subVoicesV) {
             theSoundL = theSoundL + voice.oscWave();
         }
-                        
-        theSoundL = (theSoundL / (subVoicesV.size() * 2)) * gain;
+
+        // TODO: dont have to calculate gain every sample
+        theSoundL = (theSoundL / (subVoicesV.size() * 2)) * pow(10, *gain / 20);
         theSoundR = theSoundL;
         
         outputBuffer.addSample(0, startSample, theSoundL * (1.0- *pan));
@@ -141,6 +143,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         ++startSample;
     }
 }
+
 
 
 

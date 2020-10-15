@@ -12,7 +12,7 @@ class TransitionFxAudioProcessor;
 class SynthVoice : public SynthesiserVoice
 {
 public:
-    SynthVoice (float& pan_);
+    SynthVoice (float& pan_, float& gain_);
     ~SynthVoice();
 
     // synth functions
@@ -39,7 +39,7 @@ private:
     // master
     double amplitude;
     // TODO: initialise all input
-    double gain = 0.5;
+    float* gain;
     float* pan;
     
     maxiOsc osc;

@@ -13,9 +13,14 @@
 class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
 public:
-    
+        
+    //==============================================================================
+    // audio parameters
     float masterPan = 0.5;
+    float masterGain = -6;
+    std::vector<float> voiceGains = {-6, -6, -6, -6};
     
+    //==============================================================================
     // DAW values
     double* bpm;
     AudioPlayHead::FrameRateType framerate;
