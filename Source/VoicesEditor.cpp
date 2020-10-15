@@ -53,11 +53,12 @@ void VoicesEditor::paint (juce::Graphics& g)
 void VoicesEditor::resized()
 {
     Rectangle<int> localArea = getLocalBounds().reduced(5);
+    localArea.removeFromLeft(5);
     
 //    addButton.setBounds(localArea.removeFromRight(40).reduced(0, 10));
     
     for (auto& voice: voices) {
-        voice->setBounds(localArea.removeFromLeft(105));
+        voice->setBounds(localArea.removeFromLeft(110));
         localArea.removeFromLeft(10);
     }
 }

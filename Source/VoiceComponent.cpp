@@ -39,5 +39,5 @@ void VoiceComponent::paint (juce::Graphics& g)
 void VoiceComponent::resized()
 {
     Rectangle<int> localArea = getLocalBounds().reduced(1);
-    sliders[0]->setBounds(localArea);
+    sliders[0]->setBounds(localArea.removeFromLeft(20));
 }
