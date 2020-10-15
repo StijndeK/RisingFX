@@ -30,13 +30,6 @@ VoicesEditor::~VoicesEditor()
 
 void VoicesEditor::paint (juce::Graphics& g)
 {
-    /* This demo code just fills the component's background and
-       draws some placeholder text to get you started.
-
-       You should replace everything in this method with your own
-       drawing code..
-    */
-
     g.fillAll (getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));   // clear the background
 
     g.setColour (juce::Colours::grey);
@@ -57,11 +50,12 @@ void VoicesEditor::resized()
 
 void VoicesEditor::addVoice()
 {
-    voices.push_back(new VoiceComponent(processor, voices.size())); // create new voice and its number (by giving size)
+    voices.push_back(new VoiceComponent(processor, voices.size())); // create new voice and its number
     addAndMakeVisible(voices.back());
     
-    // TODO: only last added voice has a listener
-    voices.back()->removeButton.onStateChange = [this] { updateToggleState (&voices.back()->removeButton);   }; // add listener
+    // TODO: somehow only a listener to the last created button is created
+    voices.back()->removeButton.onStateChange = [&] { updateToggleState (&voices.back()->removeButton);   };
+    
     resized(); // draw new voice
 }
 
@@ -80,13 +74,8 @@ void VoicesEditor::updateToggleState (Button* button)
         if (button == &addButton) {
                 addVoice();
         }
-        else {
-            for (auto& voice: voices) {
-                if (button == &voice->removeButton) {
-                    std::cout << "togglestate remove voice: " << voice->voiceNumber << std::endl;
-                    removeVoice(voice);
-                }
-            }
+        else if (button == &voices[voices.size() - 1]->removeButton ) {
+                removeVoice(voices[voices.size() - 1]);
         }
     }
 }

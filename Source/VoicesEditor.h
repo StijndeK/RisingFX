@@ -11,7 +11,6 @@
 #pragma once
 
 #include "VoiceComponent.h"
-#include "HeritTest.h"
 #include "Editor.h"
 
 //==============================================================================
@@ -31,7 +30,7 @@ public:
 private:
     // components
     TextButton addButton { "+" };
-    
+        
     // voices
     std::vector<VoiceComponent*> voices;
     void addVoice();
