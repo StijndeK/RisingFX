@@ -35,6 +35,7 @@ private:
     // voices
     std::vector<VoiceComponent*> voices;
     void addVoice();
+    void removeVoice(VoiceComponent* voice);
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VoicesEditor)
 };

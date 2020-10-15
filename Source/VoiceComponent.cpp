@@ -15,6 +15,9 @@
 VoiceComponent::VoiceComponent(TransitionFxAudioProcessor& p, int voiceNumber) : Editor(p)
 {
     this->voiceNumber = voiceNumber;
+    
+    // Buttons
+    addAndMakeVisible(removeButton);
 }
 
 VoiceComponent::~VoiceComponent()
@@ -36,7 +39,6 @@ void VoiceComponent::paint (juce::Graphics& g)
 
 void VoiceComponent::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
-
+    Rectangle<int> localArea = getLocalBounds().reduced(10);
+    removeButton.setBounds(localArea.removeFromLeft(20));
 }

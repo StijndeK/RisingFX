@@ -59,13 +59,34 @@ void VoicesEditor::addVoice()
 {
     voices.push_back(new VoiceComponent(processor, voices.size())); // create new voice and its number (by giving size)
     addAndMakeVisible(voices.back());
-    resized();
+    
+    // TODO: only last added voice has a listener
+    voices.back()->removeButton.onStateChange = [this] { updateToggleState (&voices.back()->removeButton);   }; // add listener
+    resized(); // draw new voice
+}
+
+void VoicesEditor::removeVoice(VoiceComponent* voice)
+{
+    std::cout << "remove voice: " << voice->voiceNumber << std::endl;
+    voices.erase(std::remove(voices.begin(), voices.end(), voice), voices.end()); // remove voice from vector
+    delete voice;// remove voice
+    
+    resized(); // remove new voice
 }
 
 void VoicesEditor::updateToggleState (Button* button)
 {
     if (button->getState() == 2) {
-        std::cout << "new" << std::endl;
-        addVoice();
+        if (button == &addButton) {
+                addVoice();
+        }
+        else {
+            for (auto& voice: voices) {
+                if (button == &voice->removeButton) {
+                    std::cout << "togglestate remove voice: " << voice->voiceNumber << std::endl;
+                    removeVoice(voice);
+                }
+            }
+        }
     }
 }
