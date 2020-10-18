@@ -14,8 +14,8 @@
 //==============================================================================
 LowpassComponent::LowpassComponent(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    processor.initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, 1000, processor.lowpassCutoff);
-    processor.initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, 1, processor.lowpassResonance);
+    processor.initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, processor.parameters.lowpassCutoff);
+    processor.initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, processor.parameters.lowpassResonance);
     
     std::vector<string> sliderIds = {"lowpassCutoffSliderID", "lowpassResonanceSliderID"};
     createSliders(sliders, sliderIds, Slider::SliderStyle::RotaryVerticalDrag);

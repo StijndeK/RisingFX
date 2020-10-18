@@ -14,12 +14,12 @@
 //==============================================================================
 TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    processor.initialiseTreeMember("releaseSliderID", lengthMsRange, 1000, processor.nullValue);
-    processor.initialiseTreeMember("attackSliderID", lengthMsRange, 1000, processor.nullValue);
-    processor.initialiseTreeMember("releaseFramesSliderID", lengthMsRange, 1000, processor.nullValue);
-    processor.initialiseTreeMember("attackFramesSliderID", lengthMsRange, 1000, processor.nullValue);
-    processor.initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, 1000, processor.nullValue);
-    processor.initialiseTreeMember("attackBeatsSliderID", lengthMsRange, 1000, processor.nullValue);
+    processor.initialiseTreeMember("releaseSliderID", lengthMsRange, processor.parameters.releaseMs);
+    processor.initialiseTreeMember("attackSliderID", lengthMsRange, processor.parameters.attackMs);
+    processor.initialiseTreeMember("releaseFramesSliderID", lengthMsRange, processor.parameters.releaseFrames);
+    processor.initialiseTreeMember("attackFramesSliderID", lengthMsRange, processor.parameters.attackFrames);
+    processor.initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, processor.parameters.releaseBeats);
+    processor.initialiseTreeMember("attackBeatsSliderID", lengthMsRange, processor.parameters.attackBeats);
     
     std::vector<string> sliderIds = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
     createSliders(sliders, sliderIds);

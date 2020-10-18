@@ -49,9 +49,9 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
 }
 //==============================================================================
 // create and add treemember, add listerener, add adaptableparameter
-void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt, void (*setFunction)(float&, std::atomic<float>&))
+void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float& parameterToAdapt, void (*setFunction)(float&, std::atomic<float>&))
 {
-    tree.createAndAddParameter(parameterID, parameterID, parameterID, range, initialValue, nullptr, nullptr);
+    tree.createAndAddParameter(parameterID, parameterID, parameterID, range, parameterToAdapt, nullptr, nullptr);
     tree.addParameterListener(parameterID, this);
     
     // TODO: don't create a copy of the id
@@ -66,8 +66,7 @@ void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, fl
     
     // processor parameters
     for (auto &param: adaptableParameters) {
-        if (param.paramId == parameterID && param.param != &nullValue) {
-//            *param.param = *tree.getRawParameterValue(parameterID);
+        if (param.paramId == parameterID) {
             param.paramSetFunction(*param.param, *tree.getRawParameterValue(parameterID));
             return; // parameter is in processor, so cast to subvoice is not necessary
         }
@@ -253,7 +252,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         verb.setParameters(reverbParameters);
         
         // filter
-        *lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), lowpassCutoff, lowpassResonance);
+        *lowPassFilter.state = *dsp::IIR::Coefficients<float>::makeLowPass(getSampleRate(), parameters.lowpassCutoff, parameters.lowpassResonance);
     }
 
     // set output for reverb

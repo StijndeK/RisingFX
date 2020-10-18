@@ -40,11 +40,6 @@ public:
     dsp::Reverb::Parameters reverbParameters;
     dsp::ProcessorDuplicator<dsp::IIR::Filter <float>, dsp::IIR::Coefficients <float>> lowPassFilter;
     
-    float lowpassCutoff = 1000;
-    float lowpassResonance = 1;
-    
-    float nullValue = 0;
-    
     //==============================================================================
     // trigger button
     int manualTrigger;
@@ -56,7 +51,7 @@ public:
     
     void parameterChanged(const String & parameterID, float newValue) override;
         
-    void initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt,void (*setFunction)(float&, std::atomic<float>&) = &::setSimpleValue);
+    void initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float& parameterToAdapt,void (*setFunction)(float&, std::atomic<float>&) = &::setSimpleValue);
     
     std::vector<AdaptableParameter> adaptableParameters;
     
