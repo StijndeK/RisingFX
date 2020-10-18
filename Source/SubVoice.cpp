@@ -10,6 +10,9 @@
 
 #include "SubVoice.h"
 
+// TODO: link the gain to subvoices
+// TODO: subvoice shouldnt have detune, but the subsubvoice, or the osc multiplier should
+
 SubVoice::SubVoice(float& frequency_, float detune_)
 {
     frequency = &frequency_;

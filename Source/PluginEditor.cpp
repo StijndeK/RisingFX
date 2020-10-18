@@ -8,9 +8,6 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
 {
     setSize (800, 500);
     
-    // value tree
-    processor.initialiseTreeMember("sliderID", master.frequencyRange, 400, processor.nullValue);
-    
     // Images
     auto logo = ImageCache::getFromMemory(BinaryData::Logo_png, BinaryData::Logo_pngSize);
     logoImage.setImage(logo, RectanglePlacement::centred);
@@ -26,12 +23,6 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     // Buttons
     addAndMakeVisible(play);
     play.onStateChange = [this] { updateToggleState (&play);   };
-    
-    // Sliders
-    slider1.setSliderStyle(Slider::SliderStyle::LinearHorizontal);
-    slider1.setTextBoxStyle(Slider::TextBoxBelow, false, 60, 20);
-    addAndMakeVisible(&slider1);
-    sliderTree = new AudioProcessorValueTreeState::SliderAttachment (processor.tree, "sliderID", slider1);
     
     // Comboboxes
     box.addItem("1", 1);
@@ -59,7 +50,7 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     resized();
     
     // initialise
-    processor.tree.state = ValueTree("sliderID");
+    processor.tree.state = ValueTree("gainSliderID");
 }
 
 
@@ -100,9 +91,7 @@ void TransitionFxAudioProcessorEditor::resized()
     
     play.setBounds(mainAreaSwitch.withTrimmedRight(mainAreaSwitch.getWidth() - 100).reduced(5));
     voices.setBounds(mainAreaVoices.reduced(5));
-    
-//    slider1.setBounds(mainArea.reduced(50));
-    
+        
     master.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedTop(5));
     effects.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3).withTrimmedTop(generalArea.getHeight() / 3).reduced(10, 5));
     timeLinking.setBounds(generalArea.withTrimmedTop(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedBottom(5));

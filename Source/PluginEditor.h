@@ -30,12 +30,9 @@ private:
     // components
     TextButton play { "Play" };
     TextEditor editor;
-    Slider slider1;
     ComboBox box;
     ImageComponent logoImage;
-    
-    ScopedPointer <AudioProcessorValueTreeState::SliderAttachment> sliderTree;
-    
+        
     // layout
     Rectangle<int> area;
     Rectangle<int> titleArea;

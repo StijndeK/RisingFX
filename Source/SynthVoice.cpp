@@ -14,7 +14,7 @@ class SynthVoice;
 SynthVoice::SynthVoice(float& pan_, float& gain_)
 {
     // create subvoices
-    for (int voice = 0; voice < 1; voice++) {
+    for (int voice = 0; voice < 4; voice++) {
         subVoicesV.push_back(SubVoice(frequency, 0.33 * voice));
     }
     
@@ -31,17 +31,7 @@ SynthVoice::~SynthVoice()
 //==============================================================================
 void SynthVoice::getSlider (float sliderValue, String ID)
 {
-    // TODO: optimise. Maybe different getter for subvoices and voices
-    if (ID == "sliderID") {
-        frequency = sliderValue;
-    }
-    else if (ID == "gainSliderID") {
-//        gain = pow(10, sliderValue / 20);   // dbtovolume
-    }
-    else if (ID == "panSliderID") {
-//        pan = (sliderValue + 1) / 2; // pan between 0 and 1
-    }
-    else if (ID == "attackSliderID") {
+    if (ID == "attackSliderID") {
         for (auto &voice : subVoicesV) {
             voice.env.setADSRValue(sliderValue, voice.env.attack, false);
         }
