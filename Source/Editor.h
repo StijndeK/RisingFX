@@ -12,6 +12,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
 #include <vector>
+#include "ParamSetFunctions.h"
 
 class Editor : public juce::Component
 {

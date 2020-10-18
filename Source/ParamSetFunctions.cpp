@@ -13,5 +13,21 @@
 // used to set values that do not need any additional calculations
 void setSimpleValue(float& valueToChange, std::atomic<float>& inputValue)
 {
+    std::cout << valueToChange << " " << inputValue << std::endl;
     valueToChange = inputValue;
+}
+
+void setVoiceGain(float& valueToChange, std::atomic<float>& inputValue)
+{
+    valueToChange =     pow(10, inputValue / 20);
+}
+
+void setEnvAttack(std::atomic<float>& inputValue)
+{
+    
+}
+
+void setEnvRelease(std::atomic<float>& inputValue)
+{
+    
 }

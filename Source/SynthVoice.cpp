@@ -124,7 +124,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         }
 
         // TODO: dont have to calculate gain every sample
-        theSoundL = (theSoundL / (subVoicesV.size() * 2)) * pow(10, *gain / 20);
+        theSoundL = (theSoundL / (subVoicesV.size() * 2)) * *gain;
         theSoundR = theSoundL;
         
         outputBuffer.addSample(0, startSample, theSoundL * (1.0- *pan));

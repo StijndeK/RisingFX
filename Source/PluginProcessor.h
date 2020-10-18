@@ -56,10 +56,8 @@ public:
     AudioProcessorValueTreeState tree;
     
     void parameterChanged(const String & parameterID, float newValue) override;
-    
-//    void setSimpleValue(float valueToChange, float inputValue);
-    
-    void initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt);
+        
+    void initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt,void (*setFunction)(float&, std::atomic<float>&) = &::setSimpleValue);
     
     std::vector<AdaptableParameter> adaptableParameters;
     

@@ -46,15 +46,14 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
 {
 }
 //==============================================================================
-void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt)
+// create and add treemember, add listerener, add adaptableparameter
+void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt, void (*setFunction)(float&, std::atomic<float>&))
 {
     tree.createAndAddParameter(parameterID, parameterID, parameterID, range, initialValue, nullptr, nullptr);
     tree.addParameterListener(parameterID, this);
     
-//    void (TransitionFxAudioProcessor::*func)(float, float) = &TransitionFxAudioProcessor::setSimpleValue;
-    
     // TODO: don't create a copy of the id
-    adaptableParameters.push_back(AdaptableParameter(parameterID, parameterToAdapt, &::setSimpleValue));
+    adaptableParameters.push_back(AdaptableParameter(parameterID, parameterToAdapt, setFunction));
 }
 
 //==============================================================================
