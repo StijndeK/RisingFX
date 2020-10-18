@@ -13,6 +13,7 @@
 #include "PluginProcessor.h"
 #include <vector>
 #include "ParamSetFunctions.h"
+#include "Parameters.h"
 
 class Editor : public juce::Component
 {

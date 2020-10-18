@@ -14,13 +14,14 @@
 #include "Envelopes.h"
 #include "DSP.h"
 
-
 class SubVoice {
 private:
     maxiOsc osc;
     
+    float* gain;
+    
 public:
-    SubVoice(float& frequency_, float detune_);
+    SubVoice(float& frequency_, float detune_, float* gain_);
     ~SubVoice();
     
     double oscWave ();

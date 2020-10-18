@@ -24,18 +24,14 @@ VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
         
         // valuetrees
         for (auto& id: voicesIds[voice]) {
-            // TODO: link to actual value (make vector in processor for voiceGainSliders)
-            processor.initialiseTreeMember(id, gainRange, processor.voiceGains[voice], processor.voiceGains[voice]);
+            // gain
+            processor.initialiseTreeMember(id, gainRange, processor.parameters.subvoiceGains[voice], processor.parameters.subvoiceGains[voice], &::setVoiceGain);
         }
         
         // voices
         voices.push_back(new VoiceComponent(processor, voice, voicesIds[voice]));
         addAndMakeVisible(voices.back());
     }
-    
-    // Buttons
-//    addAndMakeVisible(addButton);
-//    addButton.onStateChange = [this] { updateToggleState (&addButton);   };
 }
 
 VoicesEditor::~VoicesEditor()

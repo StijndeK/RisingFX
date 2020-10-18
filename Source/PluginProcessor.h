@@ -10,6 +10,7 @@
 #include <algorithm>
 #include "AdapatableParameter.h"
 #include "ParamSetFunctions.h"
+#include "Parameters.h"
 
 class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
@@ -17,9 +18,12 @@ public:
         
     //==============================================================================
     // audio parameters
+    
+    // voices
     float masterPan = 0.5;
     float masterGain = -6;
-    std::vector<float> voiceGains = {-6, -6, -6, -6};
+    
+    Parameters parameters;
     
     //==============================================================================
     // DAW values

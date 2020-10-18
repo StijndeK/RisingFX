@@ -19,11 +19,13 @@ tree (*this, nullptr)       // initialise valuetree
 {
     /* Synthesiser */
     
+    std::cout << "constructor" << std::endl;
+    
     // clear old voices
     mySynth.clearVoices();
     // add voices and sounds
     for (int i = 0; i < numVoices; i++) {
-        mySynth.addVoice(new SynthVoice(masterPan, masterGain));
+        mySynth.addVoice(new SynthVoice(masterPan, masterGain, parameters.subvoiceGains));
     }
     mySynth.clearSounds();
     mySynth.addSound(new SynthSound());

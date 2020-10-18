@@ -11,15 +11,19 @@
 class SynthVoice;
 #include "PluginEditor.h" // include plugineditor for reference to processor
 
-SynthVoice::SynthVoice(float& pan_, float& gain_)
+SynthVoice::SynthVoice(float& pan_, float& gain_, std::vector<float>& subvoiceGains_)
 {
-    // create subvoices
-    for (int voice = 0; voice < 4; voice++) {
-        subVoicesV.push_back(SubVoice(frequency, 0.33 * voice));
-    }
-    
     pan = &pan_;
     gain = &gain_;
+    subvoiceGains = &subvoiceGains_;
+    
+    // create subvoices
+    for (int voice = 0; voice < 4; voice++) {
+        float* ptr = &subvoiceGains_[voice];
+        subVoicesV.push_back(SubVoice(frequency, 0.33 * voice, ptr));
+    }
+    
+
 }
 
 SynthVoice::~SynthVoice()
