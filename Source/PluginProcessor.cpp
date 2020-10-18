@@ -18,9 +18,7 @@ tree (*this, nullptr)       // initialise valuetree
 #endif
 {
     /* Synthesiser */
-    
-    std::cout << "constructor" << std::endl;
-    
+        
     // clear old voices
     mySynth.clearVoices();
     // add voices and sounds
@@ -242,7 +240,6 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     /* reverb and lowpass */
     
     // set parameters
-    // TODO: allow for multiple parameters to change on listener, so that this value does not have to be calculated every sample
     reverbParameters.dryLevel = 1 - reverbParameters.wetLevel;
     
     // give parameters to reverb for every sample
