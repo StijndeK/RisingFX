@@ -51,8 +51,10 @@ void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID
     tree.createAndAddParameter(parameterID, parameterID, parameterID, range, initialValue, nullptr, nullptr);
     tree.addParameterListener(parameterID, this);
     
+//    void (TransitionFxAudioProcessor::*func)(float, float) = &TransitionFxAudioProcessor::setSimpleValue;
+    
     // TODO: don't create a copy of the id
-    adaptableParameters.push_back(AdaptableParameter(parameterID, parameterToAdapt));
+    adaptableParameters.push_back(AdaptableParameter(parameterID, parameterToAdapt, &::setSimpleValue));
 }
 
 //==============================================================================
@@ -64,7 +66,8 @@ void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, fl
     // processor parameters
     for (auto &param: adaptableParameters) {
         if (param.paramId == parameterID && param.param != &nullValue) {
-            *param.param = *tree.getRawParameterValue(parameterID);
+//            *param.param = *tree.getRawParameterValue(parameterID);
+            param.paramSetFunction(*param.param, *tree.getRawParameterValue(parameterID));
             return; // parameter is in processor, so cast to subvoice is not necessary
         }
     }

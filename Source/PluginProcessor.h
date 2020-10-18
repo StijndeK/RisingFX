@@ -9,6 +9,7 @@
 #include "SubVoice.h"
 #include <algorithm>
 #include "AdapatableParameter.h"
+#include "ParamSetFunctions.h"
 
 class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
@@ -55,6 +56,8 @@ public:
     AudioProcessorValueTreeState tree;
     
     void parameterChanged(const String & parameterID, float newValue) override;
+    
+//    void setSimpleValue(float valueToChange, float inputValue);
     
     void initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, float& parameterToAdapt);
     
