@@ -52,7 +52,6 @@ void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID
     tree.createAndAddParameter(parameterID, parameterID, parameterID, range, parameterToAdapt, nullptr, nullptr);
     tree.addParameterListener(parameterID, this);
     
-    // TODO: don't create a copy of the id
     adaptableParameters.push_back(AdaptableParameter(parameterID, parameterToAdapt, setFunction));
 }
 
