@@ -11,40 +11,23 @@
 class SynthVoice;
 #include "PluginEditor.h" // include plugineditor for reference to processor
 
-SynthVoice::SynthVoice(float& pan_, float& gain_, std::vector<float>& subvoiceGains_)
+SynthVoice::SynthVoice(float& pan_, float& gain_, std::vector<float>& subvoiceGains_, std::vector<Envelopes>& subvoiceEnvs_)
 {
     pan = &pan_;
     gain = &gain_;
-    subvoiceGains = &subvoiceGains_;
-    
-    // create subvoices
-    for (int voice = 0; voice < 4; voice++) {
-        float* ptr = &subvoiceGains_[voice];
-        subVoicesV.push_back(SubVoice(frequency, 0.33 * voice, ptr));
-    }
-    
 
+    // create subvoices
+    for (int voice = 0; voice < 1; voice++) {
+        
+        Envelopes* envPtr = &subvoiceEnvs_[voice];
+        float* gainPtr = &subvoiceGains_[voice];
+        
+        subVoicesV.push_back(SubVoice(frequency, 0.33 * voice, gainPtr, envPtr));
+    }
 }
 
 SynthVoice::~SynthVoice()
 {
-}
-
-//==============================================================================
-//                                Getters
-//==============================================================================
-void SynthVoice::getSlider (float sliderValue, String ID)
-{
-    if (ID == "attackSliderID") {
-        for (auto &voice : subVoicesV) {
-            voice.env.setADSRValue(sliderValue, voice.env.attack, false);
-        }
-    }
-    else if (ID == "releaseSliderID") {
-        for (auto &voice : subVoicesV) {
-            voice.env.setADSRValue(sliderValue, voice.env.release, false);
-        }
-    }
 }
 
 //==============================================================================

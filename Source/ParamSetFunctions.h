@@ -12,8 +12,21 @@
 
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Envelopes.h"
 
-void setSimpleValue(float& valueToChange, std::atomic<float>& inputValue);
-void setVoiceGain(float& valueToChange, std::atomic<float>& inputValue);
-void setEnvAttack(std::atomic<float>& inputValue);
-void setEnvRelease(std::atomic<float>& inputValue);
+
+    void setSimpleValue(float& valueToChange, std::atomic<float>& inputValue);
+    void setVoiceGain(float& valueToChange, std::atomic<float>& inputValue);
+
+    template <typename T> void setAttackLength(T& valueToChange, std::atomic<float>& inputValue) {
+            for (auto& env: valueToChange) {
+                env.setADSRValue(inputValue, env.attack, false);
+            }
+    }
+
+    template <typename T> void setReleaseLength(T& valueToChange, std::atomic<float>& inputValue) {
+            for (auto& env: valueToChange) {
+                env.setADSRValue(inputValue, env.release, false);
+            }
+    }
+

@@ -23,7 +23,8 @@ tree (*this, nullptr)       // initialise valuetree
     mySynth.clearVoices();
     // add voices and sounds
     for (int i = 0; i < numVoices; i++) {
-        mySynth.addVoice(new SynthVoice(parameters.masterPan, parameters.masterGain, parameters.subvoiceGains));
+        // TODO: every voice now uses the same set of envelopes. If the synth should be polyfonic, every voice should have own set of envelopes
+        mySynth.addVoice(new SynthVoice(parameters.masterPan, parameters.masterGain, parameters.subvoiceGains, parameters.subvoiceEnvs));
     }
     mySynth.clearSounds();
     mySynth.addSound(new SynthSound());
@@ -59,21 +60,21 @@ void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID
 
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
-    // TODO: use the same system as is used for processor parameters, for subvoices parameters (find workaround dynamic amount of voices, or create set amount of subvoices beforehand)
-    
+    // TODO: create a custom class to pass to adaptable parameters that can also take a vector of envelopes or any type of necessary value (using templates is cumbersome)
+    if (parameterID == "attackSliderID") {
+        setAttackLength(parameters.subvoiceEnvs, *tree.getRawParameterValue(parameterID));
+        return;
+    }
+    if (parameterID == "releaseSliderID") {
+        setReleaseLength(parameters.subvoiceEnvs, *tree.getRawParameterValue(parameterID));
+        return;
+    }
+ 
     // processor parameters
     for (auto &param: adaptableParameters) {
         if (param.paramId == parameterID) {
             param.paramSetFunction(*param.param, *tree.getRawParameterValue(parameterID));
             return; // parameter is in processor, so cast to subvoice is not necessary
-        }
-    }
-    
-    // synth and subvoice parameters
-    for (int i = 0; i < mySynth.getNumVoices(); i++) {
-        // check which voice is being edited
-        if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
-            myVoice->getSlider(*tree.getRawParameterValue(parameterID), parameterID);
         }
     }
 }
@@ -203,6 +204,8 @@ bool TransitionFxAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     buffer.clear();
+    
+    std::cout << getSampleRate() << std::endl;
     
     // get data from DAW(host)
     // TODO: create listeners

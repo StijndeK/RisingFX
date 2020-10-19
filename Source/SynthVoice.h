@@ -12,7 +12,7 @@ class TransitionFxAudioProcessor;
 class SynthVoice : public SynthesiserVoice
 {
 public:
-    SynthVoice (float& pan_, float& gain_, std::vector<float>& subvoiceGains_);
+    SynthVoice (float& pan_, float& gain_, std::vector<float>& subvoiceGains_, std::vector<Envelopes>& subvoiceEnvs_);
     ~SynthVoice();
 
     // synth functions
@@ -29,9 +29,6 @@ public:
     
     float frequency = 440;
     
-    // get UI data
-    void getSlider(float sliderValue, String ID);
-    
 private:
     // processor
     TransitionFxAudioProcessor *processor;
@@ -41,7 +38,6 @@ private:
     // TODO: initialise all input
     float* gain;
     float* pan;
-    std::vector<float>* subvoiceGains;
     
     maxiOsc osc;
     

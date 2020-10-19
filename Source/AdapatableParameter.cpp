@@ -15,8 +15,6 @@ AdaptableParameter::AdaptableParameter(const String & paramId_, float & param_, 
     paramId = paramId_;
     param = &param_;
     paramSetFunction = paramSetFunction_;
-    
-//    (*paramSetFunction)(0,0);
 }
 
 AdaptableParameter::~AdaptableParameter()

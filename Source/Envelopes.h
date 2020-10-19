@@ -36,7 +36,7 @@ public:
     double release = 0;
     
     // samplerate
-    double samplerate = 44100.0;
+    double samplerate = 48000.0;
     double setSampleRate (double rate)
     {
         if (rate == 0){

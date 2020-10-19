@@ -21,13 +21,3 @@ void setVoiceGain(float& valueToChange, std::atomic<float>& inputValue)
 {
     valueToChange =     pow(10, inputValue / 20);
 }
-
-void setEnvAttack(std::atomic<float>& inputValue)
-{
-    
-}
-
-void setEnvRelease(std::atomic<float>& inputValue)
-{
-    
-}

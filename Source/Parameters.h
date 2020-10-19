@@ -9,13 +9,16 @@
 */
 
 #pragma once
+
 // dataclass to hold general variables
 class Parameters {
     
 public:
     /* subvoices */
     std::vector<float> subvoiceGains = {-6, -6, -6, -6};
-    
+    std::vector<Envelopes> subvoiceEnvs = {Envelopes(), Envelopes(), Envelopes(), Envelopes()};
+    std::vector<float> subvoiceAttackLengths = {1000, 1000, 1000, 1000};
+
     /* voices */
     
     // master

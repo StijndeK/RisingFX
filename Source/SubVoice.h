@@ -19,9 +19,10 @@ private:
     maxiOsc osc;
     
     float* gain;
+    Envelopes* env;
     
 public:
-    SubVoice(float& frequency_, float detune_, float* gain_);
+    SubVoice(float& frequency_, float detune_, float* gain_, Envelopes* env_);
     ~SubVoice();
     
     double oscWave ();
@@ -31,5 +32,5 @@ public:
     
     int trigger = 0;
     
-    Envelopes env;
+    Envelopes envLocal;
 };
