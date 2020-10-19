@@ -10,15 +10,16 @@
 
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "ParamSetFunctions.h"
+#include "AdaptableParameterVariable.h"
 
 class AdaptableParameter
 {
 public:
-    AdaptableParameter(const String & paramId_, float & param_, void (*paramSetFunction_)(float&, std::atomic<float>&));
+    AdaptableParameter(const String & paramId_, float & param_, void (*paramSetFunction_)(AdaptableParameterVariable&, std::atomic<float>&), AdaptableParameterVariable* var_);
     ~AdaptableParameter();
         
     String paramId;
     float* param;
-    void (*paramSetFunction)(float&, std::atomic<float>&);
+    void (*paramSetFunction)(AdaptableParameterVariable&, std::atomic<float>&);
+    AdaptableParameterVariable* var;
 };

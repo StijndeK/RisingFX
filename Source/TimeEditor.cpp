@@ -14,12 +14,12 @@
 //==============================================================================
 TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    processor.initialiseTreeMember("releaseSliderID", lengthMsRange, processor.parameters.releaseMs);
-    processor.initialiseTreeMember("attackSliderID", lengthMsRange, processor.parameters.attackMs);
-    processor.initialiseTreeMember("releaseFramesSliderID", lengthMsRange, processor.parameters.releaseFrames);
-    processor.initialiseTreeMember("attackFramesSliderID", lengthMsRange, processor.parameters.attackFrames);
-    processor.initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, processor.parameters.releaseBeats);
-    processor.initialiseTreeMember("attackBeatsSliderID", lengthMsRange, processor.parameters.attackBeats);
+    processor.initialiseTreeMember("releaseSliderID", lengthMsRange, new AdaptableParameterVariable(processor.parameters.releaseMs, &processor.parameters.subvoiceEnvs), &::setReleaseLength);
+    processor.initialiseTreeMember("attackSliderID", lengthMsRange, new AdaptableParameterVariable(processor.parameters.attackMs, &processor.parameters.subvoiceEnvs), &::setAttackLength);
+    processor.initialiseTreeMember("releaseFramesSliderID", lengthMsRange, new AdaptableParameterVariable(processor.parameters.releaseFrames, &processor.parameters.subvoiceEnvs), &::setReleaseLength);
+    processor.initialiseTreeMember("attackFramesSliderID", lengthMsRange, new AdaptableParameterVariable(processor.parameters.attackFrames, &processor.parameters.subvoiceEnvs), &::setAttackLength);
+    processor.initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, new AdaptableParameterVariable(processor.parameters.releaseBeats, &processor.parameters.subvoiceEnvs), &::setReleaseLength);
+    processor.initialiseTreeMember("attackBeatsSliderID", lengthMsRange, new AdaptableParameterVariable(processor.parameters.attackBeats, &processor.parameters.subvoiceEnvs), &::setAttackLength);
     
     std::vector<string> sliderIds = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
     createSliders(sliders, sliderIds);

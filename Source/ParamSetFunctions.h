@@ -13,10 +13,14 @@
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Envelopes.h"
+#include "AdaptableParameterVariable.h"
 
 
-    void setSimpleValue(float& valueToChange, std::atomic<float>& inputValue);
-    void setVoiceGain(float& valueToChange, std::atomic<float>& inputValue);
+void setVoiceGain(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue);
+void setSimpleValue2(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue);
+void setAttackLength(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue);
+void setReleaseLength(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue);
+
 
     template <typename T> void setAttackLength(T& valueToChange, std::atomic<float>& inputValue) {
             for (auto& env: valueToChange) {

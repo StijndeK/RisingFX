@@ -48,32 +48,21 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
 }
 //==============================================================================
 // create and add treemember, add listerener, add adaptableparameter
-void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float& parameterToAdapt, void (*setFunction)(float&, std::atomic<float>&))
+void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, AdaptableParameterVariable* parameterToAdapt, void (*setFunction)(AdaptableParameterVariable&, std::atomic<float>&))
 {
-    tree.createAndAddParameter(parameterID, parameterID, parameterID, range, parameterToAdapt, nullptr, nullptr);
+    tree.createAndAddParameter(parameterID, parameterID, parameterID, range, *parameterToAdapt->variable, nullptr, nullptr);
     tree.addParameterListener(parameterID, this);
-    
-    adaptableParameters.push_back(AdaptableParameter(parameterID, parameterToAdapt, setFunction));
+        
+    adaptableParameters.push_back(AdaptableParameter(parameterID, *parameterToAdapt->variable, setFunction, parameterToAdapt));
 }
 
 //==============================================================================
 
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
-    // TODO: create a custom class to pass to adaptable parameters that can also take a vector of envelopes or any type of necessary value (using templates is cumbersome)
-    if (parameterID == "attackSliderID") {
-        setAttackLength(parameters.subvoiceEnvs, *tree.getRawParameterValue(parameterID));
-        return;
-    }
-    if (parameterID == "releaseSliderID") {
-        setReleaseLength(parameters.subvoiceEnvs, *tree.getRawParameterValue(parameterID));
-        return;
-    }
- 
-    // processor parameters
     for (auto &param: adaptableParameters) {
         if (param.paramId == parameterID) {
-            param.paramSetFunction(*param.param, *tree.getRawParameterValue(parameterID));
+            param.paramSetFunction(*param.var, *tree.getRawParameterValue(parameterID));
             return; // parameter is in processor, so cast to subvoice is not necessary
         }
     }
@@ -204,9 +193,7 @@ bool TransitionFxAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     buffer.clear();
-    
-    std::cout << getSampleRate() << std::endl;
-    
+        
     // get data from DAW(host)
     // TODO: create listeners
     AudioPlayHead* phead = getPlayHead();

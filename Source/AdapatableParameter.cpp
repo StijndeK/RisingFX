@@ -10,11 +10,12 @@
 
 #include "AdapatableParameter.h"
 
-AdaptableParameter::AdaptableParameter(const String & paramId_, float & param_, void (*paramSetFunction_)(float&, std::atomic<float>&))
+AdaptableParameter::AdaptableParameter(const String & paramId_, float & param_, void (*paramSetFunction_)(AdaptableParameterVariable&, std::atomic<float>&), AdaptableParameterVariable* var_)
 {
     paramId = paramId_;
     param = &param_;
     paramSetFunction = paramSetFunction_;
+    var = var_;
 }
 
 AdaptableParameter::~AdaptableParameter()

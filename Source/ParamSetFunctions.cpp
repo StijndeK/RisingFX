@@ -11,13 +11,34 @@
 #include "ParamSetFunctions.h"
 
 // used to set values that do not need any additional calculations
-void setSimpleValue(float& valueToChange, std::atomic<float>& inputValue)
+void setSimpleValue2(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue)
 {
-    std::cout << valueToChange << " " << inputValue << std::endl;
-    valueToChange = inputValue;
+    *valueToChange.variable = inputValue;
 }
 
-void setVoiceGain(float& valueToChange, std::atomic<float>& inputValue)
+void setVoiceGain(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue)
 {
-    valueToChange =     pow(10, inputValue / 20);
+    *valueToChange.variable =     pow(10, inputValue / 20);
+}
+
+void setAttackLength(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue)
+{
+    // set the variable to its new value
+    *valueToChange.variable = inputValue;
+    
+    // calculate length for all envs
+    for (auto& env: *valueToChange.variableVec) {
+        env.setADSRValue(inputValue, env.attack, false);
+    }
+}
+
+void setReleaseLength(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue)
+{
+    // set the variable to its new value
+    *valueToChange.variable = inputValue;
+    
+    // calculate length for all envs
+    for (auto& env: *valueToChange.variableVec) {
+        env.setADSRValue(inputValue, env.release, false);
+    }
 }
