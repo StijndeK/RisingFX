@@ -85,7 +85,7 @@ double Envelopes::arExp(double input, int trigger)
 //==============================================================================
 
 // linear returns the value by which to add/subtract, exponential returns a value to multiply by
-void Envelopes::setADSRValue(double lengthInMs, double &ADSRState, bool exp)
+void Envelopes::setADSRValue(double lengthInMs, float &ADSRState, bool exp)
 {
     if (exp) {
         ADSRState = pow((1.0 / amplitudeStartValue), 1.0 / (samplerate * (lengthInMs / 1000.0)));

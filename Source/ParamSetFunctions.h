@@ -21,16 +21,4 @@ void setSimpleValue2(AdaptableParameterVariable& valueToChange, std::atomic<floa
 void setAttackLength(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue);
 void setReleaseLength(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue);
 
-
-    template <typename T> void setAttackLength(T& valueToChange, std::atomic<float>& inputValue) {
-            for (auto& env: valueToChange) {
-                env.setADSRValue(inputValue, env.attack, false);
-            }
-    }
-
-    template <typename T> void setReleaseLength(T& valueToChange, std::atomic<float>& inputValue) {
-            for (auto& env: valueToChange) {
-                env.setADSRValue(inputValue, env.release, false);
-            }
-    }
-
+void setAttackLength2(float& valueToChange, std::atomic<float>& inputValue);

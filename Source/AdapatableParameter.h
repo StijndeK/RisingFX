@@ -15,11 +15,10 @@
 class AdaptableParameter
 {
 public:
-    AdaptableParameter(const String & paramId_, float & param_, void (*paramSetFunction_)(AdaptableParameterVariable&, std::atomic<float>&), AdaptableParameterVariable* var_);
+    AdaptableParameter(const String & paramId_, void (*paramSetFunction_)(AdaptableParameterVariable&, std::atomic<float>&), AdaptableParameterVariable* var_);
     ~AdaptableParameter();
         
     String paramId;
-    float* param;
     void (*paramSetFunction)(AdaptableParameterVariable&, std::atomic<float>&);
     AdaptableParameterVariable* var;
 };

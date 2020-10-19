@@ -30,10 +30,10 @@ public:
     double delayInput;
     
     // set attack and release, check for exponential or linear curve (set enum if more options arise in future)
-    void setADSRValue(double lengthInMs, double &ADSRState, bool exp);
+    void setADSRValue(double lengthInMs, float &ADSRState, bool exp);
     
-    double attack = 0;
-    double release = 0;
+    float attack = 0;
+    float release = 0;
     
     // samplerate
     double samplerate = 48000.0;

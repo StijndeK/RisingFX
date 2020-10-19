@@ -53,13 +53,17 @@ void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID
     tree.createAndAddParameter(parameterID, parameterID, parameterID, range, *parameterToAdapt->variable, nullptr, nullptr);
     tree.addParameterListener(parameterID, this);
         
-    adaptableParameters.push_back(AdaptableParameter(parameterID, *parameterToAdapt->variable, setFunction, parameterToAdapt));
+    adaptableParameters.push_back(AdaptableParameter(parameterID, setFunction, parameterToAdapt));
 }
 
 //==============================================================================
 
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
+    if (parameterID == "attackSliderID") {
+        setAttackLength2(parameters.subvoiceEnvs[0].attack, *tree.getRawParameterValue(parameterID));
+        return;
+    }
     for (auto &param: adaptableParameters) {
         if (param.paramId == parameterID) {
             param.paramSetFunction(*param.var, *tree.getRawParameterValue(parameterID));
