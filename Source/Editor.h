@@ -14,7 +14,7 @@
 #include <vector>
 #include "ParamSetFunctions.h"
 #include "Parameters.h"
-#include "AdaptableParameterVariable.h"
+#include "AdapatableParameter.h"
 
 class Editor : public juce::Component
 {

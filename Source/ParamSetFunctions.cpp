@@ -10,37 +10,23 @@
 
 #include "ParamSetFunctions.h"
 
-// TODO: allow multiple adaptableparameters to be linked to a valuetree, so that there is no need for the AdaptableParameterVariable. The envelope length could be set with a setSimpleVariable and the steplength for within the envelope could be set by linking the [envelope].attack
-
-// used to set values that do not need any additional calculations
-void setSimpleValue2(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue)
+void setEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inputValue)
 {
-    *valueToChange.variable = inputValue;
-}
-
-void setVoiceGain(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue)
-{
-    *valueToChange.variable =     pow(10, inputValue / 20);
-}
-
-void setAttackLength(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue)
-{
-    // set the variable to its new value
-    *valueToChange.variable = inputValue;
-    
-    // calculate length for all envs
-    for (auto& env: *valueToChange.variableVec) {
-        env.setADSRValue(inputValue, env.attack, false);
+    for (auto& value: valueToChange) {
+        *value = (1.0 / 48000) * (1.0 / (inputValue / 1000.0));
     }
 }
 
-void setReleaseLength(AdaptableParameterVariable& valueToChange, std::atomic<float>& inputValue)
+void setGain(std::vector<float*> valueToChange, std::atomic<float>& inputValue)
 {
-    // set the variable to its new value
-    *valueToChange.variable = inputValue;
-    
-    // calculate length for all envs
-    for (auto& env: *valueToChange.variableVec) {
-        env.setADSRValue(inputValue, env.release, false);
+    for (auto& value: valueToChange) {
+        *value = pow(10, inputValue / 20);
+    }
+}
+
+void setSimpleValue(std::vector<float*> valueToChange, std::atomic<float>& inputValue)
+{
+    for (auto& value: valueToChange) {
+        *value = inputValue;
     }
 }

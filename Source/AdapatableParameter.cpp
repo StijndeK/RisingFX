@@ -10,9 +10,20 @@
 
 #include "AdapatableParameter.h"
 
-AdaptableParameter::AdaptableParameter(const String & paramId_, void (*paramSetFunction_)(AdaptableParameterVariable&, std::atomic<float>&), AdaptableParameterVariable* var_)
+
+AdaptableLink::AdaptableLink(const String & paramId_, std::vector<AdaptableParameter> adaptableParameters_)
 {
     paramId = paramId_;
+    adaptableParameters = adaptableParameters_;
+}
+
+AdaptableLink::~AdaptableLink()
+{
+    
+}
+
+AdaptableParameter::AdaptableParameter(std::vector<float*> var_, void (*paramSetFunction_)(std::vector<float*>, std::atomic<float>&))
+{
     paramSetFunction = paramSetFunction_;
     var = var_;
 }

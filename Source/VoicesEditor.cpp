@@ -25,7 +25,7 @@ VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
         // valuetrees
         for (auto& id: voicesIds[voice]) {
             // gain
-            processor.initialiseTreeMember(id, gainRange, new AdaptableParameterVariable(processor.parameters.subvoiceGains[voice]), &::setVoiceGain);
+            processor.initialiseTreeMember(id, gainRange, processor.parameters.subvoiceGains[voice], {AdaptableParameter({&processor.parameters.subvoiceGains[voice]}, &::setGain)});
         }
         
         // voices

@@ -48,26 +48,24 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
 }
 //==============================================================================
 // create and add treemember, add listerener, add adaptableparameter
-void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, AdaptableParameterVariable* parameterToAdapt, void (*setFunction)(AdaptableParameterVariable&, std::atomic<float>&))
+void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, std::vector<AdaptableParameter> adaptableParameters)
 {
-    tree.createAndAddParameter(parameterID, parameterID, parameterID, range, *parameterToAdapt->variable, nullptr, nullptr);
+    tree.createAndAddParameter(parameterID, parameterID, parameterID, range, initialValue, nullptr, nullptr);
     tree.addParameterListener(parameterID, this);
         
-    adaptableParameters.push_back(AdaptableParameter(parameterID, setFunction, parameterToAdapt));
+    adaptableLinks.push_back(AdaptableLink(parameterID, adaptableParameters));
 }
+
 
 //==============================================================================
 
 void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, float newValue)
 {
-    if (parameterID == "attackSliderID") {
-        setAttackLength2(parameters.subvoiceEnvs[0].attack, *tree.getRawParameterValue(parameterID));
-        return;
-    }
-    for (auto &param: adaptableParameters) {
-        if (param.paramId == parameterID) {
-            param.paramSetFunction(*param.var, *tree.getRawParameterValue(parameterID));
-            return; // parameter is in processor, so cast to subvoice is not necessary
+    for (auto &link: adaptableLinks) {
+        if (link.paramId == parameterID) {
+            for (auto& adaptableParam: link.adaptableParameters) {
+                  adaptableParam.paramSetFunction(adaptableParam.var, *tree.getRawParameterValue(parameterID));
+              }
         }
     }
 }

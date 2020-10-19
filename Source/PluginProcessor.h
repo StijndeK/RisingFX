@@ -11,8 +11,6 @@
 #include "AdapatableParameter.h"
 #include "ParamSetFunctions.h"
 #include "Parameters.h"
-#include "AdaptableParameterVariable.h"
-
 
 class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
@@ -53,9 +51,11 @@ public:
     
     void parameterChanged(const String & parameterID, float newValue) override;
         
-    void initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, AdaptableParameterVariable* parameterToAdapt,void (*setFunction)(AdaptableParameterVariable&, std::atomic<float>&) = &::setSimpleValue2);
+    void initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, std::vector<AdaptableParameter> adaptableParameters);
+
     
     std::vector<AdaptableParameter> adaptableParameters;
+    std::vector<AdaptableLink> adaptableLinks;
     
     //==============================================================================
     TransitionFxAudioProcessor();
