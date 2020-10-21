@@ -10,7 +10,6 @@
 
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "AdaptableParameterVariable.h"
 #include "ParamSetFunctions.h"
 
 class AdaptableParameter

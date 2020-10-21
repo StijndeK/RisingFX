@@ -17,25 +17,59 @@ The design has been based of existing (mostly sample based) plugins such as: [GR
 
 ## Development
 
-Code examples:
-- Editor system (base class and what it contains (making sliders simply))
-- Linking ui to parameters by creating adaptable parameters and the initialisetreemember function. Creating trees when creating editor, so when creating multiple voices trees automatically created. 
-- Beat linking and manually trigering a note
-- envelopes system and how to use + pointer for the length so that does not need to be set
+Processor with voices that have subvoices. Input from midi as well as GUI of the plugin.
 
-having to hardcode voices
-### synth with voices system and user input
+- picture voices
 
-### Editors / UI
+Made as dynamically as possible, to easily be able to add and change elements. However, because of some limitations with the JUCE framework as well as wanting to keep it simple for a montlong codejam the amount of voices are hardcoded. 
+
 
 ### Linking UI to parameters
+Parameter gets linked to voice in constructor, and to user input from initialiseTreeMember, called from the specific components editors constructor using adaptable links containing adaptable parameters. Functions for how the input should adapt a value are nonmember so they can easily be passed as a function argument.
+So: processor, voice and subvoice have pointers to processor.parameters. These parameters are held in adaptableparameters which are held in adaptablelinks and callled on by processor.parameterchanged()
+using ids to check for everything
+
+- pictures
+
+Just call 2 functions and all done. This system make variable, editor and sliders (fill in 2 functions in component editor) and give variable to the processor, voice or subvoice constructor. And nothing more needs to be done. Very efficient. Instead of needing a giant if statement hardcoded with every type of variable and having to link it to its parameter and therefore also needing more variables. 
+example with voice gain and pan(only one adaptable param, gain not using default function):
+```C++
+processor.initialiseTreeMember("gainSliderID", gainRange, processor.parameters.masterGain, {AdaptableParameter({&processor.parameters.masterGain}, &::setGain)});
+processor.initialiseTreeMember("panSliderID", panRange, processor.parameters.masterPan, {AdaptableParameter({&processor.parameters.masterPan})});
+
+createSliders(sliders, linearSliderIds);
+```
+Editor base class contains functions to create sliders. Header:
+```C++
+    void createSliders (std::vector<Slider*>& sliders_, std::vector<string>& sliderIds_, Slider::SliderStyle style = Slider::SliderStyle::LinearHorizontal, Slider::TextEntryBoxPosition textBox = Slider::TextBoxBelow);
+}
+```
+
+if a parameter is changed:
+```C++
+    for (auto &link: adaptableLinks) {
+        if (link.paramId == parameterID) {
+            for (auto& adaptableParam: link.adaptableParameters) {
+                adaptableParam.paramSetFunction(adaptableParam.var, *tree.getRawParameterValue(parameterID));
+            }
+        }
+    }
+```
+
+### Editors / UI
+Baseclass editor. In pluginEdittor everything comes together.
+
+- picture
 
 ### Set time
+Different types of time setting in frames seoncs and beats, to link well and precisily to picture
 
-### Valuetree
+- picture
 
 ### Envelopes
+Envelopes exist of statemachine. Value that needs to be added per sample is calculated. Linear steps are used with smooth option.
 
+- code example
 
 ## Improvements
 As this project is a refactor for a month long part-time codejam, a lot is to be added or improved. However, the project has been made with simplicity in mind and the goal was not to make an extensive synthesiser. More voices, effects, modulation and controll of the output could be added in the future.

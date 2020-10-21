@@ -21,11 +21,19 @@ tree (*this, nullptr)       // initialise valuetree
         
     // clear old voices
     mySynth.clearVoices();
+    
     // add voices and sounds
     for (int i = 0; i < numVoices; i++) {
         // TODO: every voice now uses the same set of envelopes. If the synth should be polyfonic, every voice should have own set of envelopes
         mySynth.addVoice(new SynthVoice(parameters.masterPan, parameters.masterGain, parameters.subvoiceGains, parameters.subvoiceEnvs));
+
+        if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
+            
+            myVoice->setupProcessor(this);
+            myVoice->setSamplerate(getSampleRate());
+        }
     }
+    
     mySynth.clearSounds();
     mySynth.addSound(new SynthSound());
     
@@ -36,7 +44,7 @@ tree (*this, nullptr)       // initialise valuetree
     else{
         mySynth.setCurrentPlaybackSampleRate(44100);
     }
-    
+
     /* Reverb */
 
     auto& verb = fxChain.template get<reverbIndex>();
@@ -64,8 +72,9 @@ void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, fl
     for (auto &link: adaptableLinks) {
         if (link.paramId == parameterID) {
             for (auto& adaptableParam: link.adaptableParameters) {
-                  adaptableParam.paramSetFunction(adaptableParam.var, *tree.getRawParameterValue(parameterID));
-              }
+                // TODO: use the newValue var (remove atomic float)
+                adaptableParam.paramSetFunction(adaptableParam.var, *tree.getRawParameterValue(parameterID));
+            }
         }
     }
 }
@@ -197,7 +206,7 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     buffer.clear();
         
     // get data from DAW(host)
-    // TODO: create listeners
+    // TODO: listeners for DAW info
     AudioPlayHead* phead = getPlayHead();
     if (phead != nullptr)           // if there is a host
     {
@@ -211,21 +220,8 @@ void TransitionFxAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         currentPlayheadPosition = playposinfo.ppqPosition;
         isDawPlaying = playposinfo.isPlaying;
     }
-        
-    // if voice is cast as synt voice, relay information (set values from input via valuetreestate class)
-    for (int i = 0; i < mySynth.getNumVoices(); i++) {
-        // check which voice is being edited
-        if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
-            
-            // link processor in voice
-            myVoice->setupProcessor(this);
-            
-            // get samplerate
-            myVoice->setSamplerate(getSampleRate());
-        }
-    }
-        
-    // cal proccesor located in Voices
+
+    // render next synth block
     mySynth.renderNextBlock(buffer, midiMessages, 0, buffer.getNumSamples());
         
     /* reverb and lowpass */
