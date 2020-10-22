@@ -13,17 +13,14 @@
 // TODO: link the gain to subvoices
 // TODO: subvoice shouldnt have detune, but the subsubvoice, or the osc multiplier should
 
-SubVoice::SubVoice(float& frequency_, float detune_, float* gain_, Envelopes* env_)
+SubVoice::SubVoice(float voiceNumber_, float& frequency_, float& detune_, float* gain_, Envelopes* env_, float* onOff_)
 {
     frequency = &frequency_;
-    detune = detune_;
+    detune = &detune_;
     gain = gain_;
     env = env_;
-    
-    // init enveloeps
-    // TODO: do this with all initialisation
-    env->setADSRValue(1000, env->attack, false);
-    env->setADSRValue(1000, env->release, false);
+    voiceNumber = voiceNumber_;
+    onOff = onOff_;
 }
 
 SubVoice::~SubVoice()
@@ -32,5 +29,5 @@ SubVoice::~SubVoice()
 
 double SubVoice::oscWave ()
 {
-    return env->arLin(osc.saw(*frequency * pow(2.0 , detune)), trigger) * *gain;
+    return env->arLin(osc.saw(*frequency * pow(2.0 , (voiceNumber * *detune))), trigger) * *gain;
 }

@@ -25,10 +25,9 @@ tree (*this, nullptr)       // initialise valuetree
     // add voices and sounds
     for (int i = 0; i < numVoices; i++) {
         // TODO: every voice now uses the same set of envelopes. If the synth should be polyfonic, every voice should have own set of envelopes
-        mySynth.addVoice(new SynthVoice(parameters.masterPan, parameters.masterGain, parameters.subvoiceGains, parameters.subvoiceEnvs));
+        mySynth.addVoice(new SynthVoice(parameters.masterPan, parameters.masterGain, parameters.offset, parameters.subvoiceGains, parameters.subvoiceEnvs, parameters.subvoiceOnOffs));
 
         if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
-            
             myVoice->setupProcessor(this);
             myVoice->setSamplerate(getSampleRate());
         }
@@ -62,6 +61,9 @@ void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID
     tree.addParameterListener(parameterID, this);
         
     adaptableLinks.push_back(AdaptableLink(parameterID, adaptableParameters));
+    
+    // initialise
+    parameterChanged(parameterID, *tree.getRawParameterValue(parameterID));
 }
 
 

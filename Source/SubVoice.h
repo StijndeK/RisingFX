@@ -22,13 +22,15 @@ private:
     Envelopes* env;
     
 public:
-    SubVoice(float& frequency_, float detune_, float* gain_, Envelopes* env_);
+    SubVoice(float voiceNumber_, float& frequency_, float& detune_, float* gain_, Envelopes* env_, float* onOff_);
     ~SubVoice();
     
     double oscWave ();
     
-    float detune;
+    float* detune;
     float* frequency;
+    float* onOff;
+    float voiceNumber;
     
     int trigger = 0;
     

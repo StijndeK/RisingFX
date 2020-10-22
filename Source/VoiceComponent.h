@@ -23,12 +23,17 @@ public:
 
     void paint (juce::Graphics&) override;
     void resized() override;
-    
+    void updateToggleState (Button* button);
+
     int voiceNumber;
     
+    TextButton onOffButton { "Voice _" }; 
 private:
     
     std::vector<Slider*> sliders;
+    
+    void buttonOnOff (Button* button);
+    bool buttonState = 0;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (VoiceComponent)
 };

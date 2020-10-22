@@ -30,6 +30,7 @@ public:
 private:
     // components
 //    TextButton addButton { "+" };
+    std::vector<Slider*> sliders;
         
     // voices
     std::vector<VoiceComponent*> voices;

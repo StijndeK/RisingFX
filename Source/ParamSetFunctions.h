@@ -14,7 +14,9 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Envelopes.h"
 #include <vector>
+class TransitionFxAudioProcessor;
 
 void setEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inputValue);
 void setGain(std::vector<float*> valueToChange, std::atomic<float>& inputValue);
 void setSimpleValue(std::vector<float*> valueToChange, std::atomic<float>& inputValue);
+void setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor& processor);

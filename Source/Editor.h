@@ -33,6 +33,7 @@ public:
     NormalisableRange<float> lengthMsRange;
     NormalisableRange<float> resonanceRange;
     NormalisableRange<float> zeroOneRange;
+    NormalisableRange<float> detuneRange;
     
     void setNormalisableRange (NormalisableRange<float>& range, float start_ = 0, float end_ = 1, float interval_ = 0, float skew_ = 1);
 

@@ -11,18 +11,19 @@
 class SynthVoice;
 #include "PluginEditor.h" // include plugineditor for reference to processor
 
-SynthVoice::SynthVoice(float& pan_, float& gain_, std::vector<float>& subvoiceGains_, std::vector<Envelopes>& subvoiceEnvs_)
+SynthVoice::SynthVoice(float& pan_, float& gain_, float& offset_, std::vector<float>& subvoiceGains_, std::vector<Envelopes>& subvoiceEnvs_, std::vector<float>& subvoiceOnOffs_)
 {
     pan = &pan_;
     gain = &gain_;
 
     // create subvoices
-    for (int voice = 0; voice < 1; voice++) {
+    for (int voice = 0; voice < 4; voice++) {
         
         Envelopes* envPtr = &subvoiceEnvs_[voice];
         float* gainPtr = &subvoiceGains_[voice];
+        float* onOffPtr = &subvoiceOnOffs_[voice];
         
-        subVoicesV.push_back(SubVoice(frequency, 0.33 * voice, gainPtr, envPtr));
+        subVoicesV.push_back(SubVoice(voice, frequency, offset_, gainPtr, envPtr, onOffPtr));
     }
 }
 
@@ -107,10 +108,11 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         double theSoundR = 0;
         
         for (auto &voice : subVoicesV) {
-            theSoundL = theSoundL + voice.oscWave();
+            if (*voice.onOff == 1) {
+                theSoundL = theSoundL + voice.oscWave();
+            }
         }
 
-        // TODO: dont have to calculate gain every sample
         theSoundL = (theSoundL / (subVoicesV.size() * 2)) * *gain;
         theSoundR = theSoundL;
         

@@ -16,6 +16,7 @@ class Parameters {
 public:
     /* subvoices */
     std::vector<float> subvoiceGains = {-6, -6, -6, -6};
+    std::vector<float> subvoiceOnOffs = {1, 1, 1, 1};
     std::vector<Envelopes> subvoiceEnvs = {Envelopes(), Envelopes(), Envelopes(), Envelopes()};
     std::vector<float> subvoiceAttackLengths = {1000, 1000, 1000, 1000};
 
@@ -36,6 +37,9 @@ public:
     // DSP
     float lowpassCutoff = 1000;
     float lowpassResonance = 1;
+    
+    // Voice
+    float offset = 0;
     
     /* NOTE: reverbparameters are found in the juce DSP module */
 };
