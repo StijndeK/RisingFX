@@ -14,11 +14,26 @@
 //==============================================================================
 ModulationEditor::ModulationEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-
+    for (int component = 0; component < 2; component ++) {
+        // create sliders
+        modComponents.push_back(new ModulationComponent(processor, processor.parameters.modulationSliderIds[component]));
+        addAndMakeVisible(modComponents.back());
+        
+        // combobox
+        typeBox.addItem(processor.parameters.modulationSliderIds[component][0], component + 1);
+    }
+    
+    typeBox.setSelectedId(1);
+    typeBox.setJustificationType(Justification::centred);
+    typeBox.addListener(this);
+    addAndMakeVisible(&typeBox);
 }
 
 ModulationEditor::~ModulationEditor()
 {
+    for (int x = 0; x < modComponents.size(); x++) {
+        delete(modComponents[x]);
+    }
 }
 
 void ModulationEditor::paint (juce::Graphics& g)
@@ -28,15 +43,21 @@ void ModulationEditor::paint (juce::Graphics& g)
     g.setColour (juce::Colours::grey);
     g.drawRect (getLocalBounds(), 1);   // draw an outline around the component
 
-    g.setColour (juce::Colours::white);
-    g.setFont (14.0f);
-    g.drawText ("TimeLinkingEditor", getLocalBounds(),
-                juce::Justification::centred, true);   // draw some placeholder text
 }
 
 void ModulationEditor::resized()
 {
-    // This method is where you should set the bounds of any child
-    // components that your component contains..
+    Rectangle<int> localArea = getLocalBounds().reduced(5);
+    typeBox.setBounds(localArea.removeFromTop(20));
+    for (auto& component: modComponents) {
+        component->setBounds(localArea);
+     }
+}
 
+void ModulationEditor::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
+{
+    for (int i = 0; i < modComponents.size(); i++) {
+        bool visibility = comboBoxThatHasChanged->getSelectedId() == i + 1; // group by 2 (attack and release) to visible and rest to invisible
+        modComponents[i]->setVisible(visibility);
+    }
 }

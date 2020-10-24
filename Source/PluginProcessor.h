@@ -15,6 +15,7 @@
 class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
 public:
+    float TEMPVALUE;
     
     bool xmlOn = false;
     

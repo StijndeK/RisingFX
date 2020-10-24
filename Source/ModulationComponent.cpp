@@ -28,5 +28,10 @@ void ModulationComponent::paint (juce::Graphics& g)
 
 void ModulationComponent::resized()
 {
-    // draw the sliders
+    Rectangle<int> localArea = getLocalBounds().reduced(1);
+    float removeValue = localArea.getWidth() / sliders.size();
+    for (auto& slider: sliders) {
+         slider->setBounds(localArea.removeFromLeft(removeValue * 0.9));
+         localArea.removeFromLeft(removeValue * 0.1);
+     }
 }

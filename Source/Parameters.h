@@ -25,8 +25,8 @@ public:
                                                 {"voice3GainSliderId", "voice3OnOffButtonId"},
                                                 {"voice4GainSliderId", "voice4OnOffButtonId"} };
     
-    std::vector<std::vector<std::string>> modulationSliderIds = { {"gainMod1SliderId", "gainMod2SliderId", "gainMod3SliderId"},
-                                                            {"panMod1SliderId", "panMod2SliderId", "panMod3SliderId"} };
+    std::vector<std::vector<std::string>> modulationSliderIds = { {"gainMod1SliderId", "gainMod2SliderId", "gainMod3SliderId", "gainMod4SliderId", "gainMod5SliderId"},
+                                                            {"panMod1SliderId", "panMod2SliderId", "panMod3SliderId", "panMod4SliderId", "panMod5SliderId"} };
     /* voices */
     
     // master

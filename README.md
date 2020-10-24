@@ -58,7 +58,29 @@ if a parameter is changed:
 
 ### Editors / UI
 Baseclass editor. In pluginEdittor everything comes together.
+Editors and subeditors. example with modulationcomponent
 
+Example with modulationcomponent
+```C++
+ModulationComponent::ModulationComponent(TransitionFxAudioProcessor& p, std::vector<string>& sliderIds) : Editor(p)
+{
+    createSliders(sliders, attachments, sliderIds, Slider::SliderStyle::LinearVertical, Slider::NoTextBox);
+}
+
+ModulationComponent::~ModulationComponent()
+{
+    deleteSliders(sliders, attachments);
+}
+
+void ModulationComponent::paint (juce::Graphics& g)
+{
+}
+
+void ModulationComponent::resized()
+{
+    // draw the sliders
+}
+```
 - picture
 
 ### Set time
@@ -70,6 +92,8 @@ Different types of time setting in frames seoncs and beats, to link well and pre
 Envelopes exist of statemachine. Value that needs to be added per sample is calculated. Linear steps are used with smooth option.
 
 - code example
+
+### Voice types
 
 ## Improvements
 As this project is a refactor for a month long part-time codejam, a lot is to be added or improved. However, the project has been made with simplicity in mind and the goal was not to make an extensive synthesiser. More voices, effects, modulation and controll of the output could be added in the future.

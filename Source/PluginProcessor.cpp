@@ -79,7 +79,7 @@ tree (*this, nullptr)       // initialise valuetree
     // voice components
     for (int voiceNumber = 0; voiceNumber < 4; voiceNumber++) {
         initialiseTreeMember(parameters.voicesIds[voiceNumber][0], gainRange, parameters.subvoiceGains[voiceNumber], {AdaptableParameter({&parameters.subvoiceGains[voiceNumber]}, &::setGain)});
-        initialiseTreeMember(parameters.voicesIds[voiceNumber][1], zeroOneRange, parameters.subvoiceOnOffs[voiceNumber], {AdaptableParameter({&parameters.subvoiceOnOffs[voiceNumber]})}); // create slider to link to onoffbutton to link the onoffbutton to a valuetree
+        initialiseTreeMember(parameters.voicesIds[voiceNumber][1], zeroOneRange, parameters.subvoiceOnOffs[voiceNumber], {AdaptableParameter({&parameters.subvoiceOnOffs[voiceNumber]})});
     }
     
     // lowpass
@@ -92,7 +92,16 @@ tree (*this, nullptr)       // initialise valuetree
     initialiseTreeMember("reverbSizeSliderID", zeroOneRange, reverbParameters.roomSize, {AdaptableParameter({&reverbParameters.roomSize})});
     initialiseTreeMember("reverbDampingSliderID", zeroOneRange, reverbParameters.damping, {AdaptableParameter({&reverbParameters.damping})});
     
-    // voice components
+    // modulation components
+    // TODO: walk through the vector in parameters
+    for (int modNumber = 0; modNumber < parameters.modulationSliderIds.size(); modNumber++) {
+        for (int x = 0; x < parameters.modulationSliderIds[modNumber].size(); x++) {
+            initialiseTreeMember(parameters.modulationSliderIds[modNumber][x], zeroOneRange, TEMPVALUE, {AdaptableParameter({&TEMPVALUE})});
+        }
+    }
+    
+    /* initialise state */
+    
     tree.state = ValueTree("gainSliderID");
 }
 

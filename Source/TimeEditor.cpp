@@ -51,7 +51,7 @@ void TimeEditor::resized()
 
 void TimeEditor::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
 {
-    for (int i = 0; i < 6; i++) {
+    for (int i = 0; i < sliders.size(); i++) {
         bool visibility = comboBoxThatHasChanged->getSelectedId() == i / 2 + 1; // group by 2 (attack and release) to visible and rest to invisible
         sliders[i]->setVisible(visibility);
     }
