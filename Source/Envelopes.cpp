@@ -46,6 +46,7 @@ double Envelopes::arLin(double input, int trigger)
     return output;
 }
 
+//==============================================================================
 double Envelopes::arExp(double input, int trigger)
 {
     switch(currentEnvState) {
@@ -83,16 +84,45 @@ double Envelopes::arExp(double input, int trigger)
 }
 
 //==============================================================================
-
-// linear returns the value by which to add/subtract, exponential returns a value to multiply by
-//void Envelopes::setADSRValue(double lengthInMs, float &ADSRState, bool exp)
-//{
-//    if (exp) {
-//        ADSRState = pow((1.0 / amplitudeStartValue), 1.0 / (samplerate * (lengthInMs / 1000.0)));
-//    }
-//    else {
-//        ADSRState = (1.0 / samplerate) * (1.0 / (lengthInMs / 1000.0));
-//    }
-//}
-//
-//
+double Envelopes::arLinSteps(double input, int trigger)
+{
+    switch(currentEnvState) {
+        case ATTACK:
+            amplitude += (1 * attacks[currentStep]);
+            
+            if (amplitude >= steps[currentStep]) { // check if step needs to move forward
+                amplitude = steps[currentStep];
+                currentStep++;
+                if (amplitude >= 1) { // check if this was the last step
+                    currentEnvState = HOLD;
+                }
+            }
+            break;
+        case HOLD:
+            amplitude = 1;
+            if (trigger != 1) {
+                currentEnvState = RELEASE;
+            }
+            break;
+        case RELEASE:
+            amplitude -= (1 * releases[currentStep]);
+            
+            if (amplitude <= steps[currentStep]) { // check if step needs to move forward
+                amplitude = steps[currentStep];
+                currentStep++;
+                if (amplitude <= 0) { // check if this was the last step
+                    currentEnvState = STOP;
+                }
+            }
+            break;
+        case STOP:
+            amplitude = 0.0;
+            if (trigger == 1) {
+                currentEnvState = ATTACK;
+            }
+            break;
+    }
+    
+    output = input * amplitude;
+    return output;
+}

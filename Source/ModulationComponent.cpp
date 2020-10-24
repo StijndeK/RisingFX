@@ -24,6 +24,7 @@ ModulationComponent::~ModulationComponent()
 
 void ModulationComponent::paint (juce::Graphics& g)
 {
+    // TODO:  use location of knobs to draw lines between knobs to visualise the envelope
 }
 
 void ModulationComponent::resized()

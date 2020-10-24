@@ -21,9 +21,10 @@ public:
     void resized() override;
 
 private:
-    
     std::vector<Slider*> sliders;
     std::vector<AudioProcessorValueTreeState::SliderAttachment*> attachments;
+    
+    Path myPath;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ModulationComponent)
 };

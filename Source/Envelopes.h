@@ -24,16 +24,19 @@ public:
     // envelopes
     double arLin(double input, int trigger);
     double arExp(double input, int trigger);
+    double arLinSteps(double input, int trigger);
 
     // Delay
     double delay(double input, int trigger);    // sends a delayed trigger
     double delayInput;
-    
-    // set attack and release, check for exponential or linear curve (set enum if more options arise in future)
-//    void setADSRValue(double lengthInMs, float &ADSRState, bool exp);
-    
+
     float attack = 0;
     float release = 0;
+    
+    std::vector<float> steps;
+    std::vector<float> attacks;
+    std::vector<float> releases;
+    int currentStep = 0;
     
     // samplerate
     double samplerate = 48000.0;
