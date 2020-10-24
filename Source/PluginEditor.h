@@ -6,6 +6,7 @@
 #include "TimeEditor.h"
 #include "TimeLinkingEditor.h"
 #include "VoicesEditor.h"
+#include "ModulationEditor.h"
 
 // CALLS ALL VISUALS
 class TransitionFxAudioProcessorEditor  : public AudioProcessorEditor, public ComboBox::Listener, public Slider::Listener
@@ -49,6 +50,7 @@ private:
     TimeEditor time;
     TimeLinkingEditor timeLinking;
     VoicesEditor voices;
+    ModulationEditor modulation;
 
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TransitionFxAudioProcessorEditor)

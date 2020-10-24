@@ -4,7 +4,7 @@
 
 //==============================================================================
 TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFxAudioProcessor& p)
-: AudioProcessorEditor (&p), processor(p), master(p), effects(p), time(p), timeLinking(p), voices(p)
+: AudioProcessorEditor (&p), processor(p), master(p), effects(p), time(p), timeLinking(p), voices(p), modulation(p)
 {
     setSize (800, 500);
     
@@ -19,6 +19,7 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     addAndMakeVisible(time);
     addAndMakeVisible(timeLinking);
     addAndMakeVisible(voices);
+    addAndMakeVisible(modulation);
 
     // Buttons
     addAndMakeVisible(play);
@@ -91,6 +92,7 @@ void TransitionFxAudioProcessorEditor::resized()
     
     play.setBounds(mainAreaSwitch.withTrimmedRight(mainAreaSwitch.getWidth() - 100).reduced(5));
     voices.setBounds(mainAreaVoices.reduced(5));
+    modulation.setBounds(mainArea);
         
     master.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedTop(5));
     effects.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3).withTrimmedTop(generalArea.getHeight() / 3).reduced(10, 5));

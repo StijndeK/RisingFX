@@ -40,6 +40,11 @@ VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
 
 VoicesEditor::~VoicesEditor()
 {
+    // TODO: maybe just delete the vector?
+    // TODO: or use uniqueptr
+    for (auto& voice: voices) {
+        delete(voice);
+    }
 }
 
 void VoicesEditor::paint (juce::Graphics& g)

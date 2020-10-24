@@ -63,7 +63,7 @@ void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID
     adaptableLinks.push_back(AdaptableLink(parameterID, adaptableParameters));
     
     // initialise
-    parameterChanged(parameterID, *tree.getRawParameterValue(parameterID));
+//    parameterChanged(parameterID, *tree.getRawParameterValue(parameterID));
 }
 
 
@@ -267,10 +267,18 @@ AudioProcessorEditor* TransitionFxAudioProcessor::createEditor()
 //==============================================================================
 void TransitionFxAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
+//    auto state = tree.copyState();
+//    std::unique_ptr<juce::XmlElement> xml (state.createXml());
+//    copyXmlToBinary (*xml, destData);
 }
 
 void TransitionFxAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
+//    std::unique_ptr<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+//
+//    if (xmlState.get() != nullptr)
+//        if (xmlState->hasTagName (tree.state.getType()))
+//            tree.replaceState (juce::ValueTree::fromXml (*xmlState));
 }
 
 //==============================================================================
