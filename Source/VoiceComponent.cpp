@@ -23,6 +23,7 @@ VoiceComponent::VoiceComponent(TransitionFxAudioProcessor& p, int voiceNumber, s
     createSliders(sliders, attachments, sliderIds, Slider::SliderStyle::LinearVertical, Slider::NoTextBox);
     
     // init buttons
+    buttonState = (sliders[1]->getValue() == 1.0) ? true : false;
     buttonOnOff(&onOffButton);
 }
 
@@ -45,21 +46,13 @@ void VoiceComponent::resized()
 void VoiceComponent::updateToggleState (Button* button)
 {
     // if the button is pressed set it to button normal (slider 0) or button down (slider 1) (0 and 2)
-    if (button->getState() == 0) {
-        
-    }
-    if (button->getState() == 1) {
-        
-    }
     if (button->getState() == 2) {
-        std::cout << "pressed" << std::endl;
         buttonOnOff(button);
     }
 }
 
 void VoiceComponent::buttonOnOff (Button* button)
 {
-    buttonState = !buttonState;
     if (buttonState) { // on
         button->setColour(TextButton::buttonColourId, juce::Colours::lightslategrey);
         sliders[1]->setValue(1);
@@ -68,4 +61,5 @@ void VoiceComponent::buttonOnOff (Button* button)
         button->setColour(TextButton::buttonColourId, getLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId));
         sliders[1]->setValue(0);
     }
+    buttonState = !buttonState;
 }

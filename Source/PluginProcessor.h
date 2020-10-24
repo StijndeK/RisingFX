@@ -17,7 +17,7 @@ class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessor
 public:
     float TEMPVALUE;
     
-    bool xmlOn = false;
+    bool xmlOn = true;
     
     //==============================================================================
     // audio parameters
