@@ -27,6 +27,20 @@ SubVoice::~SubVoice()
 {
 }
 
+// set which voice type the voice has
+// TODO: set reference to function so the function isnt in processing change
+void SubVoice::setVoiceType ()
+{
+//    switch (<#expression#>) {
+//        case <#constant#>:
+//            <#statements#>
+//            break;
+//
+//        default:
+//            break;
+//    }
+}
+
 double SubVoice::oscWave ()
 {
     return env->arLin(osc.saw(*frequency * pow(2.0 , (voiceNumber * *detune))), trigger) * *gain;

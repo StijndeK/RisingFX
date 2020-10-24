@@ -25,6 +25,8 @@ public:
     SubVoice(float voiceNumber_, float& frequency_, float& detune_, float* gain_, Envelopes* env_, float* onOff_);
     ~SubVoice();
     
+    void setVoiceType ();
+    
     double oscWave ();
     
     float* detune;
