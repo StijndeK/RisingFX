@@ -23,8 +23,8 @@ public:
     ~Editor();
     
     // components and valuetrees
-    void createSliders (std::vector<Slider*>& sliders_, std::vector<string>& sliderIds_, Slider::SliderStyle style = Slider::SliderStyle::LinearHorizontal, Slider::TextEntryBoxPosition textBox = Slider::TextBoxBelow);
-    void initialiseSlider (Slider* slider, string& sliderId, ScopedPointer <AudioProcessorValueTreeState::SliderAttachment>* sliderTree, Slider::SliderStyle style, Slider::TextEntryBoxPosition textBox);
+    void createSliders (std::vector<Slider*>& sliders_, std::vector<AudioProcessorValueTreeState::SliderAttachment*>& attachments_, std::vector<string>& sliderIds_, Slider::SliderStyle style = Slider::SliderStyle::LinearHorizontal, Slider::TextEntryBoxPosition textBox = Slider::TextBoxBelow);
+    void deleteSliders (std::vector<Slider*>& sliders_, std::vector<AudioProcessorValueTreeState::SliderAttachment*>& attachments_);
     
     // normalisable ranges
     NormalisableRange<float> frequencyRange;
@@ -39,6 +39,4 @@ public:
 
     // processor
     TransitionFxAudioProcessor& processor;
-private:
-
 };

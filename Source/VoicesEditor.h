@@ -31,6 +31,7 @@ private:
     // components
 //    TextButton addButton { "+" };
     std::vector<Slider*> sliders;
+    std::vector<AudioProcessorValueTreeState::SliderAttachment*> attachments;
         
     // voices
     std::vector<VoiceComponent*> voices;

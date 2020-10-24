@@ -26,6 +26,7 @@ public:
 
 private:
     std::vector<Slider*> sliders;
-    
+    std::vector<AudioProcessorValueTreeState::SliderAttachment*> attachments;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LowpassComponent)
 };

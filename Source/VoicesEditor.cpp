@@ -19,11 +19,6 @@ VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
                                                 {"voice3GainSliderId", "voice3OnOffButtonId"},
                                                 {"voice4GainSliderId", "voice4OnOffButtonId"} };
     
-//    std::vector<std::vector<string>> voicesIds = { {"voice1GainSliderId"},
-//    {"voice2GainSliderId"},
-//    {"voice3GainSliderId"},
-//    {"voice4GainSliderId"} };
-    
     // create 4 voices
     for (int voice = 0; voice < 4; voice ++) {
         // voices
@@ -35,15 +30,14 @@ VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
     processor.initialiseTreeMember("offsetSliderID", detuneRange, processor.parameters.offset, {AdaptableParameter({&processor.parameters.offset})});
     
     std::vector<string> sliderIds = {"offsetSliderID"};
-    createSliders(sliders, sliderIds, Slider::SliderStyle::RotaryVerticalDrag, Slider::NoTextBox);
+    createSliders(sliders, attachments, sliderIds, Slider::SliderStyle::RotaryVerticalDrag, Slider::NoTextBox);
 }
 
 VoicesEditor::~VoicesEditor()
 {
-    // TODO: maybe just delete the vector?
-    // TODO: or use uniqueptr
-    for (auto& voice: voices) {
-        delete(voice);
+    deleteSliders(sliders, attachments);
+    for (int x = 0; x < voices.size(); x++) {
+        delete(voices[x]);
     }
 }
 

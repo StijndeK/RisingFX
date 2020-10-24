@@ -31,6 +31,7 @@ public:
 private:
     
     std::vector<Slider*> sliders;
+    std::vector<AudioProcessorValueTreeState::SliderAttachment*> attachments;
     
     void buttonOnOff (Button* button);
     bool buttonState = 0;

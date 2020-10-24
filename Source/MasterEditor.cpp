@@ -19,12 +19,13 @@ MasterEditor::MasterEditor(TransitionFxAudioProcessor& p) : Editor(p)
     
     std::vector<string> linearSliderIds = {"gainSliderID"};
     std::vector<string> knobSliderIds = {"panSliderID"};
-    createSliders(sliders, linearSliderIds);
-    createSliders(sliders, knobSliderIds, Slider::SliderStyle::RotaryVerticalDrag);
+    createSliders(sliders, attachments, linearSliderIds);
+    createSliders(sliders, attachments, knobSliderIds, Slider::SliderStyle::RotaryVerticalDrag);
 }
 
 MasterEditor::~MasterEditor()
 {
+    deleteSliders(sliders, attachments);
 }
 
 void MasterEditor::paint (juce::Graphics& g)

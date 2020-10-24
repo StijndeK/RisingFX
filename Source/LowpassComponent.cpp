@@ -18,11 +18,12 @@ LowpassComponent::LowpassComponent(TransitionFxAudioProcessor& p) : Editor(p)
     processor.initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, processor.parameters.lowpassResonance, {AdaptableParameter({&processor.parameters.lowpassResonance})});
 
     std::vector<string> sliderIds = {"lowpassCutoffSliderID", "lowpassResonanceSliderID"};
-    createSliders(sliders, sliderIds, Slider::SliderStyle::RotaryVerticalDrag);
+    createSliders(sliders, attachments, sliderIds, Slider::SliderStyle::RotaryVerticalDrag);
 }
 
 LowpassComponent::~LowpassComponent()
 {
+    deleteSliders(sliders, attachments);
 }
 
 void LowpassComponent::paint (juce::Graphics& g)

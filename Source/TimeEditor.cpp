@@ -25,7 +25,7 @@ TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : Editor(p)
 
     
     std::vector<string> sliderIds = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
-    createSliders(sliders, sliderIds);
+    createSliders(sliders, attachments, sliderIds);
         
     timeValueBox.addItem("MS", 1);
     timeValueBox.addItem("Beats", 2);
@@ -38,6 +38,7 @@ TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : Editor(p)
 
 TimeEditor::~TimeEditor()
 {
+    deleteSliders(sliders, attachments);
 }
 
 void TimeEditor::paint (juce::Graphics& g)

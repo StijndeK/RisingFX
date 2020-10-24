@@ -20,11 +20,12 @@ ReverbComponent::ReverbComponent(TransitionFxAudioProcessor& p) : Editor(p)
     processor.initialiseTreeMember("reverbDampingSliderID", zeroOneRange, processor.reverbParameters.damping, {AdaptableParameter({&processor.reverbParameters.damping})});
     
     std::vector<string> sliderIds = {"reverbWetSliderID", "reverbWidthSliderID", "reverbSizeSliderID", "reverbDampingSliderID"};
-    createSliders(sliders, sliderIds, Slider::SliderStyle::RotaryVerticalDrag);
+    createSliders(sliders, attachments, sliderIds, Slider::SliderStyle::RotaryVerticalDrag);
 }
 
 ReverbComponent::~ReverbComponent()
 {
+    deleteSliders(sliders, attachments);
 }
 
 void ReverbComponent::paint (juce::Graphics& g)
