@@ -43,7 +43,7 @@ private:
     Rectangle<int> mainAreaVoices;
     Rectangle<int> generalArea;
     Rectangle<int> lengthArea;
-    
+    Rectangle<int> mainAreaModulation;
     // editors
     MasterEditor master;
     EffectsEditor effects;

@@ -41,6 +41,7 @@ TransitionFxAudioProcessorEditor::TransitionFxAudioProcessorEditor (TransitionFx
     area = getLocalBounds().reduced(20);
     titleArea = getLocalBounds().reduced(20).removeFromTop(40);
     mainArea = getLocalBounds().reduced(20).withTrimmedTop(40).withTrimmedBottom(60).removeFromLeft(500);
+    mainAreaModulation = getLocalBounds().reduced(20).withTrimmedTop(40).withTrimmedBottom(60).removeFromLeft(500).withTrimmedTop(120);
     mainAreaSwitch = getLocalBounds().reduced(20).withTrimmedTop(40).removeFromLeft(500).removeFromTop(40);
     mainAreaVoices = getLocalBounds().reduced(20).withTrimmedTop(80).removeFromLeft(500).removeFromTop(80);
     mainAreaVoicesSwitchLength = getLocalBounds().reduced(20).withTrimmedTop(80).removeFromLeft(500);
@@ -93,7 +94,7 @@ void TransitionFxAudioProcessorEditor::resized()
     
     play.setBounds(mainAreaSwitch.withTrimmedRight(mainAreaSwitch.getWidth() - 100).reduced(5));
     voices.setBounds(mainAreaVoices.reduced(5));
-//    modulation.setBounds(mainArea);
+    modulation.setBounds(mainAreaModulation.reduced(5));
         
     master.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3 * 2).reduced(10, 5).withTrimmedTop(5));
     effects.setBounds(generalArea.withTrimmedBottom(generalArea.getHeight() / 3).withTrimmedTop(generalArea.getHeight() / 3).reduced(10, 5));
