@@ -20,6 +20,10 @@ public:
     std::vector<Envelopes> subvoiceEnvs = {Envelopes(), Envelopes(), Envelopes(), Envelopes()};
     std::vector<float> subvoiceAttackLengths = {1000, 1000, 1000, 1000};
 
+    std::vector<std::vector<std::string>> voicesIds = { {"voice1GainSliderId", "voice1OnOffButtonId"},
+                                                {"voice2GainSliderId", "voice2OnOffButtonId"},
+                                                {"voice3GainSliderId", "voice3OnOffButtonId"},
+                                                {"voice4GainSliderId", "voice4OnOffButtonId"} };
     /* voices */
     
     // master

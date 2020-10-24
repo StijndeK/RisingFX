@@ -15,7 +15,9 @@
 class TransitionFxAudioProcessor  : public AudioProcessor, public AudioProcessorValueTreeState::Listener
 {
 public:
-        
+    
+    bool xmlOn = false;
+    
     //==============================================================================
     // audio parameters
     Parameters parameters;

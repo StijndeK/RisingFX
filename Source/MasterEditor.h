@@ -20,7 +20,7 @@ class MasterEditor  : public Editor
 public:
     MasterEditor(TransitionFxAudioProcessor&);
     ~MasterEditor() override;
-
+    
     void paint (juce::Graphics&) override;
     void resized() override;
 

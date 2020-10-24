@@ -14,16 +14,6 @@
 //==============================================================================
 TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    processor.initialiseTreeMember("releaseSliderID", lengthMsRange, processor.parameters.releaseMs, {AdaptableParameter({&processor.parameters.releaseMs}), AdaptableParameter({&processor.parameters.subvoiceEnvs[0].release, &processor.parameters.subvoiceEnvs[1].release, &processor.parameters.subvoiceEnvs[2].release, &processor.parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
-    processor.initialiseTreeMember("attackSliderID", lengthMsRange, processor.parameters.attackMs, {AdaptableParameter({&processor.parameters.attackMs}), AdaptableParameter({&processor.parameters.subvoiceEnvs[0].attack, &processor.parameters.subvoiceEnvs[1].attack, &processor.parameters.subvoiceEnvs[2].attack, &processor.parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
-    
-    // TODO: implement other envelope types
-    processor.initialiseTreeMember("releaseFramesSliderID", lengthMsRange, processor.parameters.releaseFrames, {AdaptableParameter({&processor.parameters.releaseFrames}), AdaptableParameter({&processor.parameters.subvoiceEnvs[0].release, &processor.parameters.subvoiceEnvs[1].release, &processor.parameters.subvoiceEnvs[2].release, &processor.parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
-    processor.initialiseTreeMember("attackFramesSliderID", lengthMsRange, processor.parameters.attackFrames, {AdaptableParameter({&processor.parameters.attackFrames}), AdaptableParameter({&processor.parameters.subvoiceEnvs[0].attack, &processor.parameters.subvoiceEnvs[1].attack, &processor.parameters.subvoiceEnvs[2].attack, &processor.parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
-    processor.initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, processor.parameters.releaseMs, {AdaptableParameter({&processor.parameters.releaseMs}), AdaptableParameter({&processor.parameters.subvoiceEnvs[0].release, &processor.parameters.subvoiceEnvs[1].release, &processor.parameters.subvoiceEnvs[2].release, &processor.parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
-    processor.initialiseTreeMember("attackBeatsSliderID", lengthMsRange, processor.parameters.attackMs, {AdaptableParameter({&processor.parameters.attackMs}), AdaptableParameter({&processor.parameters.subvoiceEnvs[0].attack, &processor.parameters.subvoiceEnvs[1].attack, &processor.parameters.subvoiceEnvs[2].attack, &processor.parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
-
-    
     std::vector<string> sliderIds = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
     createSliders(sliders, attachments, sliderIds);
         

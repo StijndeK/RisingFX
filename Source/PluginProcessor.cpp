@@ -48,6 +48,52 @@ tree (*this, nullptr)       // initialise valuetree
 
     auto& verb = fxChain.template get<reverbIndex>();
     verb.setParameters(reverbParameters);
+        
+    NormalisableRange<float> frequencyRange (200, 2000, 1);
+    NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
+    NormalisableRange<float> panRange (0, 1, 0.01);
+    NormalisableRange<float> lengthMsRange (100, 10000, 1);
+    NormalisableRange<float> resonanceRange (1, 5, 0.1);
+    NormalisableRange<float> zeroOneRange (0, 1, 0.1);
+    NormalisableRange<float> detuneRange (-0.5, 0.5, 0.01);
+    
+    /* initialise tree members */
+    
+    // master
+    initialiseTreeMember("gainSliderID", gainRange, parameters.masterGain, {AdaptableParameter({&parameters.masterGain}, &::setGain)});
+    initialiseTreeMember("panSliderID", panRange, parameters.masterPan, {AdaptableParameter({&parameters.masterPan})});
+    
+    // time
+    initialiseTreeMember("releaseSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
+    initialiseTreeMember("attackSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
+
+    // TODO: implement other envelope types
+    initialiseTreeMember("releaseFramesSliderID", lengthMsRange, parameters.releaseFrames, {AdaptableParameter({&parameters.releaseFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
+    initialiseTreeMember("attackFramesSliderID", lengthMsRange, parameters.attackFrames, {AdaptableParameter({&parameters.attackFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
+    initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
+    initialiseTreeMember("attackBeatsSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
+    
+    // voice editor
+    initialiseTreeMember("offsetSliderID", detuneRange, parameters.offset, {AdaptableParameter({&parameters.offset})});
+    
+    // voice components
+    for (int voiceNumber = 0; voiceNumber < 4; voiceNumber++) {
+        initialiseTreeMember(parameters.voicesIds[voiceNumber][0], gainRange, parameters.subvoiceGains[voiceNumber], {AdaptableParameter({&parameters.subvoiceGains[voiceNumber]}, &::setGain)});
+        initialiseTreeMember(parameters.voicesIds[voiceNumber][1], zeroOneRange, parameters.subvoiceOnOffs[voiceNumber], {AdaptableParameter({&parameters.subvoiceOnOffs[voiceNumber]})}); // create slider to link to onoffbutton to link the onoffbutton to a valuetree
+    }
+    
+    // lowpass
+    initialiseTreeMember("lowpassCutoffSliderID", frequencyRange, parameters.lowpassCutoff, {AdaptableParameter({&parameters.lowpassCutoff})});
+    initialiseTreeMember("lowpassResonanceSliderID", resonanceRange, parameters.lowpassResonance, {AdaptableParameter({&parameters.lowpassResonance})});
+    
+    // reverb
+    initialiseTreeMember("reverbWetSliderID", zeroOneRange, reverbParameters.wetLevel, {AdaptableParameter({&reverbParameters.wetLevel})});
+    initialiseTreeMember("reverbWidthSliderID", zeroOneRange, reverbParameters.width, {AdaptableParameter({&reverbParameters.width})});
+    initialiseTreeMember("reverbSizeSliderID", zeroOneRange, reverbParameters.roomSize, {AdaptableParameter({&reverbParameters.roomSize})});
+    initialiseTreeMember("reverbDampingSliderID", zeroOneRange, reverbParameters.damping, {AdaptableParameter({&reverbParameters.damping})});
+    
+    // voice components
+    tree.state = ValueTree("gainSliderID");
 }
 
 TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
@@ -57,13 +103,15 @@ TransitionFxAudioProcessor::~TransitionFxAudioProcessor()
 // create and add treemember, add listerener, add adaptableparameter
 void TransitionFxAudioProcessor::initialiseTreeMember(const String & parameterID, NormalisableRange<float> range, float initialValue, std::vector<AdaptableParameter> adaptableParameters)
 {
-    tree.createAndAddParameter(parameterID, parameterID, parameterID, range, initialValue, nullptr, nullptr);
+    // createAndAddParameter is deprecated as off juce 5.4
+    using Parameter = AudioProcessorValueTreeState::Parameter;
+    tree.createAndAddParameter (std::make_unique<Parameter> (parameterID, parameterID, parameterID, range, initialValue, nullptr, nullptr));
     tree.addParameterListener(parameterID, this);
         
     adaptableLinks.push_back(AdaptableLink(parameterID, adaptableParameters));
     
     // initialise
-//    parameterChanged(parameterID, *tree.getRawParameterValue(parameterID));
+    parameterChanged(parameterID, *tree.getRawParameterValue(parameterID));
 }
 
 
@@ -267,18 +315,20 @@ AudioProcessorEditor* TransitionFxAudioProcessor::createEditor()
 //==============================================================================
 void TransitionFxAudioProcessor::getStateInformation (MemoryBlock& destData)
 {
-//    auto state = tree.copyState();
-//    std::unique_ptr<juce::XmlElement> xml (state.createXml());
-//    copyXmlToBinary (*xml, destData);
+    auto state = tree.copyState();
+    std::unique_ptr<juce::XmlElement> xml (state.createXml());
+    copyXmlToBinary (*xml, destData);
 }
 
 void TransitionFxAudioProcessor::setStateInformation (const void* data, int sizeInBytes)
 {
-//    std::unique_ptr<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
-//
-//    if (xmlState.get() != nullptr)
-//        if (xmlState->hasTagName (tree.state.getType()))
-//            tree.replaceState (juce::ValueTree::fromXml (*xmlState));
+    if (xmlOn) {
+        std::unique_ptr<juce::XmlElement> xmlState (getXmlFromBinary (data, sizeInBytes));
+
+        if (xmlState.get() != nullptr)
+            if (xmlState->hasTagName (tree.state.getType()))
+                tree.replaceState (juce::ValueTree::fromXml (*xmlState));
+    }
 }
 
 //==============================================================================

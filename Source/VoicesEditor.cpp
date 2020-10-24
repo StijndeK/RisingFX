@@ -26,9 +26,7 @@ VoicesEditor::VoicesEditor(TransitionFxAudioProcessor& p) : Editor(p)
         addAndMakeVisible(voices.back());
     }
     
-    // subvoice offset slider
-    processor.initialiseTreeMember("offsetSliderID", detuneRange, processor.parameters.offset, {AdaptableParameter({&processor.parameters.offset})});
-    
+    // subvoice offset slider    
     std::vector<string> sliderIds = {"offsetSliderID"};
     createSliders(sliders, attachments, sliderIds, Slider::SliderStyle::RotaryVerticalDrag, Slider::NoTextBox);
 }

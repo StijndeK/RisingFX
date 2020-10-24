@@ -14,9 +14,6 @@
 //==============================================================================
 MasterEditor::MasterEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    processor.initialiseTreeMember("gainSliderID", gainRange, processor.parameters.masterGain, {AdaptableParameter({&processor.parameters.masterGain}, &::setGain)});
-    processor.initialiseTreeMember("panSliderID", panRange, processor.parameters.masterPan, {AdaptableParameter({&processor.parameters.masterPan})});
-    
     std::vector<string> linearSliderIds = {"gainSliderID"};
     std::vector<string> knobSliderIds = {"panSliderID"};
     createSliders(sliders, attachments, linearSliderIds);
@@ -27,6 +24,7 @@ MasterEditor::~MasterEditor()
 {
     deleteSliders(sliders, attachments);
 }
+
 
 void MasterEditor::paint (juce::Graphics& g)
 {

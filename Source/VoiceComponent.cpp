@@ -20,9 +20,6 @@ VoiceComponent::VoiceComponent(TransitionFxAudioProcessor& p, int voiceNumber, s
     onOffButton.onStateChange = [this] { updateToggleState (&onOffButton);   };
     addAndMakeVisible(onOffButton);
 
-    processor.initialiseTreeMember(sliderIds[0], gainRange, processor.parameters.subvoiceGains[voiceNumber], {AdaptableParameter({&processor.parameters.subvoiceGains[voiceNumber]}, &::setGain)});
-    processor.initialiseTreeMember(sliderIds[1], zeroOneRange, processor.parameters.subvoiceOnOffs[voiceNumber], {AdaptableParameter({&processor.parameters.subvoiceOnOffs[voiceNumber]})}); // create slider to link to onoffbutton to link the onoffbutton to a valuetree
-
     createSliders(sliders, attachments, sliderIds, Slider::SliderStyle::LinearVertical, Slider::NoTextBox);
     
     // init buttons
@@ -41,7 +38,7 @@ void VoiceComponent::paint (juce::Graphics& g)
 void VoiceComponent::resized()
 {
     Rectangle<int> localArea = getLocalBounds().reduced(1);
-//    sliders[0]->setBounds(localArea.removeFromLeft(20));
+    sliders[0]->setBounds(localArea.removeFromLeft(20));
     onOffButton.setBounds(getLocalBounds());
 }
 
