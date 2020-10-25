@@ -88,7 +88,7 @@ double Envelopes::arLinSteps(double input, int trigger)
 {
     switch(currentEnvState) {
         case ATTACK:
-            amplitude += (1 * attacks[currentStep]);
+            amplitude += (1 * attacksAndReleases[currentStep]);
             
             if (amplitude >= steps[currentStep]) { // check if step needs to move forward
                 amplitude = steps[currentStep];
@@ -105,7 +105,7 @@ double Envelopes::arLinSteps(double input, int trigger)
             }
             break;
         case RELEASE:
-            amplitude -= (1 * releases[currentStep]);
+            amplitude -= (1 * attacksAndReleases[currentStep]);
             
             if (amplitude <= steps[currentStep]) { // check if step needs to move forward
                 amplitude = steps[currentStep];
@@ -119,10 +119,11 @@ double Envelopes::arLinSteps(double input, int trigger)
             amplitude = 0.0;
             if (trigger == 1) {
                 currentEnvState = ATTACK;
+                currentStep = 0;
             }
             break;
     }
-    
+        
     output = input * amplitude;
     return output;
 }

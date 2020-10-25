@@ -33,9 +33,8 @@ public:
     float attack = 0;
     float release = 0;
     
-    std::vector<float> steps;
-    std::vector<float> attacks;
-    std::vector<float> releases;
+    std::vector<float> steps; // by changing the height of the step change envelope shape
+    std::vector<float> attacksAndReleases; // vector because in the future the user shoulsd be able to also edit env points horizontally, instead of it being the same value for every step
     int currentStep = 0;
     
     // samplerate
