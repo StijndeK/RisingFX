@@ -11,10 +11,11 @@
 class SynthVoice;
 #include "PluginEditor.h" // include plugineditor for reference to processor
 
-SynthVoice::SynthVoice(float& pan_, float& gain_, float& offset_, std::vector<float>& subvoiceGains_, std::vector<Envelopes>& subvoiceEnvs_, std::vector<float>& subvoiceOnOffs_)
+SynthVoice::SynthVoice(float& pan_, float& gain_, float& offset_, Envelopes& env_, std::vector<float>& subvoiceGains_, std::vector<Envelopes>& subvoiceEnvs_, std::vector<float>& subvoiceOnOffs_)
 {
     pan = &pan_;
     gain = &gain_;
+    env = &env_;
 
     // create subvoices
     for (int voice = 0; voice < 1; voice++) {
@@ -103,7 +104,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
 {    
     // per sample
     for (int sample = 0; sample < numSamples; ++sample) {
-        
+                
         double theSoundL = 0;
         double theSoundR = 0;
         
@@ -113,7 +114,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
             }
         }
 
-        theSoundL = (theSoundL / (subVoicesV.size() * 2)) * *gain;
+        theSoundL = env->arLinSteps((theSoundL / (subVoicesV.size() * 2)) * *gain, trigger);
         theSoundR = theSoundL;
         
         outputBuffer.addSample(0, startSample, theSoundL * (1.0- *pan));

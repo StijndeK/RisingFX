@@ -33,8 +33,10 @@ public:
     float attack = 0;
     float release = 0;
     
-    std::vector<float> steps; // by changing the height of the step change envelope shape
-    std::vector<float> attacksAndReleases; // vector because in the future the user shoulsd be able to also edit env points horizontally, instead of it being the same value for every step
+    // initial is a direct linear line (for 48000 samplerate)
+    std::vector<float> steps = {0.25, 0.5, 0.75, 1, 0.75, 0.5, 0.25, 0}; // by changing the height of the step change envelope shape
+    std::vector<float> attacksAndReleases = {0.00002083, 0.00002083, 0.00002083, 0.00002083, 0.00002083, 0.00002083, 0.00002083, 0.00002083}; // value to add or subtract by for every step
+    
     int currentStep = 0;
     
     // samplerate

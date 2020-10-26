@@ -9,7 +9,7 @@
 */
 
 #include "AdapatableParameter.h"
-
+#include "PluginProcessor.h"
 
 AdaptableLink::AdaptableLink(const String & paramId_, std::vector<AdaptableParameter> adaptableParameters_)
 {
@@ -22,7 +22,7 @@ AdaptableLink::~AdaptableLink()
     
 }
 
-AdaptableParameter::AdaptableParameter(std::vector<float*> var_, void (*paramSetFunction_)(std::vector<float*>, std::atomic<float>&))
+AdaptableParameter::AdaptableParameter(std::vector<float*> var_, void (*paramSetFunction_)(std::vector<float*>, std::atomic<float>&, TransitionFxAudioProcessor* p))
 {
     paramSetFunction = paramSetFunction_;
     var = var_;

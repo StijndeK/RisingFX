@@ -25,7 +25,7 @@ tree (*this, nullptr)       // initialise valuetree
     // add voices and sounds
     for (int i = 0; i < numVoices; i++) {
         // TODO: every voice now uses the same set of envelopes. If the synth should be polyfonic, every voice should have own set of envelopes
-        mySynth.addVoice(new SynthVoice(parameters.masterPan, parameters.masterGain, parameters.offset, parameters.subvoiceGains, parameters.subvoiceEnvs, parameters.subvoiceOnOffs));
+        mySynth.addVoice(new SynthVoice(parameters.masterPan, parameters.masterGain, parameters.offset, parameters.gainEnv, parameters.subvoiceGains, parameters.subvoiceEnvs, parameters.subvoiceOnOffs));
 
         if ((myVoice = dynamic_cast<SynthVoice*>(mySynth.getVoice(i)))){
             myVoice->setupProcessor(this);
@@ -64,8 +64,9 @@ tree (*this, nullptr)       // initialise valuetree
     initialiseTreeMember("panSliderID", panRange, parameters.masterPan, {AdaptableParameter({&parameters.masterPan})});
     
     // time
-    initialiseTreeMember("releaseSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
-    initialiseTreeMember("attackSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
+    // set attack and release for every env
+    initialiseTreeMember("releaseSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release, &parameters.gainEnv.release}, &::setEnvSteps)});
+    initialiseTreeMember("attackSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack, &parameters.gainEnv.attack}, &::setEnvSteps)});
 
     // TODO: implement other envelope types
     initialiseTreeMember("releaseFramesSliderID", lengthMsRange, parameters.releaseFrames, {AdaptableParameter({&parameters.releaseFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
@@ -93,7 +94,6 @@ tree (*this, nullptr)       // initialise valuetree
     initialiseTreeMember("reverbDampingSliderID", zeroOneRange, reverbParameters.damping, {AdaptableParameter({&reverbParameters.damping})});
     
     // modulation components
-    // TODO: walk through the vector in parameters
     for (int modNumber = 0; modNumber < parameters.modulationSliderIds.size(); modNumber++) {
         for (int x = 0; x < parameters.modulationSliderIds[modNumber].size(); x++) {
             initialiseTreeMember(parameters.modulationSliderIds[modNumber][x], zeroOneRange, TEMPVALUE, {AdaptableParameter({&TEMPVALUE})});
@@ -132,7 +132,7 @@ void TransitionFxAudioProcessor::parameterChanged(const String & parameterID, fl
         if (link.paramId == parameterID) {
             for (auto& adaptableParam: link.adaptableParameters) {
                 // TODO: use the newValue var (remove atomic float)
-                adaptableParam.paramSetFunction(adaptableParam.var, *tree.getRawParameterValue(parameterID));
+                adaptableParam.paramSetFunction(adaptableParam.var, *tree.getRawParameterValue(parameterID), this);
             }
         }
     }

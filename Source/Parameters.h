@@ -44,9 +44,11 @@ public:
     // DSP
     float lowpassCutoff = 1000;
     float lowpassResonance = 1;
+    Envelopes gainEnv;
     
     // Voice
     float offset = 0;
     
     /* NOTE: reverbparameters are found in the juce DSP module */
+    /* NOTE: envelope parameters are found in the Enevlopes class */
 };

@@ -21,12 +21,6 @@ SubVoice::SubVoice(float voiceNumber_, float& frequency_, float& detune_, float*
     env = env_;
     voiceNumber = voiceNumber_;
     onOff = onOff_;
-
-    env->steps = {0.1, 0.2, 0.3, 1, 0.3, 0.2, 0.1, 0}; // TODO: get these values from input and link with paramsetfunction
-    for (int i = 0; i < env->steps.size(); i++) {
-        float amountOfTime = std::abs(env->steps[i] - env->steps[i - 1]); // difference
-        env->attacksAndReleases.push_back((amountOfTime / 48000) * (1.0 / (1000.0 / 1000.0)));
-    }
 }
 
 SubVoice::~SubVoice()
@@ -49,5 +43,5 @@ void SubVoice::setVoiceType ()
 
 double SubVoice::oscWave ()
 {
-    return env->arLinSteps(osc.saw(*frequency * pow(2.0 , (voiceNumber * *detune))), trigger) * *gain;
+    return env->arLin(osc.saw(*frequency * pow(2.0 , (voiceNumber * *detune))), trigger) * *gain;
 }

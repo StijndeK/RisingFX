@@ -12,7 +12,7 @@ class TransitionFxAudioProcessor;
 class SynthVoice : public SynthesiserVoice
 {
 public:
-    SynthVoice (float& pan_, float& gain_, float& offset_, std::vector<float>& subvoiceGains_, std::vector<Envelopes>& subvoiceEnvs_, std::vector<float>& subvoiceOnOffs_);
+    SynthVoice (float& pan_, float& gain_, float& offset_, Envelopes& env_, std::vector<float>& subvoiceGains_, std::vector<Envelopes>& subvoiceEnvs_, std::vector<float>& subvoiceOnOffs_);
     ~SynthVoice();
 
     // synth functions
@@ -37,9 +37,12 @@ private:
     double amplitude;
     float* gain;
     float* pan;
+    Envelopes* env;
+
     std::vector<float>* subvoiceOnOffs;
     
     maxiOsc osc;
+    
     
     // subvoices
     std::vector<SubVoice> subVoicesV;

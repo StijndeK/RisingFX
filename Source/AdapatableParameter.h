@@ -11,14 +11,15 @@
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "ParamSetFunctions.h"
+class TransitionFxAudioProcessor;
 
 class AdaptableParameter
 {
 public:
-    AdaptableParameter(std::vector<float*> var_, void (*paramSetFunction_)(std::vector<float*>, std::atomic<float>&) = &::setSimpleValue);
+    AdaptableParameter(std::vector<float*> var_, void (*paramSetFunction_)(std::vector<float*>, std::atomic<float>&, TransitionFxAudioProcessor* p) = &::setSimpleValue);
     ~AdaptableParameter();
         
-    void (*paramSetFunction)(std::vector<float*>, std::atomic<float>&);
+    void (*paramSetFunction)(std::vector<float*>, std::atomic<float>&, TransitionFxAudioProcessor* p);
     std::vector<float*> var;
 };
 
