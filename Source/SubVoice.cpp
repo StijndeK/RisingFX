@@ -43,5 +43,6 @@ void SubVoice::setVoiceType ()
 
 double SubVoice::oscWave ()
 {
-    return env->arLin(osc.saw(*frequency * pow(2.0 , (voiceNumber * *detune))), trigger) * *gain;
+//    return env->arLin(osc.saw(*frequency * pow(2.0 , (voiceNumber * *detune))), trigger) * *gain;
+    return osc.saw(*frequency * pow(2.0 , (voiceNumber * *detune))) * *gain;
 }

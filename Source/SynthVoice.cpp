@@ -115,6 +115,7 @@ void SynthVoice::renderNextBlock(AudioBuffer<float> &outputBuffer, int startSamp
         }
 
         theSoundL = env->arLinSteps((theSoundL / (subVoicesV.size() * 2)) * *gain, trigger);
+//        theSoundL = (theSoundL / (subVoicesV.size() * 2)) * *gain;
         theSoundR = theSoundL;
         
         outputBuffer.addSample(0, startSample, theSoundL * (1.0- *pan));

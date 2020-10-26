@@ -63,10 +63,26 @@ tree (*this, nullptr)       // initialise valuetree
     initialiseTreeMember("gainSliderID", gainRange, parameters.masterGain, {AdaptableParameter({&parameters.masterGain}, &::setGain)});
     initialiseTreeMember("panSliderID", panRange, parameters.masterPan, {AdaptableParameter({&parameters.masterPan})});
     
+    // modulation components
+    // should be set before other envelopes
+    for (int x = 0; x < parameters.modulationSliderIds[0].size(); x++) { // gain
+        // TODO: difference between attack and release
+        if (x < parameters.modulationSliderIds[0].size() / 2) { // attack
+            initialiseTreeMember(parameters.modulationSliderIds[0][x], zeroOneRange, parameters.gainEnv.steps[x], {AdaptableParameter({&parameters.gainEnv.attacksAndReleases[x], &parameters.gainEnv.steps[x], &parameters.gainEnv.steps[x - 1], &parameters.attackMs}, &::setStepEnvSteps)});
+        }
+        else { // release
+            initialiseTreeMember(parameters.modulationSliderIds[0][x], zeroOneRange, parameters.gainEnv.steps[x], {AdaptableParameter({&parameters.gainEnv.attacksAndReleases[x], &parameters.gainEnv.steps[x], &parameters.gainEnv.steps[x - 1], &parameters.releaseMs}, &::setStepEnvSteps)});
+        }
+    }
+    
+    for (int x = 0; x < parameters.modulationSliderIds[1].size(); x++) { // pan
+        initialiseTreeMember(parameters.modulationSliderIds[1][x], zeroOneRange, TEMPVALUE, {AdaptableParameter({&TEMPVALUE})});
+    }
+    
     // time
     // set attack and release for every env
-    initialiseTreeMember("releaseSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release, &parameters.gainEnv.release}, &::setEnvSteps)});
-    initialiseTreeMember("attackSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack, &parameters.gainEnv.attack}, &::setEnvSteps)});
+    initialiseTreeMember("releaseSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
+    initialiseTreeMember("attackSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
 
     // TODO: implement other envelope types
     initialiseTreeMember("releaseFramesSliderID", lengthMsRange, parameters.releaseFrames, {AdaptableParameter({&parameters.releaseFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
@@ -79,8 +95,8 @@ tree (*this, nullptr)       // initialise valuetree
     
     // voice components
     for (int voiceNumber = 0; voiceNumber < 4; voiceNumber++) {
-        initialiseTreeMember(parameters.voicesIds[voiceNumber][0], gainRange, parameters.subvoiceGains[voiceNumber], {AdaptableParameter({&parameters.subvoiceGains[voiceNumber]}, &::setGain)});
-        initialiseTreeMember(parameters.voicesIds[voiceNumber][1], zeroOneRange, parameters.subvoiceOnOffs[voiceNumber], {AdaptableParameter({&parameters.subvoiceOnOffs[voiceNumber]})});
+        initialiseTreeMember(parameters.voicesIds[voiceNumber][0], gainRange, parameters.subvoiceGains[voiceNumber], {AdaptableParameter({&parameters.subvoiceGains[voiceNumber]}, &::setGain)}); // gain
+        initialiseTreeMember(parameters.voicesIds[voiceNumber][1], zeroOneRange, parameters.subvoiceOnOffs[voiceNumber], {AdaptableParameter({&parameters.subvoiceOnOffs[voiceNumber]})}); // onoff
     }
     
     // lowpass
@@ -92,13 +108,6 @@ tree (*this, nullptr)       // initialise valuetree
     initialiseTreeMember("reverbWidthSliderID", zeroOneRange, reverbParameters.width, {AdaptableParameter({&reverbParameters.width})});
     initialiseTreeMember("reverbSizeSliderID", zeroOneRange, reverbParameters.roomSize, {AdaptableParameter({&reverbParameters.roomSize})});
     initialiseTreeMember("reverbDampingSliderID", zeroOneRange, reverbParameters.damping, {AdaptableParameter({&reverbParameters.damping})});
-    
-    // modulation components
-    for (int modNumber = 0; modNumber < parameters.modulationSliderIds.size(); modNumber++) {
-        for (int x = 0; x < parameters.modulationSliderIds[modNumber].size(); x++) {
-            initialiseTreeMember(parameters.modulationSliderIds[modNumber][x], zeroOneRange, TEMPVALUE, {AdaptableParameter({&TEMPVALUE})});
-        }
-    }
     
     /* initialise state */
     
