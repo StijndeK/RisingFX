@@ -89,9 +89,11 @@ Different types of time setting in frames seoncs and beats, to link well and pre
 - picture
 
 ### Envelopes
-Envelopes exist of statemachine. Value that needs to be added per sample is calculated. Linear steps are used with smooth option.
+Envelopes exist of statemachine. Value that needs to be added per sample is calculated. Linear steps are used with smooth option. Two types of envelopes.
 
-- code example
+- setting of envelopes works like this (graph)
+
+- code example how to set the add and subtract values (and for stepenvs)
 
 ### Voice types
 

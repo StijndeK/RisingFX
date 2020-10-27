@@ -18,7 +18,7 @@ SynthVoice::SynthVoice(float& pan_, float& gain_, float& offset_, Envelopes& env
     env = &env_;
 
     // create subvoices
-    for (int voice = 0; voice < 1; voice++) {
+    for (int voice = 0; voice < 4; voice++) {
         
         Envelopes* envPtr = &subvoiceEnvs_[voice];
         float* gainPtr = &subvoiceGains_[voice];

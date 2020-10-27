@@ -30,6 +30,8 @@ private:
     std::vector<Slider*> sliders;
         std::vector<AudioProcessorValueTreeState::SliderAttachment*> attachments;
 
+    std::vector<string> sliderIds = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
+
     ComboBox timeValueBox;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (TimeEditor)

@@ -52,7 +52,8 @@ tree (*this, nullptr)       // initialise valuetree
     NormalisableRange<float> frequencyRange (200, 2000, 1);
     NormalisableRange<float> gainRange (-78.0,0.0, 0.01, 2.5);
     NormalisableRange<float> panRange (0, 1, 0.01);
-    NormalisableRange<float> lengthMsRange (100, 10000, 1);
+    NormalisableRange<float> lengthMsRange (1, 10000, 1);
+    NormalisableRange<float> lengthFramesRange (1, 240, 1);
     NormalisableRange<float> resonanceRange (1, 5, 0.1);
     NormalisableRange<float> zeroOneRange (0, 1, 0.1);
     NormalisableRange<float> detuneRange (-0.5, 0.5, 0.01);
@@ -65,18 +66,15 @@ tree (*this, nullptr)       // initialise valuetree
     
     // modulation components
     // should be set before other envelopes
-    for (int x = 0; x < parameters.modulationSliderIds[0].size(); x++) { // gain
-        // TODO: difference between attack and release
+    for (int x = 0; x < parameters.modulationSliderIds[0].size(); x++) {
         if (x < parameters.modulationSliderIds[0].size() / 2) { // attack
             initialiseTreeMember(parameters.modulationSliderIds[0][x], zeroOneRange, parameters.gainEnv.steps[x], {AdaptableParameter({&parameters.gainEnv.attacksAndReleases[x], &parameters.gainEnv.steps[x], &parameters.gainEnv.steps[x - 1], &parameters.attackMs}, &::setStepEnvSteps)});
+            initialiseTreeMember(parameters.modulationSliderIds[1][x], zeroOneRange, TEMPVALUE, {AdaptableParameter({&TEMPVALUE})});
         }
         else { // release
             initialiseTreeMember(parameters.modulationSliderIds[0][x], zeroOneRange, parameters.gainEnv.steps[x], {AdaptableParameter({&parameters.gainEnv.attacksAndReleases[x], &parameters.gainEnv.steps[x], &parameters.gainEnv.steps[x - 1], &parameters.releaseMs}, &::setStepEnvSteps)});
+            initialiseTreeMember(parameters.modulationSliderIds[1][x], zeroOneRange, TEMPVALUE, {AdaptableParameter({&TEMPVALUE})});
         }
-    }
-    
-    for (int x = 0; x < parameters.modulationSliderIds[1].size(); x++) { // pan
-        initialiseTreeMember(parameters.modulationSliderIds[1][x], zeroOneRange, TEMPVALUE, {AdaptableParameter({&TEMPVALUE})});
     }
     
     // time
@@ -84,9 +82,10 @@ tree (*this, nullptr)       // initialise valuetree
     initialiseTreeMember("releaseSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
     initialiseTreeMember("attackSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
 
+    initialiseTreeMember("releaseFramesSliderID", lengthFramesRange, parameters.releaseFrames, {AdaptableParameter({&parameters.releaseFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release, &parameters.releaseMs}, &::setEnvStepsFrames)});
+    initialiseTreeMember("attackFramesSliderID", lengthFramesRange, parameters.attackFrames, {AdaptableParameter({&parameters.attackFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack, &parameters.attackMs}, &::setEnvStepsFrames)});
+
     // TODO: implement other envelope types
-    initialiseTreeMember("releaseFramesSliderID", lengthMsRange, parameters.releaseFrames, {AdaptableParameter({&parameters.releaseFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
-    initialiseTreeMember("attackFramesSliderID", lengthMsRange, parameters.attackFrames, {AdaptableParameter({&parameters.attackFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
     initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
     initialiseTreeMember("attackBeatsSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
     

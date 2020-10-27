@@ -14,7 +14,6 @@
 //==============================================================================
 TimeEditor::TimeEditor(TransitionFxAudioProcessor& p) : Editor(p)
 {
-    std::vector<string> sliderIds = {"attackSliderID", "releaseSliderID", "attackBeatsSliderID", "releaseBeatsSliderID", "attackFramesSliderID", "releaseFramesSliderID"};
     createSliders(sliders, attachments, sliderIds);
         
     timeValueBox.addItem("MS", 1);
@@ -54,5 +53,10 @@ void TimeEditor::comboBoxChanged(ComboBox *comboBoxThatHasChanged)
     for (int i = 0; i < sliders.size(); i++) {
         bool visibility = comboBoxThatHasChanged->getSelectedId() == i / 2 + 1; // group by 2 (attack and release) to visible and rest to invisible
         sliders[i]->setVisible(visibility);
+        
+        // set length of envelopes to the length of selected type
+        if (visibility) {
+            processor.parameterChanged(sliderIds[i], *processor.tree.getRawParameterValue(sliderIds[i]));
+        }
     }
 }

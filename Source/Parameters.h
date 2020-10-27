@@ -36,8 +36,8 @@ public:
     // length
     float attackMs = 1000;
     float releaseMs = 1000;
-    float attackFrames = 1000;
-    float releaseFrames = 1000;
+    float attackFrames = 24;
+    float releaseFrames = 24;
     float attackBeats = 1000;
     float releaseBeats = 1000;
     
