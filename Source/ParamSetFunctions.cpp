@@ -42,7 +42,7 @@ void setStepEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inpu
     *valueToChange[0] = (amountAmplitude / p->getSampleRate()) * (1.0 / (length / 1000.0));
 }
 
-void setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // last valuetochange is the general length of the attack or ms. All values before are envelope add or subtract values
+void setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // last valuetochange is the general length of the attack or ms. All values before are envelope add or subtract values. inputvalue
 {
     auto framerate = p->framerate;
     
@@ -75,14 +75,35 @@ void setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& in
     }
     
     // framerate to ms
-    usedFramerate = inputValue / usedFramerate * 1000;
+    float framesInMs = inputValue / usedFramerate * 1000;
     
     // set general length value
-    *valueToChange[valueToChange.size() - 1] = usedFramerate;
+    *valueToChange[valueToChange.size() - 1] = framesInMs;
     
     // set add or subtractvalues
     for (int value = 0; value < valueToChange.size() - 1; value++) {
-        *valueToChange[value] = (1.0 / p->getSampleRate()) * (1.0 / (usedFramerate / 1000.0));
+        *valueToChange[value] = (1.0 / p->getSampleRate()) * (1.0 / (framesInMs / 1000.0));
+    }
+    
+    // set the values for every step envelope
+    for (string& value: p->parameters.modulationSliderIds[0]) {
+        p->parameterChanged(value, *p->tree.getRawParameterValue(value));
+    }
+}
+
+void setEnvStepsBeats(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // last valuetochange is the general length of the attack or ms. All values before are envelope add or subtract values
+{
+    float bpm = (p->bpm == nullptr) ? 100 : *p->bpm;
+    
+    // beats to ms
+    float beatsInMs = 60000.f / bpm * inputValue;
+
+    // set general length value
+    *valueToChange[valueToChange.size() - 1] = beatsInMs;
+
+    // set add or subtractvalues
+    for (int value = 0; value < valueToChange.size() - 1; value++) {
+        *valueToChange[value] = (1.0 / p->getSampleRate()) * (1.0 / (beatsInMs / 1000.0));
     }
     
     // set the values for every step envelope

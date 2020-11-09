@@ -21,3 +21,4 @@ void setStepEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inpu
 void setGain(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p);
 void setSimpleValue(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p);
 void setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p);
+void setEnvStepsBeats(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p);

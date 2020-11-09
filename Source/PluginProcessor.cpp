@@ -54,6 +54,7 @@ tree (*this, nullptr)       // initialise valuetree
     NormalisableRange<float> panRange (0, 1, 0.01);
     NormalisableRange<float> lengthMsRange (1, 10000, 1);
     NormalisableRange<float> lengthFramesRange (1, 240, 1);
+    NormalisableRange<float> lengthBeatsRange (1, 20, 1);
     NormalisableRange<float> resonanceRange (1, 5, 0.1);
     NormalisableRange<float> zeroOneRange (0, 1, 0.1);
     NormalisableRange<float> detuneRange (-0.5, 0.5, 0.01);
@@ -86,8 +87,8 @@ tree (*this, nullptr)       // initialise valuetree
     initialiseTreeMember("attackFramesSliderID", lengthFramesRange, parameters.attackFrames, {AdaptableParameter({&parameters.attackFrames}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack, &parameters.attackMs}, &::setEnvStepsFrames)});
 
     // TODO: implement other envelope types
-    initialiseTreeMember("releaseBeatsSliderID", lengthMsRange, parameters.releaseMs, {AdaptableParameter({&parameters.releaseMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release}, &::setEnvSteps)});
-    initialiseTreeMember("attackBeatsSliderID", lengthMsRange, parameters.attackMs, {AdaptableParameter({&parameters.attackMs}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack}, &::setEnvSteps)});
+    initialiseTreeMember("releaseBeatsSliderID", lengthBeatsRange, parameters.releaseBeats, {AdaptableParameter({&parameters.releaseBeats}), AdaptableParameter({&parameters.subvoiceEnvs[0].release, &parameters.subvoiceEnvs[1].release, &parameters.subvoiceEnvs[2].release, &parameters.subvoiceEnvs[3].release, &parameters.releaseMs}, &::setEnvStepsBeats)});
+    initialiseTreeMember("attackBeatsSliderID", lengthBeatsRange, parameters.attackBeats, {AdaptableParameter({&parameters.attackBeats}), AdaptableParameter({&parameters.subvoiceEnvs[0].attack, &parameters.subvoiceEnvs[1].attack, &parameters.subvoiceEnvs[2].attack, &parameters.subvoiceEnvs[3].attack, &parameters.attackMs}, &::setEnvStepsBeats)});
     
     // voice editor
     initialiseTreeMember("offsetSliderID", detuneRange, parameters.offset, {AdaptableParameter({&parameters.offset})});
