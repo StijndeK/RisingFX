@@ -26,13 +26,19 @@ The images shows a very basic overview of the tool's dataflow.
 For linking the input to values in the synthesiser, the UI elements are linked to certain functions using *Adaptable Parameters*. This prevents having to use a large amount of getters and setters, and automates and optimises the process of adding UI elements.
 
 <!---
+dit allemaal gewoon 1 voor 1 invullen en waar nodig visuals maken en code examples
+
+
 [] examples per different type (some inputs need more other data)
 [] link to processor
 [] adaptable parameters
-RUN THROUGH EXAMPLE OF CREATING A UI ELEMENT EASILY IN EDITOR, TO LINKING IT WITH ADAPTABLE PARAM, TO WHAT IT EDITS. THIS EXPLAINS EVERYTHINGS
 
 - code ex
 - figure
+
+### Editors
+RUN THROUGH EXAMPLE OF CREATING A UI ELEMENT EASILY IN EDITOR, TO LINKING IT WITH ADAPTABLE PARAM, TO WHAT IT EDITS. THIS EXPLAINS EVERYTHINGS
+baseclass, linking, modulation component
 
 ### Envelopes
 - code ex
