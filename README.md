@@ -29,12 +29,15 @@ For linking the input to values in the synthesiser, the UI elements are linked t
 [] examples per different type (some inputs need more other data)
 [] link to processor
 [] adaptable parameters
+RUN THROUGH EXAMPLE OF CREATING A UI ELEMENT EASILY IN EDITOR, TO LINKING IT WITH ADAPTABLE PARAM, TO WHAT IT EDITS. THIS EXPLAINS EVERYTHINGS
 
 - code ex
 - figure
 
 ### Envelopes
 - code ex
+
+JUST EXAMPLE OF HOW ENVELOPE WORKS.
 - figure
 
 ### Voices system
