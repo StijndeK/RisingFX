@@ -36,8 +36,9 @@ dit allemaal gewoon 1 voor 1 invullen en waar nodig visuals maken en code exampl
 - code ex
 - figure
 
+### RUN THROUGH EXAMPLE OF CREATING A UI ELEMENT EASILY IN EDITOR, TO LINKING IT WITH ADAPTABLE PARAM, TO WHAT IT EDITS. THIS EXPLAINS EVERYTHINGS
+
 ### Editors
-RUN THROUGH EXAMPLE OF CREATING A UI ELEMENT EASILY IN EDITOR, TO LINKING IT WITH ADAPTABLE PARAM, TO WHAT IT EDITS. THIS EXPLAINS EVERYTHINGS
 baseclass, linking, modulation component
 
 ### Envelopes
@@ -61,6 +62,12 @@ JUST EXAMPLE OF HOW ENVELOPE WORKS.
 
 - code ex
 - figure
+
+### paramsetfunctions
+
+- code ex
+- figure
+
 --->
 
 ## Improvements
