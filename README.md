@@ -64,7 +64,7 @@ JUST EXAMPLE OF HOW ENVELOPE WORKS.
 - figure
 
 ### paramsetfunctions
-
+hoe link doen naar processor
 - code ex
 - figure
 
