@@ -16,7 +16,7 @@ class TransitionFxAudioProcessor;
 class AdaptableParameter
 {
 public:
-    AdaptableParameter(std::vector<float*> var_, void (*paramSetFunction_)(std::vector<float*>, std::atomic<float>&, TransitionFxAudioProcessor* p) = &::setSimpleValue);
+    AdaptableParameter(std::vector<float*> var_, void (*paramSetFunction_)(std::vector<float*>, std::atomic<float>&, TransitionFxAudioProcessor* p) = &ParamSetFunctions::setSimpleValue);
     ~AdaptableParameter();
         
     void (*paramSetFunction)(std::vector<float*>, std::atomic<float>&, TransitionFxAudioProcessor* p);

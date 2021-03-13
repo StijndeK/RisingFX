@@ -14,8 +14,17 @@
 
 // TODO: rename valueToChange, because it is also used to pass certain variables necessary
 // TODO: link to processor might not be necessary as some variables are passed through valueToChange anyway
+// TODO: maybe just use processor reference
 
-void setEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p)
+
+void ParamSetFunctions::setGain(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p)
+{
+    for (auto& value: valueToChange) {
+        *value = pow(10, inputValue / 20);
+    }
+}
+
+void ParamSetFunctions::setEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p)
 {
     for (auto& value: valueToChange) {
         *value = (1.0 / p->getSampleRate()) * (1.0 / (inputValue / 1000.0));
@@ -27,7 +36,7 @@ void setEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inputVal
     }
 }
 
-void setStepEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // first valuetochange is attackAndRelease value to change, second is step value to change and third is the previous step value. Fourth valueToChange is attack or release length .Inputvalue is stepvalue.
+void ParamSetFunctions::setStepEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // first valuetochange is attackAndRelease value to change, second is step value to change and third is the previous step value. Fourth valueToChange is attack or release length .Inputvalue is stepvalue.
 {
     // set stepvalue
     *valueToChange[1] = inputValue;
@@ -42,7 +51,7 @@ void setStepEnvSteps(std::vector<float*> valueToChange, std::atomic<float>& inpu
     *valueToChange[0] = (amountAmplitude / p->getSampleRate()) * (1.0 / (length / 1000.0));
 }
 
-void setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // last valuetochange is the general length of the attack or ms. All values before are envelope add or subtract values. inputvalue
+void ParamSetFunctions::setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // last valuetochange is the general length of the attack or ms. All values before are envelope add or subtract values. inputvalue
 {
     auto framerate = p->framerate;
     
@@ -70,7 +79,7 @@ void setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& in
             break;
         default:
             std::cout << "framerate not found: setting to 24";
-            usedFramerate = 24;
+            usedFramerate = 120;
             break;
     }
     
@@ -91,7 +100,7 @@ void setEnvStepsFrames(std::vector<float*> valueToChange, std::atomic<float>& in
     }
 }
 
-void setEnvStepsBeats(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // last valuetochange is the general length of the attack or ms. All values before are envelope add or subtract values
+void ParamSetFunctions::setEnvStepsBeats(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p) // last valuetochange is the general length of the attack or ms. All values before are envelope add or subtract values
 {
     float bpm = (p->bpm == nullptr) ? 100 : *p->bpm;
     
@@ -112,17 +121,9 @@ void setEnvStepsBeats(std::vector<float*> valueToChange, std::atomic<float>& inp
     }
 }
 
-void setGain(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p)
-{
-    for (auto& value: valueToChange) {
-        *value = pow(10, inputValue / 20);
-    }
-}
-
-void setSimpleValue(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p)
+void ParamSetFunctions::setSimpleValue(std::vector<float*> valueToChange, std::atomic<float>& inputValue, TransitionFxAudioProcessor* p)
 {
     for (auto& value: valueToChange) {
         *value = inputValue;
     }
 }
-

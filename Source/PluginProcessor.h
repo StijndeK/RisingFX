@@ -45,7 +45,7 @@ public:
     
     //==============================================================================
     // trigger button
-    int manualTrigger;
+    int manualTrifgger;
     void triggerManualSound(juce::TextButton::ButtonState state);
     
     //==============================================================================

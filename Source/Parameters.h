@@ -10,8 +10,16 @@
 
 #pragma once
 
+//class Parameters2 {
+//public:
+//    static float masterPan;
+//};
+//
+//float Parameters2::masterPan = 0.5;
+
+
 // dataclass to hold general variables
-class Parameters {
+struct Parameters {
     
 public:
     /* subvoices */
