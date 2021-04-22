@@ -6,8 +6,8 @@ Development on RFX is currently still in progress.
 
 RFX is written in C++ using the JUCE framework and [Maximilian DSP](https://github.com/micknoise/Maximilian) library. It is a refactor of the [TransitionFX ALPHA](https://github.com/StijndeK/TransitionFX-ALPHA), made for [Code With Friends Fall 2020](https://codewithfriends.io/events/cwf-fall-2020/).
 
-## Design
-Emphesis has been put on not overwelming the user with to many possibilities. It should be easy to make an impressive sounding riser quickly without having to go through long tutorials. Voices containing preset synthesis can be added or removed and given a type, and effects can be loaded in and edited. Most control is provided in the modulation. 
+## Riser sound effects
+The plugin prefers a simple workflow. It should be easy to make an impressive sounding riser quickly without having to go through long tutorials. Voices containing preset synthesis can be added or removed and given a type, and effects can be loaded in and edited. Most control is provided in the modulation. 
 
 Some of the most important elements of Risers  are:
 - **A LOT of modulation**: the largest part of the plugin is a modulation editor
