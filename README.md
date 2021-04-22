@@ -19,7 +19,6 @@ The design has been based of existing (mostly sample based) plugins such as: [GR
 ## Development
 RFX has been made as dynamically as possible, to easily be able to add and change elements. 
 
-The images shows a very basic overview of the tool's dataflow.
 ![RTR_BasicDataflow (1)](https://user-images.githubusercontent.com/31696336/110832977-3031a100-829c-11eb-8fcd-9c439dc2b9d0.png)
 
 ### Linking input to audio data
